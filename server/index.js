@@ -25,11 +25,12 @@ app.use(session({
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-
 // set up API routes
 const diary = require('./routes/diary');
 app.use('/diary', diary);
 const user = require('./routes/user');
 app.use('/user', user);
+const login = require('./routes/login');
+app.use('/login', login);
 
 app.listen(8080, () => {console.log('Listening on port 8080')});

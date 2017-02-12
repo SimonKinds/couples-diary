@@ -43,7 +43,7 @@ router.post('/', (req, res) => {
   Diary.create(req.body, (err, post) => {
     if (err) {
       console.log(err);
-      res.put('Error');
+      res.send('Error');
     } else {
       res.json(post);
     }
@@ -54,7 +54,7 @@ router.put('/:id', (req, res) => {
   Diary.findByIdAndUpdate(req.params.id, req.body, (err, post) => {
     if (err) {
       console.log(err);
-      res.put('Error');
+      res.send('Error');
     } else {
       res.json(post);
     }

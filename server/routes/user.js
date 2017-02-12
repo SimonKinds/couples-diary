@@ -8,7 +8,7 @@ router.post(
     '/', (request, response) => {User.create(request.body, (err, post) => {
            if (err) {
              console.log(err);
-             response.put('Error')
+             response.send('Error')
            } else {
              response.json(post)
            }
