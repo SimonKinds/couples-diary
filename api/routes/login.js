@@ -17,7 +17,9 @@ router.post('/', (request, response) => {
       response.status(404).send();
     } else {
       const id = db_response._id;
-      const token = jwt.sign({username: username, userId: id}, jwtConfig.key);
+      // 1 day JWT token expiration
+      const token = jwt.sign(
+          {username: username, userId: id}, jwtConfig.key, {expiresIn: '1day'});
       response.status(200).send(token);
     }
   });
