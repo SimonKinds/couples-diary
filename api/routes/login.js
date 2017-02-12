@@ -9,20 +9,21 @@ const jwtConfig = require('../jwt_config');
 
 router.post('/', (request, response) => {
   const username = request.body.username;
-  User.findOne({username: username}, (err, db_response) => {
-    if (err) {
-      console.error(err);
-      response.status(500).send();
-    } else if (!db_response) {
-      response.status(404).send();
-    } else {
-      const id = db_response._id;
-      // 1 day JWT token expiration
-      const token = jwt.sign(
-          {username: username, userId: id}, jwtConfig.key, {expiresIn: '1day'});
-      response.status(200).send(token);
-    }
-  });
+  User.findOne({username: username})
+      .then(user => {
+        if (user) {
+          const token = jwt.sign(
+              {userId: user._id, coupleId: user.couple}, jwtConfig.key,
+              {expiresIn: '1day'});
+          response.send(token);
+        } else {
+          response.status(404).send();
+        }
+      })
+      .catch(e => {
+        console.error(e);
+        response.status(500).send();
+      });
 });
 
 module.exports = router;
