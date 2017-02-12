@@ -3,6 +3,7 @@ const app = express();
 
 // db
 const mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 mongoose.connection.on('open', (ref) => console.log('Connected to mongodb'));
 mongoose.connection.on(
     'error', (ref) => console.log('Error connecting to mongodb'));
@@ -15,6 +16,8 @@ app.use(bodyParser.json());
 // set up API routes
 const diary = require('./routes/diary');
 app.use('/diary', diary);
+const couple = require('./routes/couple');
+app.use('/couple', couple);
 const user = require('./routes/user');
 app.use('/user', user);
 const login = require('./routes/login');
