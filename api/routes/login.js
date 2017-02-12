@@ -4,25 +4,22 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const User = require('../models/user.js');
 
-router.post('/', (request, response) => {
-  User.findOne({username: request.body.username}, (err, db_response) => {
-    if (err) {
-      console.log(err);
-      response.send('Error');
-    } else if (!db_response) {
-      response.send('Could not find user');
-    } else {
-      request.session.user_id = db_response._id;
-      console.log(request.session);
-      response.redirect('/login/success');
-    }
-  });
-});
+const jwt = require('jsonwebtoken');
+const jwtConfig = require('../jwt_config');
 
-router.get('/success', (request, response) => {
-  console.log(request.session);
-  User.findOne({_id: request.session.user_id}, (err, db_response) => {
-    response.send('User with above ID has username: ' + db_response.username);
+router.post('/', (request, response) => {
+  const username = request.body.username;
+  User.findOne({username: username}, (err, db_response) => {
+    if (err) {
+      console.error(err);
+      response.status(500).send();
+    } else if (!db_response) {
+      response.status(404).send();
+    } else {
+      const id = db_response._id;
+      const token = jwt.sign({username: username, userId: id}, jwtConfig.key);
+      response.status(200).send(token);
+    }
   });
 });
 
