@@ -3,10 +3,12 @@ import React from 'react';
 export default class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.username = '';
+    this.state = {username: ''};
 
     this.onLogin = this.onLogin.bind(this);
     this.onSignup = this.onSignup.bind(this);
+    this.onUsernameChange = this.onUsernameChange.bind(this);
+    this.shouldShowLoginError = this.shouldShowLoginError.bind(this);
   }
 
   render() {
@@ -15,8 +17,9 @@ export default class LoginForm extends React.Component {
         <form
           onSubmit={this.onLogin}>
           <label>Username</label>
-          <input type="text" value={this.username}/>
+          <input type="text" value={this.state.username} onChange={this.onUsernameChange}/>
         </form>
+        <div>{this.shouldShowLoginError(this.props.loginError)}</div>
         <button onClick={this.onLogin}>
           Login
         </button>
@@ -27,11 +30,23 @@ export default class LoginForm extends React.Component {
     );
   }
 
-  onLogin() {
-    this.props.onLogin(this.username);
+  onLogin(event) {
+    if (event) event.preventDefault();
+    this.props.onLogin(this.state.username);
   }
 
   onSignup() {
-    this.props.onSignup(this.username);
+    this.props.onSignup(this.state.username);
+  }
+
+  onUsernameChange(event) {
+    this.setState({username: event.target.value});
+  }
+
+  shouldShowLoginError(isLogInError) {
+    if (isLogInError) {
+      return 'Error logging in';
+    }
+    return '';
   }
 };
