@@ -8,7 +8,6 @@ export default class LoginForm extends React.Component {
     this.onLogin = this.onLogin.bind(this);
     this.onSignup = this.onSignup.bind(this);
     this.onUsernameChange = this.onUsernameChange.bind(this);
-    this.shouldShowLoginError = this.shouldShowLoginError.bind(this);
   }
 
   render() {
@@ -19,7 +18,7 @@ export default class LoginForm extends React.Component {
           <label>Username</label>
           <input type="text" value={this.state.username} onChange={this.onUsernameChange}/>
         </form>
-        <div>{this.shouldShowLoginError(this.props.loginError)}</div>
+        {this.props.loginError && <div>Error logging in</div>}
         <button onClick={this.onLogin}>
           Login
         </button>
@@ -41,12 +40,5 @@ export default class LoginForm extends React.Component {
 
   onUsernameChange(event) {
     this.setState({username: event.target.value});
-  }
-
-  shouldShowLoginError(isLogInError) {
-    if (isLogInError) {
-      return 'Error logging in';
-    }
-    return '';
   }
 };
