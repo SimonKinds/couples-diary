@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const jwtConfig = require('../jwt_config');
 
 router.post('/create', (req, res) => {
-  const decodedToken = isValidToken(req.get('Authorization'));
+  const decodedToken = isValidToken(req.headers.authorization);
   if (!decodedToken) {
     res.status(401).send();
     return;
