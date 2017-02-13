@@ -13,9 +13,10 @@ const jwtVerifyAsync = Promise.promisify(jwt.verify, {context: jwt});
 
 const NON_EXISTANT_COUPLE = 'couple does not exists';
 const NOT_IN_COUPLE_ERROR = 'not in couple';
+const INVALID_REQUEST = 'invalid request';
 
 function isJwtError(err) {
-  return err.name || err.name == 'JsonWebTokenError';
+  return err.name && err.name == 'JsonWebTokenError';
 }
 
 // year and month is zero indexed
@@ -44,32 +45,47 @@ router.get('/:coupleId/:year/:month', (req, res) => {
       .catch(e => {
         console.error(e);
         let status = 500;  // server error (db crash)
-        if (isJwtError(e) || e == NOT_IN_COUPLE_ERROR ||
-            e == NON_EXISTANT_COUPLE) {
+        if (isJwtError(e) || e.message == NOT_IN_COUPLE_ERROR) {
           status = 401;  // unauthorized
+        } else if (e.message == NON_EXISTANT_COUPLE) {
+          status = 404;  // couple was not found
         }
         res.status(status).send();
       });
 });
 
-router.post('/', (req, res) => {
-  const token = req.headers.authorization;
-  jwt.verify(token, jwtConfig.key, (err, decoded) => {
-    if (err) {
-      console.error(err);
-      res.status(401).send();
-      return;
-    }
-  });
+router.post('/create', (req, res) => {
+  jwtVerifyAsync(req.headers.authorization, jwtConfig.key)
+      .then(decodedToken => {
+        const couple = req.body.couple;
+        const year = req.body.year;
+        const month = req.body.month;
+        const day = req.body.day;
+        const text = req.body.text;
 
-  Diary.create(req.body, (err, post) => {
-    if (err) {
-      console.log(err);
-      res.send('Error');
-    } else {
-      res.json(post);
-    }
-  });
+        if (!couple || !year || !month || !day || !text) {
+          throw new Error(INVALID_REQUEST);
+        }
+
+        return Diary.create({
+          couple: couple,
+          year: year,
+          month: month,
+          day: day,
+          entries: [{user: decodedToken.userId, text: text}]
+        });
+      })
+      .then(entry => res.status(200).send())
+      .catch(err => {
+        console.error(err);
+        let status = 500;
+        if (isJwtError(err)) {
+          status = 401;
+        } else if (err.message == INVALID_REQUEST) {
+          status = 400;
+        }
+        res.status(status).send();
+      });
 });
 
 router.put('/:id', (req, res) => {
