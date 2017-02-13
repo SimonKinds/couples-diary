@@ -18,7 +18,6 @@ mongoose.connect('mongodb://localhost/couples_diary');
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
-app.use('/', (req, res) => res.status(404).send());
 // set up API routes
 const diary = require('./routes/diary');
 app.use('/diary', diary);
@@ -28,5 +27,7 @@ const user = require('./routes/user');
 app.use('/user', user);
 const login = require('./routes/login');
 app.use('/login', login);
+
+app.use('/', (req, res) => res.status(404).send());
 
 module.exports = app;
