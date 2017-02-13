@@ -88,15 +88,4 @@ router.post('/create', (req, res) => {
       });
 });
 
-router.put('/:id', (req, res) => {
-  console.log(req.body);
-  Diary.findByIdAndUpdate(req.params.id, req.body, (err, post) => {
-    if (err) {
-      console.log(err);
-      res.send('Error');
-    } else {
-      res.json(post);
-    }
-  });
-});
 module.exports = router;
