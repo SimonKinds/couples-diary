@@ -1,6 +1,6 @@
 module.exports = {
   entry: './src/app.jsx',
-  output: {filename: './public/bundle.js'},
+  output: {filename: './build/bundle.js'},
   module: {
     loaders: [{
       test: /\.js$|\.jsx$/,
