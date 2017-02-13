@@ -17,14 +17,15 @@
   "dependencies": {
     "bluebird": "^3.4.7",
     "body-parser": "^1.16.1",
+    "cors": "^2.8.1",
     "express": "^4.14.1",
     "jsonwebtoken": "^7.2.1",
     "mongodb": "^2.2.22",
     "mongoose": "^4.8.1",
+    "node-fetch": "^1.6.3",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
-    "react-redux-form": "^1.5.5",
     "redux": "^3.6.0",
     "vhost": "^3.0.2"
   },

@@ -1,5 +1,10 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
+
+app.use(cors());  // enable CORS across all API calls
+// This might be needed for "complex" CORS calls
+// app.options('*', cors());
 
 // db
 const mongoose = require('mongoose');
