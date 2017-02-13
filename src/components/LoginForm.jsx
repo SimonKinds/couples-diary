@@ -1,30 +1,37 @@
 import React from 'react';
-import {LocalForm, Control} from 'react-redux-form';
 
 export default class LoginForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.username = '';
+
+    this.onLogin = this.onLogin.bind(this);
+    this.onSignup = this.onSignup.bind(this);
+  }
+
   render() {
     return (
       <div>
-        <LocalForm
-          onSubmit={values => this.handleSubmit(values)}>
+        <form
+          onSubmit={this.onLogin}>
           <label>Username</label>
-          <Control.text model='.username'/>
-        </LocalForm>
-        <button onClick={this.handleSubmit}>
+          <input type="text" value={this.username}/>
+        </form>
+        <button onClick={this.onLogin}>
           Login
         </button>
-        <button onClick={this.routeToSignup}>
+        <button onClick={this.onSignup}>
           Sign Up
         </button>
       </div>
     );
   }
 
-  handleSubmit(values) {
-    alert(values.username);
+  onLogin() {
+    this.props.onLogin(this.username);
   }
 
-  routeToSignup() {
-    alert('I want to sign up');
+  onSignup() {
+    this.props.onSignup(this.username);
   }
 };
