@@ -13,7 +13,7 @@ router.post('/', (request, response) => {
       .then(user => {
         if (user) {
           const token = jwt.sign(
-              {userId: user._id, coupleId: user.couple}, jwtConfig.key,
+              {userId: user._id, username: user.username, coupleId: user.couple}, jwtConfig.key,
               {expiresIn: '1day'});
           response.send(token);
         } else {
