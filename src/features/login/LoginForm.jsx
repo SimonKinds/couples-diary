@@ -23,6 +23,7 @@ class LoginForm extends React.Component {
             onChange={this.props.onUsernameChange}/>
         </form>
         <button onSubmit={this.onSubmit}>Login</button>
+        {this.props.loginError && <div>Error logging in</div>}
       </div>
     )
   }
@@ -30,6 +31,7 @@ class LoginForm extends React.Component {
 
 LoginForm.propTypes = {
   username: PropTypes.string.isRequired,
+  loginError: PropTypes.bool.isRequired,
   onUsernameChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired
 }

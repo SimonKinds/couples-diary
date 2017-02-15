@@ -1,19 +1,18 @@
 import {LOGIN_FAIL, LOGIN_SUCCESS, LOGINFORM_ON_CHANGE, LOGINFORM_SUBMIT} from './LoginActions'
 
 const initialState = {
-  username: ''
+  username: '',
+  loginError: false
 }
 
 function loginForm(state = initialState, action) {
   switch (action.type) {
     case LOGINFORM_ON_CHANGE:
-      return { username: action.username }
+      return Object.assign({}, state, {username: action.username})
     case LOGIN_FAIL:
-      console.log('Failed login')
-      return { username: state.username }
+      return Object.assign({}, state, {loginError: true })
     case LOGIN_SUCCESS:
-      console.log('Successfull login')
-      return { username: state.username }
+      return Object.assign({}, state, {loginError: false })
     default:
       return state
   }

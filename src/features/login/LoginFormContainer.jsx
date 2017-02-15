@@ -5,7 +5,8 @@ import {loginFormOnChange, login} from './LoginActions'
 
 const mapStateToProps = state => {
   return {
-    username: state.username
+    username: state.username,
+    loginError: state.loginError
   }
 }
 
