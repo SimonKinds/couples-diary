@@ -10,5 +10,9 @@ module.exports = {
     }]
   },
   resolve: {extensions: ['.js', '.jsx']},
-  watch: true
+  watch: true,
+  node: {
+    net: 'empty',
+    dns: 'empty'
+  }
 };
