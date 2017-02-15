@@ -1,15 +1,31 @@
 import React, {PropTypes} from 'react'
 
-const LoginForm = ({username, onUsernameChange, onSubmit}) => {
-  return (
-  <div>
-    <form onSubmit={onSubmit}>
-      <label>Username</label>
-      <input type="text" value={username} onChange={onUsernameChange}/>
-    </form>
-    <button onClick={onSubmit}>Login</button>
-  </div>
-  )
+class LoginForm extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onSubmit(event) {
+    if (event) event.preventDefault()
+
+    this.props.onSubmit(this.props.username)
+  }
+
+  render() {
+    return (
+      <div>
+        <form onSubmit={this.onSubmit}>
+          <label>Username</label>
+          <input type="text"
+            value={this.props.username}
+            onChange={this.props.onUsernameChange}/>
+        </form>
+        <button onSubmit={this.onSubmit}>Login</button>
+      </div>
+    )
+  }
 }
 
 LoginForm.propTypes = {

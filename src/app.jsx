@@ -1,14 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {createStore, applyMiddleware} from 'redux'
 import { Provider } from 'react-redux'
-import {createStore} from 'redux'
+import thunkMiddleware from 'redux-thunk'
 
 import loginReducers from './features/login/LoginReducers'
 import LoginFormContainer from './features/login/LoginFormContainer'
 
-let store = createStore(loginReducers)
-
-let unsub = store.subscribe(() => console.log(store.getState()))
+let store = createStore(loginReducers, applyMiddleware(thunkMiddleware))
 
 ReactDOM.render(
   <Provider store={store}>
