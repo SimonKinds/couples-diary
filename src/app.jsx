@@ -4,13 +4,15 @@ import { Provider } from 'react-redux'
 import {createStore} from 'redux'
 
 import loginReducers from './features/login/LoginReducers'
-import LoginForm from './features/login/LoginForm'
+import LoginFormContainer from './features/login/LoginFormContainer'
 
 let store = createStore(loginReducers)
 
+let unsub = store.subscribe(() => console.log(store.getState()))
+
 ReactDOM.render(
   <Provider store={store}>
-    <LoginForm onUsernameChange={(event) => alert('Change')} username=''/>
+    <LoginFormContainer />
   </Provider>,
   document.getElementById('root')
 )
