@@ -8,12 +8,12 @@ function loginForm(state = initialState, action) {
   switch (action.type) {
     case LOGINFORM_ON_CHANGE:
       return { username: action.username }
-    case LOGINFORM_SUBMIT:
-      return { username: state.username + 'SUBMITTED' }
     case LOGIN_FAIL:
-      return { username: state.username + 'FAIL' }
+      console.log('Failed login')
+      return { username: state.username }
     case LOGIN_SUCCESS:
-      return { username: state.username + 'SUCCESS' }
+      console.log('Successfull login')
+      return { username: state.username }
     default:
       return state
   }
