@@ -1,7 +1,7 @@
 import {connect} from 'react-redux'
 
 import LoginForm from './LoginForm'
-import {loginFormOnChange} from './LoginActions'
+import {loginFormOnChange, loginFormSubmit} from './LoginActions'
 
 const mapStateToProps = state => {
   return {
@@ -13,6 +13,10 @@ const mapDispatchToProps = dispatch => {
   return {
     onUsernameChange: event => {
       dispatch(loginFormOnChange(event.target.value))
+    },
+    onSubmit: event => {
+      event.preventDefault()
+      dispatch(loginFormSubmit())
     }
   }
 }
