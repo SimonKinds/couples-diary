@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 
-const Date = (props) => {
+const Day = (props) => {
   return (
     <div style={
       {flex: 1, border: '2px solid black', borderRadius: '5px'}}
@@ -10,9 +10,9 @@ const Date = (props) => {
   )
 }
 
-Date.propTypes = {
+Day.propTypes = {
   day: PropTypes.number.isRequired,
   onClick: PropTypes.func.isRequired
 }
 
-export default Date
+export default Day
