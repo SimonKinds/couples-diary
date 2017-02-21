@@ -8,7 +8,7 @@ const Day = (props) => {
       <span>
         {props.day}
       </span>
-      {props.entries.map((entry) => {
+      {props.entries && props.entries.map((entry) => {
         return (
           <p key={entry.name} style={{color: entry.color}}> 
             <b >{entry.name + ' '}</b>
