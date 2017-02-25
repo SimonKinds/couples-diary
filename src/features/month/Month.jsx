@@ -18,7 +18,6 @@ const renderRows = (startIndex, days) => {
     ++columnIndex
   })
 
-  console.log('columnIndex' + columnIndex)
   row = row.concat(createEmptyDivs(Math.abs(columnIndex - ((rows.length + 1) * daysInWeek))))
   rows.push(renderRow(row))
 
@@ -27,7 +26,6 @@ const renderRows = (startIndex, days) => {
 
 let emptyDivKey = 0
 const createEmptyDivs = (startIndex) => {
-  console.log(startIndex)
   let row = []
   let columnIndex = 0
   while (columnIndex < startIndex) {
