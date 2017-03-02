@@ -1,22 +1,7 @@
 import {combineReducers} from 'redux'
-import jwt from 'jsonwebtoken'
+import {buildUserFromToken, setJwtToken} from '../../utils/jwt'
 
 import {LOGIN_FAIL, LOGIN_SUCCESS, LOGINFORM_ON_CHANGE, LOGINFORM_SUBMIT} from './LoginActions'
-
-const buildUserFromToken = token => {
-  try {
-    // we won't verify on client side, just decode
-    // if the token is invalid the server should tell us so
-    const decodedToken = jwt.decode(token)
-    return {
-      id: decodedToken.userId,
-      username: decodedToken.username,
-      coupleId: decodedToken.coupleId
-    }
-  } catch(err) {
-    return {};
-  }
-}
 
 function loginForm(state = {username: '', loginError: false}, action) {
   switch (action.type) {
@@ -31,11 +16,11 @@ function loginForm(state = {username: '', loginError: false}, action) {
   }
 }
 
-function user(state = buildUserFromToken(localStorage.getItem('jwtToken')), action) {
+function user(state = buildUserFromToken(), action) {
   switch(action.type) {
     case LOGIN_SUCCESS:
       const token = action.token
-      localStorage.setItem('jwtToken', token)
+      setJwtToken(token)
       return buildUserFromToken(token)
     case LOGIN_FAIL:
       return {}
