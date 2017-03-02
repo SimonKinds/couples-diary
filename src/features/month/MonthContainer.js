@@ -10,7 +10,7 @@ const mapStateToProps = state => {
   // 0 = last date of previous month
   date.setDate(1)
   return {
-    startIndex: date.getDay(),
+    startIndex: date.getDay() - 1,
     // long = full name
     monthName: date.toLocaleString('en-us', { month: "long"}),
     days: state.month.days

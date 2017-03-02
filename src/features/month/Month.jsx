@@ -4,7 +4,10 @@ import Day from '../day/Day'
 const Month = (props) => {
   return (
     <div>
-      {props.monthName}
+      <b>{props.monthName}</b>
+      <div style={{display: 'flex'}}>
+        {weekDays().map((name) => <div key={name} style={{flex: 1, textAlign: 'center'}}>{name}</div>)}
+      </div>
       <div style={{display: 'flex', flexDirection: 'column'}}>
         {renderRows(props.startIndex, props.days)}
       </div>
@@ -62,6 +65,20 @@ const createDay = (day) => {
     day={day.day} 
     onClick={() => alert(day.day)}
     entries={day.entries}/>
+}
+
+const weekDays = (locale = 'en-us') => {
+  let days = new Array(7)
+  let date = new Date()
+  // 0 = Sunday
+  const currentDay = date.getDay()
+  date.setDate(date.getDate() + (1 - currentDay))
+
+  for(let i = 0; i < 7; ++i) {
+    days[i] = date.toLocaleString(locale, {weekday: 'long'})
+    date.setDate(date.getDate() + 1)
+  }
+  return days
 }
 
 export default Month
