@@ -1,6 +1,17 @@
 import React, {PropTypes} from 'react'
 import Day from '../day/Day'
 
+const Month = (props) => {
+  return (
+    <div>
+      {props.monthName}
+      <div style={{display: 'flex', flexDirection: 'column'}}>
+        {renderRows(props.startIndex, props.days)}
+      </div>
+    </div>
+  )
+}
+
 const renderRows = (startIndex, days) => {
   const daysInWeek = 7
 
@@ -51,14 +62,6 @@ const createDay = (day) => {
     day={day.day} 
     onClick={() => alert(day.day)}
     entries={day.entries}/>
-}
-
-const Month = (props) => {
-  return (
-    <div style={{display: 'flex', flexDirection: 'column', width: '100%', height: '100%'}}>
-      {renderRows(props.startIndex, props.days)}
-    </div>
-  )
 }
 
 export default Month

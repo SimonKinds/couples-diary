@@ -9,18 +9,20 @@ const defaultState = {
   days: extendDays([], daysInMonth())
 }
 
-function daysInMonth() {
-  const date = new Date()
+function daysInMonth(date = new Date()) {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
 }
 
 export default function month(state = {month: defaultState}, action) {
   switch(action.type) {
     case MONTH_GET_SUCCESS:
+      const date = new Date()
+      date.setYear(action.year)
+      date.setMonth(action.month)
       return {month: {
         year: action.year,
         month: action.month,
-        days: extendDays(action.days, daysInMonth())}}
+        days: extendDays(action.days, daysInMonth(date))}}
     default:
       return state
   }
