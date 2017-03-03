@@ -11,7 +11,7 @@ const Day = (props) => {
           return (
             <p key={entry.name} style={{color: entry.color}}> 
               <b >{entry.name + ' '}</b>
-              <i style={{opacity: '0.7'}}>{entry.content}</i>
+              <i style={{opacity: '0.7'}}>{entry.text}</i>
             </p>)
         })}
       </span>
@@ -24,7 +24,7 @@ Day.propTypes = {
   onClick: PropTypes.func.isRequired,
   entries: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
-    content: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
     color: PropTypes.string.isRequired
   }))
 }

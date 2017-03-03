@@ -1,21 +1,50 @@
+import fetch from 'node-fetch'
+import {getJwtToken, buildUserFromToken} from '../../utils/jwt'
+
 export const MONTH_GET = "MONTH_GET"
 export const MONTH_FETCHING = "MONTH_FETCHING"
 export const MONTH_GET_SUCCESS = "MONTH_GET_SUCCESS"
+export const MONTH_GET_FAIL = "MONTH_GET_FAIL"
 
-export function monthGet(year, month) {
+const ERROR_INVALID_USER = "invalid user"
+
+export const monthGet = (year, month) => {
+  const token = getJwtToken()
+  const user = buildUserFromToken(token)
   return dispatch => {
-    dispatch(monthGetSuccess(year, month,
-      [{day: 1, year: year, month: month,  entries:
-        [{name: 'simon', content: 'Today I\'ve been hiding from the rain', color: '#ff00ff'}]}, 
-        {day: 20, year: year, month: month, entries:
-          [{name: 'simon', content: 'Today I saw the puking lion', color: '#ff00ff'}]}]))
+    if (!user) {
+      throw new Error(ERROR_INVALID_USER)
+    }
+
+    dispatch(monthFetching(year, month))
+
+    return fetch('http://localhost:8080/api/diary/' 
+      + year + '/' + month + '?coupleId=' + user.coupleId,
+      {
+        headers: {'Authorization': token}
+      })
+      .then(response => {
+        if (response.status == 200) {
+          return response.json()
+        } else {
+          throw new Error()
+        }
+      })
+      .then(days => dispatch(monthGetSuccess(year, month, days)))
+      .catch(err => {
+        dispatch(monthGetFail(year, month, err))
+      })
   }
 }
 
-function monthFetching(year, month) {
+const monthFetching = (year, month) => {
   return {type: MONTH_FETCHING, year: year, month: month}
 }
 
-function monthGetSuccess(year, month, days) {
+const monthGetSuccess = (year, month, days) => {
   return {type: MONTH_GET_SUCCESS, year: year, month: month, days: days}
+}
+
+const monthGetFail = (year, month, error) => {
+  return {type: MONTH_GET_FAIL, year: year, month: month, error: error}
 }

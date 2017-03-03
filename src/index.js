@@ -5,7 +5,7 @@ const path = require('path');
 const app = express();
 const api = require('./api/index');
 
-app.use(vhost('api.localhost', api));
+app.use('/api', api);
 
 app.use(express.static('public'));
 app.use(express.static('build'));

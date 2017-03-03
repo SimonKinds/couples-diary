@@ -22,7 +22,7 @@ export default function month(state = {month: defaultState}, action) {
       return {month: {
         year: action.year,
         month: action.month,
-        days: extendDays(action.days, daysInMonth(date))}}
+        days: extendDays(transformDays(action.days), daysInMonth(date))}}
     default:
       return state
   }
@@ -39,4 +39,21 @@ function extendDays(days, amountOfDays) {
     }
   }
   return extendedDays
+}
+
+const transformDays = (days) => {
+  let i = 0
+  for (const day of days) {
+    const entries = day.entries
+    let newEntries = []
+    for (const entry of entries) {
+      newEntries.push({
+        name: entry.user.username,
+        color: entry.user.color,
+        text: entry.text
+      })
+    }
+    day.entries = newEntries
+  }
+  return days
 }

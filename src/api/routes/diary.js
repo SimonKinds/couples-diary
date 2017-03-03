@@ -20,13 +20,15 @@ function isJwtError(err) {
 }
 
 // year and month is zero indexed
-router.get('/:coupleId/:year/:month', (req, res) => {
+// coupleId should be a query
+router.get('/:year/:month', (req, res) => {
   const token = req.headers.authorization;
   jwtVerifyAsync(token, jwtConfig.key)
       // make sure this person is in the set couple
       .then(
           decodedToken => {
-              return Couple.findOne({_id: req.params.coupleId})
+            const coupleId = req.query.coupleId
+              return Couple.findOne({_id: coupleId})
                   .then(couple => {
                     if (!couple) {
                       throw new Error(NON_EXISTANT_COUPLE);
@@ -34,14 +36,14 @@ router.get('/:coupleId/:year/:month', (req, res) => {
                         couple.users.indexOf(decodedToken.userId) == -1) {
                       throw new Error(NOT_IN_COUPLE_ERROR);
                     }
-
                     return Diary.find({
-                      couple: req.params.coupleId,
-                      year: req.params.year,
-                      month: req.params.month
-                    });
+                      couple: coupleId,
+                      year: parseInt(req.params.year),
+                      month: parseInt(req.params.month)
+                    })
+                    .populate('entries.user')
                   })
-                  .then(overview => { res.status(200).json(overview); })})
+                  .then(days => { res.status(200).json(days); })})
       .catch(e => {
         console.error(e);
         let status = 500;  // server error (db crash)
