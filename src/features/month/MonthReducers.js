@@ -6,23 +6,24 @@ const amountOfDays =
 const defaultState = {
   year: date.getFullYear(),
   month: date.getMonth(),
-  days: extendDays([], daysInMonth())
+  days: extendDays([], daysInMonth()),
+  isFetching: true
 }
 
 function daysInMonth(date = new Date()) {
   return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
 }
 
-export default function month(state = {month: defaultState}, action) {
+export default function month(state = defaultState, action) {
   switch(action.type) {
     case MONTH_GET_SUCCESS:
       const date = new Date()
       date.setYear(action.year)
       date.setMonth(action.month)
-      return {month: {
+      return {
         year: action.year,
         month: action.month,
-        days: extendDays(transformDays(action.days), daysInMonth(date))}}
+        days: extendDays(transformDays(action.days), daysInMonth(date))}
     default:
       return state
   }

@@ -1,4 +1,5 @@
 import fetch from 'node-fetch'
+import { push } from 'react-router-redux'
 
 export const LOGINFORM_ON_CHANGE = 'LOGINFORM_ON_CHANGE'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
@@ -34,7 +35,10 @@ export function login(username) {
           throw new Error();
         }
       })
-      .then(token => dispatch(loginSuccess(token)))
+      .then(token => {
+        dispatch(loginSuccess(token))
+        dispatch(push('/diary'))
+      })
       .catch(err => {
         dispatch(loginFail())
       });

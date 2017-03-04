@@ -3,7 +3,7 @@ import {buildUserFromToken, setJwtToken} from '../../utils/jwt'
 
 import {LOGIN_FAIL, LOGIN_SUCCESS, LOGINFORM_ON_CHANGE, LOGINFORM_SUBMIT} from './LoginActions'
 
-function loginForm(state = {username: '', loginError: false}, action) {
+export function loginForm(state = {username: '', loginError: false}, action) {
   switch (action.type) {
     case LOGINFORM_ON_CHANGE:
       return Object.assign({}, state, {username: action.username})
@@ -16,7 +16,8 @@ function loginForm(state = {username: '', loginError: false}, action) {
   }
 }
 
-function user(state = buildUserFromToken(), action) {
+export function user(state = buildUserFromToken(), action) {
+  if (!state) state = {}
   switch(action.type) {
     case LOGIN_SUCCESS:
       const token = action.token
@@ -28,10 +29,3 @@ function user(state = buildUserFromToken(), action) {
       return state
   }
 }
-
-const loginReducers = combineReducers({
-  loginForm,
-  user
-})
-
-export default loginReducers
