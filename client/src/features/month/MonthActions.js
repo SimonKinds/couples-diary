@@ -8,7 +8,7 @@ export const MONTH_GET_FAIL = "MONTH_GET_FAIL"
 
 const ERROR_INVALID_USER = "invalid user"
 
-export const monthGet = (year, month) => {
+export function monthGet(year, month) {
   const token = getJwtToken()
   const user = buildUserFromToken(token)
   return dispatch => {
@@ -37,14 +37,14 @@ export const monthGet = (year, month) => {
   }
 }
 
-const monthFetching = (year, month) => {
+function monthFetching(year, month) {
   return {type: MONTH_FETCHING, year: year, month: month}
 }
 
-const monthGetSuccess = (year, month, days) => {
+function monthGetSuccess(year, month, days) {
   return {type: MONTH_GET_SUCCESS, year: year, month: month, days: days}
 }
 
-const monthGetFail = (year, month, error) => {
+function monthGetFail(year, month, error) {
   return {type: MONTH_GET_FAIL, year: year, month: month, error: error}
 }

@@ -16,13 +16,12 @@ let store = createStore(
   reducers,
   applyMiddleware(thunkMiddleware, routerMiddleware(browserHistory)))
 
-const App = (props) =>
-{
+function App(props) {
   return (<div>{props.children}</div>)
 }
 
 let isTrapped = false
-const requireAuth = (nextState, replace) => {
+function requireAuth(nextState, replace) {
   if (!buildUserFromToken() && !isTrapped) {
     isTrapped = true
     replace({

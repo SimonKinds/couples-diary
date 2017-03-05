@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react'
 import Day from './day/Day'
 
-const Month = (props) => {
+function Month(props) {
   return (
     <div>
       <b>{props.monthName}</b>
@@ -15,7 +15,7 @@ const Month = (props) => {
   )
 }
 
-const renderRows = (startIndex, days) => {
+function renderRows(startIndex, days) {
   const daysInWeek = 7
 
   const rows = []
@@ -39,7 +39,7 @@ const renderRows = (startIndex, days) => {
 }
 
 let emptyDivKey = 0
-const createEmptyDivs = (startIndex) => {
+function createEmptyDivs(startIndex) {
   let row = []
   let columnIndex = 0
   while (columnIndex < startIndex) {
@@ -50,7 +50,7 @@ const createEmptyDivs = (startIndex) => {
 }
 
 let rowIndex = 0
-const renderRow = (row) => {
+function renderRow(row) {
   let reactRow = []
   reactRow.push(
     <div key={'row' + rowIndex++} style={{display: 'flex'}}>
@@ -59,7 +59,7 @@ const renderRow = (row) => {
   return reactRow
 }
 
-const createDay = (day) => {
+function createDay(day) {
   return <Day
     key={'day' + day.day}
     day={day.day} 
@@ -67,7 +67,7 @@ const createDay = (day) => {
     entries={day.entries}/>
 }
 
-const weekDays = (locale = 'en-us') => {
+function weekDays(locale = 'en-us') {
   let days = new Array(7)
   let date = new Date()
   // 0 = Sunday

@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 
-const Day = (props) => {
+function Day(props) {
   return (
     <div style={
       {flex: 1, border: '2px solid black', padding: 5, margin: -1}}

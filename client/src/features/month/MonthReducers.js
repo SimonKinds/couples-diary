@@ -42,7 +42,7 @@ function extendDays(days, amountOfDays) {
   return extendedDays
 }
 
-const transformDays = (days) => {
+function transformDays(days) {
   let i = 0
   for (const day of days) {
     const entries = day.entries

@@ -1,14 +1,14 @@
 import jwt from 'jsonwebtoken'
 
-export const getJwtToken = () => {
+export function getJwtToken() {
   return localStorage.getItem('jwtToken')
 }
 
-export const setJwtToken = token => {
+export function setJwtToken(token) {
   localStorage.setItem('jwtToken', token)
 }
 
-export const buildUserFromToken = (token = getJwtToken())  => {
+export function buildUserFromToken(token = getJwtToken())  {
   try {
     // we won't verify on client side, just decode
     // if the token is invalid the server should tell us so

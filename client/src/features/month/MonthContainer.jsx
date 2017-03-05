@@ -23,7 +23,7 @@ class MonthContainer extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const date = new Date()
   date.setYear(state.month.year)
   date.setMonth(state.month.month)
@@ -40,7 +40,7 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+function mapDispatchToProps(dispatch) {
   return {
     getMonth: (year, month) => dispatch(monthGet(year, month))
   }

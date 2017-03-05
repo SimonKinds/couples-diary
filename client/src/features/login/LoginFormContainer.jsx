@@ -3,14 +3,14 @@ import {connect} from 'react-redux'
 import LoginForm from './LoginForm'
 import {loginFormOnChange, login} from './LoginActions'
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   return {
     username: state.loginForm.username,
     loginError: state.loginForm.loginError
   }
 }
 
-const mapDispatchToProps = dispatch => {
+function mapDispatchToProps(dispatch) {
   return {
     onUsernameChange: event => {
       dispatch(loginFormOnChange(event.target.value))
