@@ -7,7 +7,7 @@ const api = require('./src/api/index')
 
 app.use('/api', api)
 
-app.use(express.static('build'))
+app.use(express.static('../client/build'))
 
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, './public/index.html')))
 

@@ -1,0 +1,35 @@
+{
+  "name": "couples-diary-client",
+  "version": "0.0.1",
+  "description": "Client for Couples Diary",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/app.jsx --exec babel-node"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react"
+    ]
+  },
+  "author": "Simon Kindström",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-loader": "^6.3.2",
+    "babel-preset-env": "^1.2.0",
+    "babel-preset-react": "^6.23.0",
+    "nodemon": "^1.11.0",
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^7.3.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.3",
+    "react-router": "^3.0.2",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
+  }
+}
