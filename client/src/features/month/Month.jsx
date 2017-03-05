@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import Day from '../day/Day'
+import Day from './day/Day'
 
 const Month = (props) => {
   return (
