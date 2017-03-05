@@ -6,12 +6,6 @@
   "scripts": {
     "start": "nodemon index.js --exec babel-node"
   },
-  "babel": {
-    "presets": [
-      "env",
-      "react"
-    ]
-  },
   "author": "Simon Kindström",
   "license": "MIT",
   "devDependencies": {

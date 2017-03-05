@@ -1,12 +1,11 @@
 module.exports = {
-  entry: './src/app.jsx',
+  entry: './index.jsx',
   output: {filename: './build/bundle.js'},
   module: {
     loaders: [{
       test: /\.js$|\.jsx$/,
       exclude: /(node_modules)/,
-      loader: 'babel-loader',
-      query: {presets: ['env', 'react']}
+      loader: 'babel-loader'
     }]
   },
   resolve: {extensions: ['.js', '.jsx']},

@@ -1,16 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { browserHistory, Router, Route, IndexRoute, IndexRedirect } from 'react-router'
+import { browserHistory, Router, Route, IndexRedirect } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
-import { combineReducers, createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import thunkMiddleware from 'redux-thunk'
 
-import {buildUserFromToken} from './utils/jwt'
+import { buildUserFromToken } from './src/utils/jwt'
 
-import reducers from './utils/reducers'
-import LoginFormContainer from './features/login/LoginFormContainer'
-import MonthContainer from './features/month/MonthContainer'
+import reducers from './src/utils/reducers'
+import LoginFormContainer from './src/features/login/LoginFormContainer'
+import MonthContainer from './src/features/month/MonthContainer'
 
 let store = createStore(
   reducers,

@@ -2,16 +2,6 @@
   "name": "couples-diary-client",
   "version": "0.0.1",
   "description": "Client for Couples Diary",
-  "main": "index.js",
-  "scripts": {
-    "start": "nodemon src/app.jsx --exec babel-node"
-  },
-  "babel": {
-    "presets": [
-      "env",
-      "react"
-    ]
-  },
   "author": "Simon Kindström",
   "license": "MIT",
   "devDependencies": {
