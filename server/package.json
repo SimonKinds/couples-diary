@@ -22,10 +22,8 @@
   },
   "dependencies": {
     "body-parser": "^1.17.0",
-    "cors": "^2.8.1",
     "express": "^4.15.0",
     "jsonwebtoken": "^7.3.0",
-    "mongoose": "^4.8.5",
-    "vhost": "^3.0.2"
+    "mongoose": "^4.8.5"
   }
 }
