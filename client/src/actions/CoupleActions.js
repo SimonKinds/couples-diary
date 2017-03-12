@@ -1,0 +1,1 @@
+export const GET_COUPLE_SUCCESS = 'GET_COUPLE_SUCCESS';

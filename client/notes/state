@@ -6,16 +6,21 @@
     }
   },
   "diary": {
-    "coupleId": "id",
-    "thisUser": {
+    "users": {
+      "<id>":
+      {
+        "username": "String",
+        "color": "color"
+      }
+    }
+    "couple": {
       "id": "id",
-      "username": "String",
-      "color": "color"
-    },
-    "otherUser": {
-      "id": "id",
-      "username": "String",
-      "color": "color"
+      "thisUser": {
+        "id": "id"
+      },
+      "otherUser": {
+        "id": "id"
+      }
     },
     "entries": {
       "<id>": { 
