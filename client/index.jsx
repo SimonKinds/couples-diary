@@ -10,7 +10,7 @@ import { buildUserFromToken } from './src/utils/jwt';
 
 import reducers from './src/reducers/reducers';
 import LoginContainer from './src/containers/LoginContainer';
-import MonthContainer from './src/features/month/MonthContainer';
+import MonthContainer from './src/containers/MonthContainer';
 
 let store = createStore(
   reducers,
