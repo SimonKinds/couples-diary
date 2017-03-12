@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
-import { buildUserFromToken, setJwtToken } from '../../utils/jwt';
+import { buildUserFromToken, setJwtToken } from '../utils/jwt';
 
 import {
   LOGIN_FAIL,
   LOGIN_SUCCESS,
   LOGINFORM_ON_CHANGE,
   LOGINFORM_SUBMIT
-} from './LoginActions';
+} from '../actions/LoginActions';
 
 export function login(
   state = { loginError: false, ui: { username: '' } },
