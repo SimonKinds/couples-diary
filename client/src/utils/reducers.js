@@ -1,8 +1,8 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
 
-import {user, loginForm} from '../features/login/LoginReducers'
-import month from '../features/month/MonthReducers'
+import { user, login } from '../features/login/LoginReducers';
+import month from '../features/month/MonthReducers';
 
-const reducers = combineReducers({user, loginForm, month})
+const reducers = combineReducers({ user, login, month });
 
-export default reducers
+export default reducers;

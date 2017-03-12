@@ -1,5 +1,6 @@
 {
   "login": {
+    "loginError": "bool",
     "ui": {
       "username": "String"
     }

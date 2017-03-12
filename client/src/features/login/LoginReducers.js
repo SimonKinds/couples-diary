@@ -1,31 +1,39 @@
-import {combineReducers} from 'redux'
-import {buildUserFromToken, setJwtToken} from '../../utils/jwt'
+import { combineReducers } from 'redux';
+import { buildUserFromToken, setJwtToken } from '../../utils/jwt';
 
-import {LOGIN_FAIL, LOGIN_SUCCESS, LOGINFORM_ON_CHANGE, LOGINFORM_SUBMIT} from './LoginActions'
+import {
+  LOGIN_FAIL,
+  LOGIN_SUCCESS,
+  LOGINFORM_ON_CHANGE,
+  LOGINFORM_SUBMIT
+} from './LoginActions';
 
-export function loginForm(state = {username: '', loginError: false}, action) {
+export function login(
+  state = { loginError: false, ui: { username: '' } },
+  action
+) {
   switch (action.type) {
     case LOGINFORM_ON_CHANGE:
-      return Object.assign({}, state, {username: action.username})
+      return { ...state, ui: { username: action.username } };
     case LOGIN_FAIL:
-      return Object.assign({}, state, {loginError: true})
+      return { ...state, loginError: true };
     case LOGIN_SUCCESS:
-      return Object.assign({}, state, {loginError: false})
+      return { ...state, loginError: false };
     default:
-      return state
+      return state;
   }
 }
 
 export function user(state = buildUserFromToken(), action) {
-  if (!state) state = {}
-  switch(action.type) {
+  if (!state) state = {};
+  switch (action.type) {
     case LOGIN_SUCCESS:
-      const token = action.token
-      setJwtToken(token)
-      return buildUserFromToken(token)
+      const token = action.token;
+      setJwtToken(token);
+      return buildUserFromToken(token);
     case LOGIN_FAIL:
-      return {}
+      return {};
     default:
-      return state
+      return state;
   }
 }
