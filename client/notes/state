@@ -5,23 +5,23 @@
       "username": "String"
     }
   },
-  "diary": {
-    "users": {
-      "<id>":
-      {
-        "username": "String",
-        "color": "color"
-      }
+  "users": {
+    "<id>":
+    {
+      "username": "String",
+      "color": "color"
     }
-    "couple": {
-      "id": "id",
-      "thisUser": {
-        "id": "id"
-      },
-      "otherUser": {
-        "id": "id"
-      }
+  },
+  "couple": {
+    "id": "id",
+    "thisUser": {
+      "id": "id"
     },
+    "otherUser": {
+      "id": "id"
+    }
+  },
+  "diary": {
     "entries": {
       "<id>": { 
         "user": "id",
@@ -47,17 +47,17 @@
     "ui": {
       "selectedYear": "int",
       "selectedMonth": "int"
-    },
-    "date": {
-      "year": "int",
-      "month": "month",
-      "day": "day",
-      "entries": ["id"],
-      "isDirty": "bool",
-      "ui": {
-        "isInEditMode": "bool",
-        "updatedText": "String"
-      }
+    }
+  },
+  "date": {
+    "year": "int",
+    "month": "month",
+    "day": "day",
+    "entries": ["id"],
+    "isDirty": "bool",
+    "ui": {
+      "isInEditMode": "bool",
+      "updatedText": "String"
     }
   }
 }
