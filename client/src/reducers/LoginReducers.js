@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux';
-
 import {
   LOGIN_FAIL,
   LOGIN_SUCCESS,
@@ -23,14 +21,4 @@ export function login(
   }
 }
 
-export function user(state = {}, action) {
-  if (!state) state = {};
-  switch (action.type) {
-    case LOGIN_SUCCESS:
-      return action.user;
-    case LOGIN_FAIL:
-      return {};
-    default:
-      return state;
-  }
-}
+export default login;
