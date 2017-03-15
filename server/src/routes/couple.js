@@ -47,7 +47,7 @@ router.post('/create', (req, res) => {
     });
 });
 
-router.post('/:id', (req, res) => {
+router.get('/:id', (req, res) => {
   const token = req.headers.authorization;
   jwtVerifyAsync(token, jwtConfig.key)
     .then(decodedToken => {
@@ -69,7 +69,7 @@ router.post('/:id', (req, res) => {
           const thisUser = couple.users[thisUserIndex];
           const otherUser = couple.users[(thisUserIndex + 1) % 2];
 
-          res.json({
+          res.status(200).json({
             id: couple._id,
             thisUser: {
               id: thisUser._id,
