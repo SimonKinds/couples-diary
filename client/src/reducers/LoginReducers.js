@@ -1,5 +1,4 @@
 import { combineReducers } from 'redux';
-import { buildUserFromToken, setJwtToken } from '../utils/jwt';
 
 import {
   LOGIN_FAIL,
@@ -24,13 +23,11 @@ export function login(
   }
 }
 
-export function user(state = buildUserFromToken(), action) {
+export function user(state = {}, action) {
   if (!state) state = {};
   switch (action.type) {
     case LOGIN_SUCCESS:
-      const token = action.token;
-      setJwtToken(token);
-      return buildUserFromToken(token);
+      return action.user;
     case LOGIN_FAIL:
       return {};
     default:

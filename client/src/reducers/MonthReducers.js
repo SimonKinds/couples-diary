@@ -26,7 +26,8 @@ export default function month(state = defaultState, action) {
       return {
         year: action.year,
         month: action.month,
-        days: extendDays(transformDays(action.days), daysInMonth(date))
+        days: extendDays(transformDays(action.days), daysInMonth(date)),
+        isFetching: false
       };
     default:
       return state;

@@ -1,33 +1,36 @@
-import fetch from 'node-fetch'
-import { push } from 'react-router-redux'
+import fetch from 'node-fetch';
+import { push } from 'react-router-redux';
 
-export const LOGINFORM_ON_CHANGE = 'LOGINFORM_ON_CHANGE'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const LOGIN_FAIL = 'LOGIN_FAIL'
+import { setJwtToken, buildUserFromToken } from '../utils/jwt';
+import { getCouple } from './CoupleActions';
+
+export const LOGINFORM_ON_CHANGE = 'LOGINFORM_ON_CHANGE';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAIL = 'LOGIN_FAIL';
 
 export function loginFormOnChange(username) {
-  return { type: LOGINFORM_ON_CHANGE, username: username }
+  return { type: LOGINFORM_ON_CHANGE, username: username };
 }
 
 function loginFormSubmit() {
-  return { type: LOGINFORM_SUBMIT }
+  return { type: LOGINFORM_SUBMIT };
 }
 
-function loginSuccess(token) {
-  return { type: LOGIN_SUCCESS, token: token }
+function loginSuccess(user) {
+  return { type: LOGIN_SUCCESS, user };
 }
 
 function loginFail() {
-  return { type: LOGIN_FAIL }
+  return { type: LOGIN_FAIL };
 }
 
 export function login(username) {
   return dispatch => {
-    return fetch('http://localhost:8080/api/login',
-      { method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username: username})
-      })
+    return fetch('http://localhost:8080/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: username })
+    })
       .then(response => {
         if (response.status == 200) {
           return response.text();
@@ -36,11 +39,15 @@ export function login(username) {
         }
       })
       .then(token => {
-        dispatch(loginSuccess(token))
-        dispatch(push('/diary'))
+        setJwtToken(token);
+        const user = buildUserFromToken(token);
+        dispatch(getCouple(user.coupleId, token));
+
+        dispatch(loginSuccess(user));
+        dispatch(push('/diary'));
       })
       .catch(err => {
-        dispatch(loginFail())
+        dispatch(loginFail());
       });
-  }
+  };
 }
