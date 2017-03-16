@@ -4,6 +4,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Diary = require('../models/diary');
 const Couple = require('../models/couple');
+const Entry = require('../models/entry');
 
 const Promise = require('bluebird');
 const jwt = require('jsonwebtoken');
@@ -38,11 +39,9 @@ router.get('/:year/:month', (req, res) => {
             couple: coupleId,
             year: parseInt(req.params.year),
             month: parseInt(req.params.month)
-          }).populate('entries.user');
+          }).populate('entries');
         })
-        .then(days => {
-          res.status(200).json(days);
-        });
+        .then(days => res.status(200).json(days));
     })
     .catch(e => {
       console.error(e);
@@ -56,6 +55,7 @@ router.get('/:year/:month', (req, res) => {
     });
 });
 
+/*
 router.post('/create', (req, res) => {
   jwtVerifyAsync(req.headers.authorization, jwtConfig.key)
     .then(decodedToken => {
@@ -93,5 +93,5 @@ router.post('/create', (req, res) => {
       res.status(status).send();
     });
 });
-
+*/
 module.exports = router;

@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 
 const DiarySchema = new mongoose.Schema({
-  couple: {type: mongoose.Schema.Types.ObjectId, ref: 'Couple'},
+  couple: { type: mongoose.Schema.Types.ObjectId, ref: 'Couple' },
   year: Number,
   month: Number,
   day: Number,
-  entries: [{user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-    text: String}]
+  entries: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Entry' }]
 });
 
 module.exports = mongoose.model('Diary', DiarySchema);
