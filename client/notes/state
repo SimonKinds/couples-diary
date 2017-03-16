@@ -28,26 +28,21 @@
         "text": "string"
       }
     },
-    "years": 
-    {
+    "dates": {
       "<year>": {
-        "months": {
-          "<month>": {
-            "isFetching": "bool",
-            "days": {
-              "<day>":
-              {
-                "entries": ["id"]
-              }
-            }
+        "<month>": {
+          "isFetching": "bool",
+          "<day>":
+          {
+            "entries": ["id"]
           }
         }
       }
-    },
-    "ui": {
-      "selectedYear": "int",
-      "selectedMonth": "int"
     }
+  },
+  "ui": {
+    "selectedYear": "int",
+    "selectedMonth": "int"
   },
   "date": {
     "year": "int",
