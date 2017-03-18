@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 
 import Month from '../components/Month';
-import { monthGet } from '../actions/MonthActions';
+import { diaryGetMonth } from '../actions/DiaryActions';
 
 class MonthContainer extends React.Component {
   constructor(props) {
@@ -28,25 +28,57 @@ class MonthContainer extends React.Component {
 }
 
 function mapStateToProps(state) {
+  const year = state.diary.ui.selectedYear;
+  const month = state.diary.ui.selectedMonth;
+
   const date = new Date();
-  date.setYear(state.month.year);
-  date.setMonth(state.month.month);
+  date.setYear(year);
+  date.setMonth(month);
   // 0 = last date of previous month
   date.setDate(1);
   return {
     startIndex: date.getDay() - 1,
+    year: year,
+    month: month,
     // long = full name
     monthName: date.toLocaleString('en-us', { month: 'long' }),
-    month: state.month.month,
-    year: state.month.year,
-    days: state.month.days,
-    isFetching: state.month.isFetching
+    days: days(state),
+    isFetching: state.diary.dates[year][month].isFetching
   };
+}
+
+function days(state) {
+  const year = state.diary.ui.selectedYear;
+  const month = state.diary.ui.selectedMonth;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  let days = [];
+  for (let dayIndex = 0; dayIndex < daysInMonth; ++dayIndex) {
+    days.push({ day: dayIndex + 1, entries: [] });
+  }
+
+  for (const prop in state.diary.dates[year][month]) {
+    if (prop == 'isFetching') continue;
+
+    const dayIndex = prop;
+    for (const entryId of state.diary.dates[year][month][dayIndex].entries) {
+      const entry = state.diary.entries[entryId];
+      const user = state.users[entry.user];
+
+      days[dayIndex].entries.push({
+        name: user.username,
+        color: user.color,
+        text: entry.text
+      });
+    }
+  }
+
+  return days;
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getMonth: (year, month) => dispatch(monthGet(year, month))
+    getMonth: (year, month) => dispatch(diaryGetMonth(year, month))
   };
 }
 

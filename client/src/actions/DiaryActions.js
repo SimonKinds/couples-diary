@@ -24,7 +24,7 @@ export function diaryGetMonth(year, month) {
         }
       })
       .then(days => dispatch(diaryGetMonthSuccess(year, month, days)))
-      .catch(err => dispatch(diaryGetMonthfail(year, month)));
+      .catch(err => dispatch(diaryGetMonthFail(year, month)));
   };
 }
 
