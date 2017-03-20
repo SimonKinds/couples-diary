@@ -11,13 +11,14 @@ function Month(props) {
         ))}
       </div>
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        {renderRows(props.startIndex, props.days)}
+        {renderRows(props)}
       </div>
     </div>
   );
 }
 
-function renderRows(startIndex, days) {
+function renderRows(props) {
+  const { startIndex, days, onClick } = props;
   const daysInWeek = 7;
 
   const rows = [];
@@ -30,7 +31,7 @@ function renderRows(startIndex, days) {
       row = [];
     }
 
-    row.push(createDay(day));
+    row.push(createDay(day, onClick));
     ++columnIndex;
   });
 
@@ -69,12 +70,12 @@ function renderRow(row) {
   return reactRow;
 }
 
-function createDay(day) {
+function createDay(day, onClick) {
   return (
     <Day
       key={'day' + day.day}
       day={day.day}
-      onClick={() => alert(day.day)}
+      onClick={() => onClick(day.day)}
       entries={day.entries}
     />
   );

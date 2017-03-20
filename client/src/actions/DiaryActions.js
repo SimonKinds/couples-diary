@@ -1,8 +1,11 @@
+import { push } from 'react-router-redux';
+
 import { getJwtToken, buildUserFromToken } from '../utils/jwt';
 
 export const DIARY_GET_MONTH = 'DIARY_GET_MONTH';
 export const DIARY_GET_MONTH_SUCCESS = 'DIARY_GET_MONTH_SUCCESS';
 export const DIARY_GET_MONTH_FAIL = 'DIARY_GET_MONTH_FAIL';
+export const DIARY_SHOW_DATE = 'DIARY_SHOW_DATE';
 
 export function diaryGetMonth(year, month) {
   const token = getJwtToken();
@@ -34,4 +37,11 @@ function diaryGetMonthSuccess(year, month, days) {
 
 function diaryGetMonthFail(year, month) {
   return { type: DIARY_GET_MONTH_FAIL, year, month };
+}
+
+export function diaryShowDate(year, month, day) {
+  return dispatch => {
+    dispatch({ type: DIARY_SHOW_DATE, year, month, day });
+    dispatch(push('/diary/' + year + '/' + month + '/' + day));
+  };
 }

@@ -1,7 +1,8 @@
 import {
   DIARY_GET_MONTH,
   DIARY_GET_MONTH_SUCCESS,
-  DIARY_GET_MONTH_FAIL
+  DIARY_GET_MONTH_FAIL,
+  DIARY_SHOW_DATE
 } from '../actions/DiaryActions';
 
 function defaultDates() {
@@ -27,7 +28,8 @@ function diary(
     ui: {
       selectedYear: new Date().getFullYear(),
       selectedMonth: new Date().getMonth()
-    }
+    },
+    date: {}
   },
   action
 ) {
@@ -47,6 +49,21 @@ function diary(
         ...state,
         entries: transformToEntriesMap(action.days),
         dates: updateDates(action.year, action.month, action.days, state.dates)
+      };
+    case DIARY_SHOW_DATE:
+      const { year, month, day } = action;
+      return {
+        ...state,
+        date: {
+          year: year,
+          month: month,
+          day: day,
+          entries: state.dates[year][month][day].entries,
+          isDirty: false,
+          ui: {
+            isInEditMode: false
+          }
+        }
       };
     default:
       return state;

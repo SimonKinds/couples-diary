@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 
 import Month from '../components/Month';
-import { diaryGetMonth } from '../actions/DiaryActions';
+import { diaryGetMonth, diaryShowDate } from '../actions/DiaryActions';
 
 class MonthContainer extends React.Component {
   constructor(props) {
@@ -22,6 +22,9 @@ class MonthContainer extends React.Component {
         startIndex={this.props.startIndex}
         monthName={this.props.monthName}
         days={this.props.days}
+        onClick={day =>
+        //decrement by one to have 0-indexed
+          this.props.onClick(this.props.year, this.props.month, day - 1)}
       />
     );
   }
@@ -78,7 +81,8 @@ function days(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getMonth: (year, month) => dispatch(diaryGetMonth(year, month))
+    getMonth: (year, month) => dispatch(diaryGetMonth(year, month)),
+    onClick: (year, month, day) => dispatch(diaryShowDate(year, month, day))
   };
 }
 
