@@ -6,7 +6,8 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 
-import { buildUserFromToken } from './src/utils/jwt';
+import { getJwtToken, buildUserFromToken } from './src/utils/jwt';
+import { getCouple } from './src/actions/CoupleActions';
 
 import reducers from './src/reducers/reducers';
 import LoginContainer from './src/containers/LoginContainer';
@@ -23,7 +24,12 @@ function App(props) {
 
 let isTrapped = false;
 function requireAuth(nextState, replace) {
-  if (!buildUserFromToken() && !isTrapped) {
+  const token = getJwtToken();
+  const user = buildUserFromToken(token);
+  // update some of the required information
+  if (user) {
+    store.dispatch(getCouple(user.coupleId, token));
+  } else {
     isTrapped = true;
     replace({
       pathname: '/login',
