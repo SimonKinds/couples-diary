@@ -5,6 +5,8 @@ import {
   DIARY_SHOW_DATE
 } from '../actions/DiaryActions';
 
+import { URL_CHANGE } from '../actions/UrlActions';
+
 function defaultDates() {
   const year = new Date().getFullYear();
   const dates = {};
@@ -58,13 +60,35 @@ function diary(
           year: year,
           month: month,
           day: day,
-          entries: state.dates[year][month][day].entries,
           isDirty: false,
           ui: {
             isInEditMode: false
           }
         }
       };
+    case URL_CHANGE:
+      const { path } = action;
+      const matches = path.match(/^\/diary\/(\d+)\/(\d+)\/(\d+)$/);
+      if (matches) {
+        const year = matches[1];
+        const month = matches[2];
+        const day = matches[3];
+
+        return {
+          ...state,
+          date: {
+            year: year,
+            month: month,
+            day: day,
+            isDirty: false,
+            ui: {
+              isInEditMode: false
+            }
+          }
+        };
+      } else {
+        return state;
+      }
     default:
       return state;
   }
