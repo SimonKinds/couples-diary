@@ -48,7 +48,6 @@
     "year": "int",
     "month": "month",
     "day": "day",
-    "entries": ["id"],
     "isDirty": "bool",
     "ui": {
       "isInEditMode": "bool",

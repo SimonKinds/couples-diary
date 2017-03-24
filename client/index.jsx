@@ -13,7 +13,7 @@ import { onUrlChange } from './src/actions/UrlActions';
 import reducers from './src/reducers/reducers';
 import LoginContainer from './src/containers/LoginContainer';
 import MonthContainer from './src/containers/MonthContainer';
-import DateComponent from './src/components/Date.jsx';
+import DateContainer from './src/containers/DateContainer';
 
 let store = createStore(
   reducers,
@@ -38,7 +38,7 @@ ReactDOM.render(
       <Route path="/" component={App} onEnter={requireAuth}>
         <IndexRedirect to="/diary" />
         <Route path="/diary" component={MonthContainer} />
-        <Route path="/diary/:year/:month/:day" component={DateComponent} />
+        <Route path="/diary/:year/:month/:day" component={DateContainer} />
         <Route path="/login" component={LoginContainer} />
       </Route>
     </Router>
