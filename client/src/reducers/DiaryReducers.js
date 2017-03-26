@@ -3,6 +3,7 @@ import {
   DIARY_GET_MONTH_SUCCESS,
   DIARY_GET_MONTH_FAIL,
   DIARY_SHOW_DATE,
+  ENTRY_ON_EDIT_MODE_CLICKED,
   ENTRY_ON_CHANGE
 } from '../actions/DiaryActions';
 
@@ -90,6 +91,17 @@ function diary(
       } else {
         return state;
       }
+    case ENTRY_ON_EDIT_MODE_CLICKED:
+      return {
+        ...state,
+        date: {
+          ...state.date,
+          ui: {
+            ...state.date.ui,
+            isInEditMode: !state.date.ui.isInEditMode
+          }
+        }
+      };
     case ENTRY_ON_CHANGE:
       return {
         ...state,

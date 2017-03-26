@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { diaryGetMonth, entryOnChange } from '../actions/DiaryActions';
+import {
+  diaryGetMonth,
+  entryOnChange,
+  entryOnEditModeClicked
+} from '../actions/DiaryActions';
 
 import DateComponent from '../components/Date';
 
@@ -22,6 +26,7 @@ class DateContainer extends React.Component {
         thisUser={this.props.thisUser}
         otherUser={this.props.otherUser}
         onUserEntryChange={this.props.onUserEntryChange}
+        onEditModeClicked={this.props.onEditModeClicked}
       />
     );
   }
@@ -61,7 +66,7 @@ function mapStateToProps(state, ownProps) {
         name: thisUser.username,
         color: thisUser.color,
         text: thisUserText,
-        isInEditMode: false
+        isInEditMode: diary.date.ui.isInEditMode
       },
       otherUser: {
         name: otherUser.username,
@@ -92,7 +97,8 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     getDate: (year, month, day) => dispatch(diaryGetMonth(year, month)),
-    onUserEntryChange: text => dispatch(entryOnChange(text))
+    onUserEntryChange: text => dispatch(entryOnChange(text)),
+    onEditModeClicked: () => dispatch(entryOnEditModeClicked())
   };
 }
 

@@ -6,7 +6,9 @@ export const DIARY_GET_MONTH = 'DIARY_GET_MONTH';
 export const DIARY_GET_MONTH_SUCCESS = 'DIARY_GET_MONTH_SUCCESS';
 export const DIARY_GET_MONTH_FAIL = 'DIARY_GET_MONTH_FAIL';
 export const DIARY_SHOW_DATE = 'DIARY_SHOW_DATE';
+
 export const ENTRY_ON_CHANGE = 'ENTRY_ONCHANGE';
+export const ENTRY_ON_EDIT_MODE_CLICKED = 'ENTRY_ON_EDIT_MODE_CLICKED';
 
 export function diaryGetMonth(year, month) {
   const token = getJwtToken();
@@ -49,4 +51,8 @@ export function diaryShowDate(year, month, day) {
 
 export function entryOnChange(text) {
   return { type: ENTRY_ON_CHANGE, text };
+}
+
+export function entryOnEditModeClicked() {
+  return { type: ENTRY_ON_EDIT_MODE_CLICKED };
 }

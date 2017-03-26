@@ -3,12 +3,13 @@ import React, { PropTypes } from 'react';
 function DateComponent(props) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-      <EditableDateEntry
-        name={props.thisUser.name}
-        color={props.thisUser.color}
-        text={props.thisUser.text}
-        onChange={props.onUserEntryChange}
-      />
+      <div>
+        <UserDateEntry
+          user={props.thisUser}
+          onUserEntryChange={props.onUserEntryChange}
+        />
+        <button onClick={() => props.onEditModeClicked()}>Edit</button>
+      </div>
       <DateEntry
         name={props.otherUser.name}
         color={props.otherUser.color}
@@ -32,6 +33,26 @@ DateComponent.propTypes = {
   }),
   onUserEntryChange: PropTypes.func.isRequired
 };
+
+function UserDateEntry(props) {
+  if (props.user.isInEditMode) {
+    return (
+      <EditableDateEntry
+        name={props.user.name}
+        color={props.user.color}
+        text={props.user.text}
+        onChange={props.onUserEntryChange}
+      />
+    );
+  }
+  return (
+    <DateEntry
+      name={props.user.name}
+      color={props.user.color}
+      text={props.user.text}
+    />
+  );
+}
 
 function DateEntry(props) {
   return (
