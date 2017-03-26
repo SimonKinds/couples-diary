@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { diaryGetMonth } from '../actions/DiaryActions';
+import { diaryGetMonth, entryOnChange } from '../actions/DiaryActions';
 
 import DateComponent from '../components/Date';
 
@@ -21,6 +21,7 @@ class DateContainer extends React.Component {
       <DateComponent
         thisUser={this.props.thisUser}
         otherUser={this.props.otherUser}
+        onUserEntryChange={this.props.onUserEntryChange}
       />
     );
   }
@@ -47,6 +48,10 @@ function mapStateToProps(state, ownProps) {
       entry => entry.user == couple.otherUser
     )[0] || { text: 'No entry for this day ;(' };
 
+    const thisUserText = diary.date.ui.isInEditMode
+      ? diary.date.ui.updatedText
+      : thisUserEntry.text;
+
     return {
       year,
       month,
@@ -55,8 +60,7 @@ function mapStateToProps(state, ownProps) {
       thisUser: {
         name: thisUser.username,
         color: thisUser.color,
-        text: thisUserEntry.text,
-        updateText: thisUserEntry.text,
+        text: thisUserText,
         isInEditMode: false
       },
       otherUser: {
@@ -68,6 +72,9 @@ function mapStateToProps(state, ownProps) {
   }
 
   return {
+    year,
+    month,
+    day,
     isFetching: true,
     thisUser: {
       name: thisUser.name,
@@ -84,7 +91,8 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getDate: (year, month, day) => dispatch(diaryGetMonth(year, month))
+    getDate: (year, month, day) => dispatch(diaryGetMonth(year, month)),
+    onUserEntryChange: text => dispatch(entryOnChange(text))
   };
 }
 

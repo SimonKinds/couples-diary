@@ -2,7 +2,8 @@ import {
   DIARY_GET_MONTH,
   DIARY_GET_MONTH_SUCCESS,
   DIARY_GET_MONTH_FAIL,
-  DIARY_SHOW_DATE
+  DIARY_SHOW_DATE,
+  ENTRY_ON_CHANGE
 } from '../actions/DiaryActions';
 
 import { URL_CHANGE } from '../actions/UrlActions';
@@ -62,7 +63,7 @@ function diary(
           day: day,
           isDirty: false,
           ui: {
-            isInEditMode: false
+            isInEditMode: true
           }
         }
       };
@@ -89,6 +90,17 @@ function diary(
       } else {
         return state;
       }
+    case ENTRY_ON_CHANGE:
+      return {
+        ...state,
+        date: {
+          ...state.date,
+          ui: {
+            isInEditMode: true,
+            updatedText: action.text
+          }
+        }
+      };
     default:
       return state;
   }

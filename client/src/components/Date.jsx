@@ -3,10 +3,11 @@ import React, { PropTypes } from 'react';
 function DateComponent(props) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-      <DateEntry
+      <EditableDateEntry
         name={props.thisUser.name}
         color={props.thisUser.color}
         text={props.thisUser.text}
+        onChange={props.onUserEntryChange}
       />
       <DateEntry
         name={props.otherUser.name}
@@ -16,6 +17,21 @@ function DateComponent(props) {
     </div>
   );
 }
+
+DateComponent.propTypes = {
+  thisUser: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+    text: PropTypes.string,
+    isInEditMode: PropTypes.bool
+  }),
+  otherUser: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+    text: PropTypes.string
+  }),
+  onUserEntryChange: PropTypes.func.isRequired
+};
 
 function DateEntry(props) {
   return (
@@ -32,19 +48,22 @@ function DateEntry(props) {
   );
 }
 
-DateComponent.propTypes = {
-  thisUser: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-    text: PropTypes.string,
-    updatedText: PropTypes.string,
-    isInEditMode: PropTypes.bool
-  }),
-  otherUser: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-    text: PropTypes.string
-  })
-};
+function EditableDateEntry(props) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center'
+      }}
+    >
+      <b style={{ textAlign: 'center' }}>{props.name}</b>
+      <textarea
+        value={props.text}
+        onChange={e => props.onChange(e.target.value)}
+      />
+    </div>
+  );
+}
 
 export default DateComponent;

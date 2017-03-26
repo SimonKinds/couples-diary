@@ -6,6 +6,7 @@ export const DIARY_GET_MONTH = 'DIARY_GET_MONTH';
 export const DIARY_GET_MONTH_SUCCESS = 'DIARY_GET_MONTH_SUCCESS';
 export const DIARY_GET_MONTH_FAIL = 'DIARY_GET_MONTH_FAIL';
 export const DIARY_SHOW_DATE = 'DIARY_SHOW_DATE';
+export const ENTRY_ON_CHANGE = 'ENTRY_ONCHANGE';
 
 export function diaryGetMonth(year, month) {
   const token = getJwtToken();
@@ -44,4 +45,8 @@ export function diaryShowDate(year, month, day) {
     dispatch({ type: DIARY_SHOW_DATE, year, month, day });
     dispatch(push('/diary/' + year + '/' + month + '/' + day));
   };
+}
+
+export function entryOnChange(text) {
+  return { type: ENTRY_ON_CHANGE, text };
 }
