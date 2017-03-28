@@ -20,7 +20,7 @@ function isJwtError(err) {
   return err.name && err.name == 'JsonWebTokenError';
 }
 
-// year and month is zero indexed
+// month is zero indexed
 // coupleId should be a query
 router.get('/:year/:month', (req, res) => {
   const token = req.headers.authorization;
@@ -55,7 +55,6 @@ router.get('/:year/:month', (req, res) => {
     });
 });
 
-/*
 router.post('/create', (req, res) => {
   jwtVerifyAsync(req.headers.authorization, jwtConfig.key)
     .then(decodedToken => {
@@ -73,12 +72,20 @@ router.post('/create', (req, res) => {
         throw new Error(INVALID_REQUEST);
       }
 
-      return Diary.create({
-        couple: couple,
-        year: year,
-        month: month,
-        day: day,
-        entries: [{ user: decodedToken.userId, text: text }]
+      return Entry.create({
+        user: decodedToken.userId,
+        text: text
+      }).then(entry => {
+        return Diary.update(
+          {
+            couple: couple,
+            year: year,
+            month: month,
+            day: day
+          },
+          { $push: { entries: entry } },
+          { upsert: true }
+        );
       });
     })
     .then(entry => res.status(200).send())
@@ -93,5 +100,5 @@ router.post('/create', (req, res) => {
       res.status(status).send();
     });
 });
-*/
+
 module.exports = router;
