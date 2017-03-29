@@ -9,6 +9,9 @@ export const DIARY_SHOW_DATE = 'DIARY_SHOW_DATE';
 
 export const ENTRY_ON_CHANGE = 'ENTRY_ONCHANGE';
 export const ENTRY_ON_EDIT_MODE_CLICKED = 'ENTRY_ON_EDIT_MODE_CLICKED';
+export const ENTRY_ON_SAVE = 'ENTRY_ON_SAVE';
+export const ENTRY_ON_SAVE_FAIL = 'ENTRY_ON_SAVE_FAIL';
+export const ENTRY_ON_SAVE_SUCCESS = 'ENTRY_ON_SAVE_SUCCESS';
 
 export function diaryGetMonth(year, month) {
   const token = getJwtToken();
@@ -55,4 +58,43 @@ export function entryOnChange(text) {
 
 export function entryOnEditModeClicked() {
   return { type: ENTRY_ON_EDIT_MODE_CLICKED };
+}
+
+export function entryOnSave(year, month, day, text) {
+  return (dispatch, getState) => {
+    dispatch({ type: ENTRY_ON_SAVE });
+    const { couple } = getState();
+
+    const url = 'http://localhost:8080/api/diary/create';
+    const headers = {
+      Authorization: getJwtToken()
+    };
+    const body = {
+      couple: couple.id,
+      user: user.thisUser,
+      year,
+      month,
+      day,
+      text
+    };
+
+    return fetch(url, {
+      method: 'post',
+      headers,
+      body
+    })
+      .then(response => {
+        if (response.status == 200) {
+          return response.json();
+        } else {
+          throw new Error();
+        }
+      })
+      .then(day => {
+        dispatch({ type: ENTRY_ON_SAVE_SUCCESS, day });
+      })
+      .catch(e => {
+        dispatch({ type: ENTRY_ON_SAVE_FAIL });
+      });
+  };
 }

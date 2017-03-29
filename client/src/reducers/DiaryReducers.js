@@ -4,7 +4,9 @@ import {
   DIARY_GET_MONTH_FAIL,
   DIARY_SHOW_DATE,
   ENTRY_ON_EDIT_MODE_CLICKED,
-  ENTRY_ON_CHANGE
+  ENTRY_ON_CHANGE,
+  ENTRY_ON_SAVE_SUCCESS,
+  ENTRY_ON_SAVE_FAIL
 } from '../actions/DiaryActions';
 
 import { URL_CHANGE } from '../actions/UrlActions';
@@ -111,6 +113,30 @@ function diary(
             isInEditMode: true,
             updatedText: action.text
           }
+        }
+      };
+    case ENTRY_ON_SAVE_SUCCESS:
+      const days = [action.day];
+      return {
+        ...state,
+        entries: transformToEntriesMap(action.days),
+        dates: updateDates(
+          action.day.year,
+          action.day.month,
+          action.days,
+          state.dates
+        ),
+        date: {
+          ...state.date,
+          savedError: false
+        }
+      };
+    case ENTRY_ON_SAVE_FAIL:
+      return {
+        ...state,
+        date: {
+          ...state.date,
+          savedError: true
         }
       };
     default:

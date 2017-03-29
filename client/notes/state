@@ -48,7 +48,7 @@
     "year": "int",
     "month": "month",
     "day": "day",
-    "isDirty": "bool",
+    "savedError": "bool",
     "ui": {
       "isInEditMode": "bool",
       "updatedText": "String"
