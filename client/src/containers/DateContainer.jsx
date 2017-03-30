@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import {
   diaryGetMonth,
   entryOnChange,
-  entryOnEditModeClicked
+  entryOnEditModeClicked,
+  entryOnSave
 } from '../actions/DiaryActions';
 
 import DateComponent from '../components/Date';
@@ -27,6 +28,13 @@ class DateContainer extends React.Component {
         otherUser={this.props.otherUser}
         onUserEntryChange={this.props.onUserEntryChange}
         onEditModeClicked={this.props.onEditModeClicked}
+        onEntrySave={text =>
+          this.props.onEntrySave(
+            this.props.year,
+            this.props.month,
+            this.props.day,
+            text
+          )}
       />
     );
   }
@@ -98,7 +106,9 @@ function mapDispatchToProps(dispatch) {
   return {
     getDate: (year, month, day) => dispatch(diaryGetMonth(year, month)),
     onUserEntryChange: text => dispatch(entryOnChange(text)),
-    onEditModeClicked: () => dispatch(entryOnEditModeClicked())
+    onEditModeClicked: () => dispatch(entryOnEditModeClicked()),
+    onEntrySave: (year, month, day, text) =>
+      dispatch(entryOnSave(year, month, parseInt(day) + 1, text))
   };
 }
 

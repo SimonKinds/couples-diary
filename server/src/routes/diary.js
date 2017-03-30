@@ -58,11 +58,8 @@ router.get('/:year/:month', (req, res) => {
 router.post('/create', (req, res) => {
   jwtVerifyAsync(req.headers.authorization, jwtConfig.key)
     .then(decodedToken => {
-      const couple = req.body.couple;
-      const year = req.body.year;
-      const month = req.body.month;
-      const day = req.body.day;
-      const text = req.body.text;
+      const { userId } = decodedToken;
+      const { couple, entryId, year, month, day, text } = req.body;
 
       if (couple != decodedToken.coupleId) {
         throw new Error(NOT_IN_COUPLE_ERROR);
@@ -72,23 +69,50 @@ router.post('/create', (req, res) => {
         throw new Error(INVALID_REQUEST);
       }
 
-      return Entry.create({
-        user: decodedToken.userId,
-        text: text
-      }).then(entry => {
-        return Diary.update(
-          {
-            couple: couple,
-            year: year,
-            month: month,
-            day: day
-          },
-          { $push: { entries: entry } },
-          { upsert: true }
-        );
-      });
+      return Diary.findOne({
+        couple,
+        year,
+        month,
+        day
+      })
+        .populate('entries')
+        .then(day => {
+          const { entries } = day;
+          const thisUserEntry = entries.filter(e => e.user == userId)[0];
+
+          if (thisUserEntry) {
+            return Entry.update(
+              {
+                _id: thisUserEntry._id
+              },
+              { $set: { text } },
+              { upsert: true }
+            ).then(entry => {
+              day.entries.filter(e => e.user != userId);
+              day.entries.push(entry);
+
+              return day;
+            });
+          } else {
+            return Entry.create({
+              user: userId,
+              text: text
+            }).then(entry => {
+              return Diary.update(
+                {
+                  couple: couple,
+                  year: year,
+                  month: month,
+                  day: day.day
+                },
+                { $push: { entries: entry._id } },
+                { upsert: true }
+              );
+            });
+          }
+        });
     })
-    .then(entry => res.status(200).send())
+    .then(day => res.status(200).send(day))
     .catch(err => {
       console.error(err);
       let status = 500;

@@ -67,11 +67,12 @@ export function entryOnSave(year, month, day, text) {
 
     const url = 'http://localhost:8080/api/diary/create';
     const headers = {
-      Authorization: getJwtToken()
+      Authorization: getJwtToken(),
+      'Content-Type': 'application/json'
     };
     const body = {
       couple: couple.id,
-      user: user.thisUser,
+      user: couple.thisUser,
       year,
       month,
       day,
@@ -81,7 +82,7 @@ export function entryOnSave(year, month, day, text) {
     return fetch(url, {
       method: 'post',
       headers,
-      body
+      body: JSON.stringify(body)
     })
       .then(response => {
         if (response.status == 200) {

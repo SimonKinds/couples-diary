@@ -8,13 +8,20 @@ function DateComponent(props) {
           user={props.thisUser}
           onUserEntryChange={props.onUserEntryChange}
         />
+        <div>
         <button onClick={() => props.onEditModeClicked()}>Edit</button>
+        {props.thisUser.isInEditMode &&
+          <button onClick={() => props.onEntrySave(props.thisUser.text)}>
+            Save
+          </button>}
+        </div>
       </div>
       <DateEntry
         name={props.otherUser.name}
         color={props.otherUser.color}
         text={props.otherUser.text}
       />
+      {' '}
     </div>
   );
 }
