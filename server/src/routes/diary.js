@@ -87,11 +87,8 @@ router.post('/create', (req, res) => {
               },
               { $set: { text } },
               { upsert: true }
-            ).then(entry => {
-              day.entries.filter(e => e.user != userId);
-              day.entries.push(entry);
-
-              return day;
+            ).then(_ => {
+              return {_id: thisUserEntry._id, user: userId, text};
             });
           } else {
             return Entry.create({
@@ -107,7 +104,8 @@ router.post('/create', (req, res) => {
                 },
                 { $push: { entries: entry._id } },
                 { upsert: true }
-              );
+                // we want to return the entry
+              ).then(day => entry);
             });
           }
         });

@@ -91,8 +91,8 @@ export function entryOnSave(year, month, day, text) {
           throw new Error();
         }
       })
-      .then(day => {
-        dispatch({ type: ENTRY_ON_SAVE_SUCCESS, day });
+      .then(entry => {
+        dispatch({ type: ENTRY_ON_SAVE_SUCCESS, year, month, day, entry });
       })
       .catch(e => {
         dispatch({ type: ENTRY_ON_SAVE_FAIL });

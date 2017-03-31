@@ -116,25 +116,36 @@ function diary(
         }
       };
     case ENTRY_ON_SAVE_SUCCESS:
-      const days = [action.day];
-      return {
-        ...state,
-        entries: transformToEntriesMap(days),
-        dates: updateDates(
-          action.day.year,
-          action.day.month,
-          days,
-          state.dates
-        ),
-        date: {
-          ...state.date,
-          savedError: false,
-          ui: {
-            ...state.date.ui,
-            isInEditMode: false
-          }
+      {
+        const { year, month, day, entry } = action;
+
+        const entries = {...state.entries};
+        entries[entry._id] = {
+          user: entry.user,
+          text: entry.text
+        };
+
+        const dates = {...state.dates};
+        // add only newly created, and not update
+        const dateEntries = dates[year][month][day - 1].entries;
+        if (dateEntries.indexOf(entry._id) == -1) {
+          dateEntries.push(entry._id);
         }
-      };
+
+        return {
+          ...state,
+          entries,
+          dates,
+          date: {
+            ...state.date,
+            savedError: false,
+            ui: {
+              ...state.date.ui,
+              isInEditMode: false
+            }
+          }
+        };
+      }
     case ENTRY_ON_SAVE_FAIL:
       return {
         ...state,
