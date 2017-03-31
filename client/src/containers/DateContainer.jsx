@@ -108,7 +108,7 @@ function mapDispatchToProps(dispatch) {
     onUserEntryChange: text => dispatch(entryOnChange(text)),
     onEditModeClicked: () => dispatch(entryOnEditModeClicked()),
     onEntrySave: (year, month, day, text) =>
-      dispatch(entryOnSave(year, month, parseInt(day) + 1, text))
+      dispatch(entryOnSave(year, month, day, text))
   };
 }
 

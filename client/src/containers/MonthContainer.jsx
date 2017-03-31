@@ -23,8 +23,7 @@ class MonthContainer extends React.Component {
         monthName={this.props.monthName}
         days={this.props.days}
         onClick={day =>
-        //decrement by one to have 0-indexed
-          this.props.onClick(this.props.year, this.props.month, day - 1)}
+            this.props.onClick(this.props.year, this.props.month, day)}
       />
     );
   }
@@ -36,7 +35,7 @@ function mapStateToProps(state) {
 
   const date = new Date();
   date.setYear(year);
-  date.setMonth(month);
+  date.setMonth(month - 1);
   // 0 = last date of previous month
   date.setDate(1);
   return {
@@ -53,11 +52,11 @@ function mapStateToProps(state) {
 function days(state) {
   const year = state.diary.ui.selectedYear;
   const month = state.diary.ui.selectedMonth;
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const daysInMonth = new Date(year, month, 0).getDate();
 
   let days = [];
-  for (let dayIndex = 0; dayIndex < daysInMonth; ++dayIndex) {
-    days.push({ day: dayIndex + 1, entries: [] });
+  for (let dayIndex = 1; dayIndex <= daysInMonth; ++dayIndex) {
+    days.push({ day: dayIndex, entries: [] });
   }
 
   for (const prop in state.diary.dates[year][month]) {
@@ -68,7 +67,7 @@ function days(state) {
       const entry = state.diary.entries[entryId];
       const user = state.users[entry.user];
 
-      days[dayIndex].entries.push({
+      days[dayIndex - 1].entries.push({
         name: user.username,
         color: user.color,
         text: entry.text

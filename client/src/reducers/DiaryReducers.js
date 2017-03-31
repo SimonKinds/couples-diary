@@ -15,12 +15,12 @@ function defaultDates() {
   const year = new Date().getFullYear();
   const dates = {};
   dates[year] = {};
-  for (let month = 0; month < 12; ++month) {
+  for (let month = 1; month <= 12; ++month) {
     // set to last day of current month
-    let date = new Date(year, month + 1, 0);
+    let date = new Date(year, month, 0);
     dates[year][month] = { isFetching: false };
     // set to last date, so loop through all days
-    for (let day = 0; day < date.getDate(); ++day) {
+    for (let day = 1; day <= date.getDate(); ++day) {
       dates[year][month][day] = { entries: [] };
     }
   }
@@ -33,7 +33,8 @@ function diary(
     dates: defaultDates(),
     ui: {
       selectedYear: new Date().getFullYear(),
-      selectedMonth: new Date().getMonth()
+      // javacript 0-indexes, I don't
+      selectedMonth: new Date().getMonth() + 1
     },
     date: {}
   },
@@ -127,7 +128,7 @@ function diary(
 
         const dates = {...state.dates};
         // add only newly created, and not update
-        const dateEntries = dates[year][month][day - 1].entries;
+        const dateEntries = dates[year][month][day].entries;
         if (dateEntries.indexOf(entry._id) == -1) {
           dateEntries.push(entry._id);
         }
@@ -168,7 +169,7 @@ function updateDates(year, month, days, dates) {
       entryIds.push(entry._id);
     }
     // currenty zero-indexed locally but not remotely
-    datesCopy[year][month][day.day - 1].entries = entryIds;
+    datesCopy[year][month][day.day].entries = entryIds;
   }
   return datesCopy;
 }
