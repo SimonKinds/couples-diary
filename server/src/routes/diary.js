@@ -56,28 +56,31 @@ router.get('/:year/:month', (req, res) => {
 });
 
 router.post('/create', (req, res) => {
-  jwtVerifyAsync(req.headers.authorization, jwtConfig.key)
-    .then(decodedToken => {
-      const { userId } = decodedToken;
-      const { couple, entryId, year, month, day, text } = req.body;
+  jwtVerifyAsync(
+    req.headers.authorization,
+    jwtConfig.key
+  ).then(decodedToken => {
+    const { userId } = decodedToken;
+    const { couple, entryId, year, month, day, text } = req.body;
 
-      if (couple != decodedToken.coupleId) {
-        throw new Error(NOT_IN_COUPLE_ERROR);
-      }
+    if (couple != decodedToken.coupleId) {
+      throw new Error(NOT_IN_COUPLE_ERROR);
+    }
 
-      if (!couple || !year || !month || !day || !text) {
-        throw new Error(INVALID_REQUEST);
-      }
+    if (!couple || !year || !month || !day || !text) {
+      throw new Error(INVALID_REQUEST);
+    }
 
-      return Diary.findOne({
-        couple,
-        year,
-        month,
-        day
-      })
-        .populate('entries')
-        .then(day => {
-          const { entries } = day;
+    return Diary.findOne({
+      couple,
+      year,
+      month,
+      day
+    })
+      .populate('entries')
+      .then(diaryDay => {
+        if (diaryDay) {
+          const { entries } = diaryDay;
           const thisUserEntry = entries.filter(e => e.user == userId)[0];
 
           if (thisUserEntry) {
@@ -88,7 +91,7 @@ router.post('/create', (req, res) => {
               { $set: { text } },
               { upsert: true }
             ).then(_ => {
-              return {_id: thisUserEntry._id, user: userId, text};
+              return { _id: thisUserEntry._id, user: userId, text };
             });
           } else {
             return Entry.create({
@@ -100,7 +103,7 @@ router.post('/create', (req, res) => {
                   couple: couple,
                   year: year,
                   month: month,
-                  day: day.day
+                  day: day
                 },
                 { $push: { entries: entry._id } },
                 { upsert: true }
@@ -108,19 +111,33 @@ router.post('/create', (req, res) => {
               ).then(day => entry);
             });
           }
-        });
-    })
-    .then(day => res.status(200).send(day))
-    .catch(err => {
-      console.error(err);
-      let status = 500;
-      if (isJwtError(err)) {
-        status = 401;
-      } else if (err.message == INVALID_REQUEST) {
-        status = 400;
-      }
-      res.status(status).send();
-    });
+        } else {
+          return Entry.create({
+            user: userId,
+            text: text
+          }).then(entry => {
+            new Diary({
+              couple,
+              year,
+              month,
+              day,
+              entries: [entry._id]
+            }).save(_ => entry);
+          });
+        }
+      })
+      .then(entry => res.status(200).send(entry))
+      .catch(err => {
+        console.error(err);
+        let status = 500;
+        if (isJwtError(err)) {
+          status = 401;
+        } else if (err.message == INVALID_REQUEST) {
+          status = 400;
+        }
+        res.status(status).send();
+      });
+  });
 });
 
 module.exports = router;

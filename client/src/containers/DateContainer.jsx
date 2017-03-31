@@ -48,7 +48,7 @@ function mapStateToProps(state, ownProps) {
 
   if (
     state.diary.dates[year] &&
-    state.diary.dates[year][month][day].entries.length > 0
+    state.diary.dates[year][month].isFetched
   ) {
     const entries = diary.dates[year][month][day].entries.map(
       entryId => diary.entries[entryId]

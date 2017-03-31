@@ -18,7 +18,7 @@ function defaultDates() {
   for (let month = 1; month <= 12; ++month) {
     // set to last day of current month
     let date = new Date(year, month, 0);
-    dates[year][month] = { isFetching: false };
+    dates[year][month] = { isFetching: false, isFetched: false };
     // set to last date, so loop through all days
     for (let day = 1; day <= date.getDate(); ++day) {
       dates[year][month][day] = { entries: [] };
@@ -163,6 +163,7 @@ function diary(
 function updateDates(year, month, days, dates) {
   let datesCopy = { ...dates };
   datesCopy[year][month].isFetching = false;
+  datesCopy[year][month].isFetched = true;
   for (const day of days) {
     let entryIds = [];
     for (const entry of day.entries) {

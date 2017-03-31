@@ -32,6 +32,7 @@
       "<year>": {
         "<month>": {
           "isFetching": "bool",
+          "isFetched": "bool",
           "<day>":
           {
             "entries": ["id"]

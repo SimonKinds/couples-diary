@@ -60,7 +60,7 @@ function days(state) {
   }
 
   for (const prop in state.diary.dates[year][month]) {
-    if (prop == 'isFetching') continue;
+    if (isNaN(prop)) continue;
 
     const dayIndex = prop;
     for (const entryId of state.diary.dates[year][month][dayIndex].entries) {
