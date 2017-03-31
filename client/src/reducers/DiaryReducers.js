@@ -119,16 +119,20 @@ function diary(
       const days = [action.day];
       return {
         ...state,
-        entries: transformToEntriesMap(action.days),
+        entries: transformToEntriesMap(days),
         dates: updateDates(
           action.day.year,
           action.day.month,
-          action.days,
+          days,
           state.dates
         ),
         date: {
           ...state.date,
-          savedError: false
+          savedError: false,
+          ui: {
+            ...state.date.ui,
+            isInEditMode: false
+          }
         }
       };
     case ENTRY_ON_SAVE_FAIL:
