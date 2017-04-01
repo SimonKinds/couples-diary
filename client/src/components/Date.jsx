@@ -9,11 +9,13 @@ function DateComponent(props) {
           onUserEntryChange={props.onUserEntryChange}
         />
         <div>
-        <button onClick={() => props.onEditModeClicked()}>Edit</button>
-        {props.thisUser.isInEditMode &&
-          <button onClick={() => props.onEntrySave(props.thisUser.text)}>
-            Save
-          </button>}
+          <button onClick={() => props.onEditModeClicked()}>
+            {editModeButtonName(props.thisUser.isInEditMode)}
+          </button>
+          {props.thisUser.isInEditMode &&
+            <button onClick={() => props.onEntrySave(props.thisUser.text)}>
+              Save
+            </button>}
         </div>
       </div>
       <DateEntry
@@ -40,6 +42,13 @@ DateComponent.propTypes = {
   }),
   onUserEntryChange: PropTypes.func.isRequired
 };
+
+function editModeButtonName(isInEditMode) {
+  if (isInEditMode) {
+    return 'Cancel';
+  }
+  return 'Edit';
+}
 
 function UserDateEntry(props) {
   if (props.user.isInEditMode) {
@@ -70,7 +79,7 @@ function DateEntry(props) {
         justifyContent: 'center'
       }}
     >
-      <b style={{ textAlign: 'center' }}>{props.name}</b>
+      <b style={{ textAlign: 'center', color: props.color }}>{props.name}</b>
       <p>{props.text}</p>
     </div>
   );
@@ -85,7 +94,7 @@ function EditableDateEntry(props) {
         justifyContent: 'center'
       }}
     >
-      <b style={{ textAlign: 'center' }}>{props.name}</b>
+      <b style={{ textAlign: 'center', color: props.color }}>{props.name}</b>
       <textarea
         value={props.text}
         onChange={e => props.onChange(e.target.value)}
