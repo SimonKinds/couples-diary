@@ -26,6 +26,7 @@ class DateContainer extends React.Component {
       <DateComponent
         thisUser={this.props.thisUser}
         otherUser={this.props.otherUser}
+        saveError={this.props.saveError}
         onUserEntryChange={this.props.onUserEntryChange}
         onEditModeClicked={this.props.onEditModeClicked}
         onEntrySave={text =>
@@ -70,6 +71,7 @@ function mapStateToProps(state, ownProps) {
       month,
       day,
       isFetching: false,
+      saveError: diary.date.saveError,
       thisUser: {
         name: thisUser.username,
         color: thisUser.color,

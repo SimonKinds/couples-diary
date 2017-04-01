@@ -16,6 +16,11 @@ function DateComponent(props) {
             <button onClick={() => props.onEntrySave(props.thisUser.text)}>
               Save
             </button>}
+            {
+              props.thisUser.isInEditMode &&
+                props.saveError &&
+                <p style={{ color: 'red' }}>Error saving entry</p>
+            }
         </div>
       </div>
       <DateEntry
@@ -40,7 +45,8 @@ DateComponent.propTypes = {
     color: PropTypes.string.isRequired,
     text: PropTypes.string
   }),
-  onUserEntryChange: PropTypes.func.isRequired
+  onUserEntryChange: PropTypes.func.isRequired,
+  saveError: PropTypes.bool.isRequired
 };
 
 function editModeButtonName(isInEditMode) {

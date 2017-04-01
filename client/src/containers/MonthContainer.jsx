@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import React from 'react';
 
 import Month from '../components/Month';
-import { diaryGetMonth, diaryShowDate } from '../actions/DiaryActions';
+import { diaryGetMonth, diaryRouteDate } from '../actions/DiaryActions';
 
 class MonthContainer extends React.Component {
   constructor(props) {
@@ -81,7 +81,7 @@ function days(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getMonth: (year, month) => dispatch(diaryGetMonth(year, month)),
-    onClick: (year, month, day) => dispatch(diaryShowDate(year, month, day))
+    onClick: (year, month, day) => dispatch(diaryRouteDate(year, month, day))
   };
 }
 

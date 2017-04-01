@@ -66,57 +66,33 @@ function diary(
           year: year,
           month: month,
           day: day,
-          isDirty: false,
+          saveError: false,
           ui: {
-            isInEditMode: true
+            isInEditMode: false
           }
         }
       };
-    case URL_CHANGE:
-      const { path } = action;
-      const matches = path.match(/^\/diary\/(\d+)\/(\d+)\/(\d+)$/);
-      if (matches) {
-        const year = matches[1];
-        const month = matches[2];
-        const day = matches[3];
+    case ENTRY_ON_EDIT_MODE_CLICKED: {
+      const { year, month, day } = state.date;
+      const { user } = action;
+      const thisUserEntry = state.dates[year][month][day].entries
+        .map(entryId => state.entries[entryId])
+        .filter(entry => entry.user == user)[0] || { text: '' };
 
-        return {
-          ...state,
-          date: {
-            year: year,
-            month: month,
-            day: day,
-            isDirty: false,
-            ui: {
-              isInEditMode: false
-            }
+      // set the updated text to the current value if it's empty
+      const updatedText = state.ui.updatedText || thisUserEntry.text;
+      return {
+        ...state,
+        date: {
+          ...state.date,
+          ui: {
+            ...state.date.ui,
+            isInEditMode: !state.date.ui.isInEditMode,
+            updatedText: updatedText
           }
-        };
-      } else {
-        return state;
-      }
-    case ENTRY_ON_EDIT_MODE_CLICKED:
-      {
-        const {year, month, day} = state.date;
-        const {user} = action;
-        const thisUserEntry = state.dates[year][month][day].entries
-          .map(entryId => state.entries[entryId])
-          .filter(entry => entry.user == user)[0] || {text: ''}
-
-        // set the updated text to the current value if it's empty
-        const updatedText = state.ui.updatedText || thisUserEntry.text;
-        return {
-          ...state,
-          date: {
-            ...state.date,
-            ui: {
-              ...state.date.ui,
-              isInEditMode: !state.date.ui.isInEditMode,
-              updatedText: updatedText
-            }
-          }
-        };
-      }
+        }
+      };
+    }
     case ENTRY_ON_CHANGE:
       return {
         ...state,
@@ -128,43 +104,42 @@ function diary(
           }
         }
       };
-    case ENTRY_ON_SAVE_SUCCESS:
-      {
-        const { year, month, day, entry } = action;
+    case ENTRY_ON_SAVE_SUCCESS: {
+      const { year, month, day, entry } = action;
 
-        const entries = {...state.entries};
-        entries[entry._id] = {
-          user: entry.user,
-          text: entry.text
-        };
+      const entries = { ...state.entries };
+      entries[entry._id] = {
+        user: entry.user,
+        text: entry.text
+      };
 
-        const dates = {...state.dates};
-        // add only newly created, and not update
-        const dateEntries = dates[year][month][day].entries;
-        if (dateEntries.indexOf(entry._id) == -1) {
-          dateEntries.push(entry._id);
-        }
-
-        return {
-          ...state,
-          entries,
-          dates,
-          date: {
-            ...state.date,
-            savedError: false,
-            ui: {
-              ...state.date.ui,
-              isInEditMode: false
-            }
-          }
-        };
+      const dates = { ...state.dates };
+      // add only newly created, and not update
+      const dateEntries = dates[year][month][day].entries;
+      if (dateEntries.indexOf(entry._id) == -1) {
+        dateEntries.push(entry._id);
       }
+
+      return {
+        ...state,
+        entries,
+        dates,
+        date: {
+          ...state.date,
+          saveError: false,
+          ui: {
+            ...state.date.ui,
+            isInEditMode: false
+          }
+        }
+      };
+    }
     case ENTRY_ON_SAVE_FAIL:
       return {
         ...state,
         date: {
           ...state.date,
-          savedError: true
+          saveError: true
         }
       };
     default:

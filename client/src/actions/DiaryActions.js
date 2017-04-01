@@ -45,13 +45,18 @@ function diaryGetMonthFail(year, month) {
   return { type: DIARY_GET_MONTH_FAIL, year, month };
 }
 
-export function diaryShowDate(year, month, day) {
+export function diaryRouteDate(year, month, day) {
   return (dispatch, getState) => {
     const { couple } = getState();
-    dispatch({ type: DIARY_SHOW_DATE, year, month, day, user: couple.thisUser});
+    dispatch(diaryShowDate(year, month, day, couple.thisUser));
     dispatch(push('/diary/' + year + '/' + month + '/' + day));
   };
 }
+
+export function diaryShowDate(year, month, day, user) {
+  return { type: DIARY_SHOW_DATE, year, month, day, user};
+}
+
 
 export function entryOnChange(text) {
   return { type: ENTRY_ON_CHANGE, text };
