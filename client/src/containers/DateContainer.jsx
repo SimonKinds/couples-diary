@@ -15,7 +15,9 @@ class DateContainer extends React.Component {
   }
 
   componentWillMount() {
-    this.props.getDate(this.props.year, this.props.month, this.props.day);
+    if (this.props.shouldFetch) {
+      this.props.getDate(this.props.year, this.props.month, this.props.day);
+    }
   }
 
   render() {
@@ -47,10 +49,7 @@ function mapStateToProps(state, ownProps) {
   const thisUser = users[couple.thisUser];
   const otherUser = users[couple.otherUser];
 
-  if (
-    state.diary.dates[year] &&
-    state.diary.dates[year][month].isFetched
-  ) {
+  if (state.diary.dates[year] && state.diary.dates[year][month].isFetched) {
     const entries = diary.dates[year][month][day].entries.map(
       entryId => diary.entries[entryId]
     );
@@ -70,6 +69,7 @@ function mapStateToProps(state, ownProps) {
       year,
       month,
       day,
+      shouldFetch: false,
       isFetching: false,
       saveError: diary.date.saveError,
       thisUser: {
@@ -90,17 +90,8 @@ function mapStateToProps(state, ownProps) {
     year,
     month,
     day,
+    shouldFetch: true,
     isFetching: true,
-    thisUser: {
-      name: thisUser.name,
-      color: thisUser.color,
-      text: ''
-    },
-    otherUser: {
-      name: otherUser.name,
-      color: otherUser.color,
-      text: ''
-    }
   };
 }
 

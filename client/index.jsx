@@ -30,8 +30,6 @@ function App(props) {
   return <div>{props.children}</div>;
 }
 
-store.subscribe(() => console.log(store.getState()));
-
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
