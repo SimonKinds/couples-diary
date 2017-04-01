@@ -80,50 +80,9 @@ router.post('/create', (req, res) => {
       .populate('entries')
       .then(diaryDay => {
         if (diaryDay) {
-          const { entries } = diaryDay;
-          const thisUserEntry = entries.filter(e => e.user == userId)[0];
-
-          if (thisUserEntry) {
-            return Entry.update(
-              {
-                _id: thisUserEntry._id
-              },
-              { $set: { text } },
-              { upsert: true }
-            ).then(_ => {
-              return { _id: thisUserEntry._id, user: userId, text };
-            });
-          } else {
-            return Entry.create({
-              user: userId,
-              text: text
-            }).then(entry => {
-              return Diary.update(
-                {
-                  couple: couple,
-                  year: year,
-                  month: month,
-                  day: day
-                },
-                { $push: { entries: entry._id } },
-                { upsert: true }
-                // we want to return the entry
-              ).then(day => entry);
-            });
-          }
+          return updateEntry(userId, req.body, diaryDay);
         } else {
-          return Entry.create({
-            user: userId,
-            text: text
-          }).then(entry => {
-            new Diary({
-              couple,
-              year,
-              month,
-              day,
-              entries: [entry._id]
-            }).save(_ => entry);
-          });
+          return createEntry(userId, couple, year, month, day, text);
         }
       })
       .then(entry => res.status(200).send(entry))
@@ -139,5 +98,48 @@ router.post('/create', (req, res) => {
       });
   });
 });
+
+function updateEntry(userId, requestBody, diaryDay) {
+  const { couple, entryId, year, month, day, text } = requestBody;
+  const { entries } = diaryDay;
+  const thisUserEntry = entries.filter(e => e.user == userId)[0];
+
+  if (thisUserEntry) {
+    return Entry.update(
+      {
+        _id: thisUserEntry._id
+      },
+      { $set: { text } },
+      { upsert: true }
+    ).then(_ => {
+      return { _id: thisUserEntry._id, user: userId, text };
+    });
+  } else {
+    return upsertEntry(userId, couple, year, month, day, text);
+  }
+}
+
+function upsertEntry(userId, couple, year, month, day, text) {
+  return Entry.create({
+    user: userId,
+    text: text
+  }).then(entry => {
+    return Diary.update(
+      {
+        couple: couple,
+        year: year,
+        month: month,
+        day: day
+      },
+      { $push: { entries: entry._id } },
+      { upsert: true }
+      // we want to return the entry
+    ).then(day => entry);
+  });
+}
+
+function createEntry(userId, couple, year, month, day, text) {
+  return upsertEntry(userId, couple, year, month, day, text);
+}
 
 module.exports = router;
