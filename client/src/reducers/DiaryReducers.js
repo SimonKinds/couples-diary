@@ -58,7 +58,8 @@ function diary(
         dates: updateDates(action.year, action.month, action.days, state.dates)
       };
     case DIARY_SHOW_DATE:
-      const { year, month, day } = action;
+      const { year, month, day, user } = action;
+
       return {
         ...state,
         date: {
@@ -95,16 +96,27 @@ function diary(
         return state;
       }
     case ENTRY_ON_EDIT_MODE_CLICKED:
-      return {
-        ...state,
-        date: {
-          ...state.date,
-          ui: {
-            ...state.date.ui,
-            isInEditMode: !state.date.ui.isInEditMode
+      {
+        const {year, month, day} = state.date;
+        const {user} = action;
+        const thisUserEntry = state.dates[year][month][day].entries
+          .map(entryId => state.entries[entryId])
+          .filter(entry => entry.user == user)[0] || {text: ''}
+
+        // set the updated text to the current value if it's empty
+        const updatedText = state.ui.updatedText || thisUserEntry.text;
+        return {
+          ...state,
+          date: {
+            ...state.date,
+            ui: {
+              ...state.date.ui,
+              isInEditMode: !state.date.ui.isInEditMode,
+              updatedText: updatedText
+            }
           }
-        }
-      };
+        };
+      }
     case ENTRY_ON_CHANGE:
       return {
         ...state,

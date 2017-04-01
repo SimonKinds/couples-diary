@@ -46,8 +46,9 @@ function diaryGetMonthFail(year, month) {
 }
 
 export function diaryShowDate(year, month, day) {
-  return dispatch => {
-    dispatch({ type: DIARY_SHOW_DATE, year, month, day });
+  return (dispatch, getState) => {
+    const { couple } = getState();
+    dispatch({ type: DIARY_SHOW_DATE, year, month, day, user: couple.thisUser});
     dispatch(push('/diary/' + year + '/' + month + '/' + day));
   };
 }
@@ -57,7 +58,8 @@ export function entryOnChange(text) {
 }
 
 export function entryOnEditModeClicked() {
-  return { type: ENTRY_ON_EDIT_MODE_CLICKED };
+  const user = buildUserFromToken().id;
+  return { type: ENTRY_ON_EDIT_MODE_CLICKED, user};
 }
 
 export function entryOnSave(year, month, day, text) {
