@@ -28,18 +28,20 @@
         "text": "string"
       }
     },
-    "dates": {
-      "<year>": {
-        "<month>": {
-          "isFetching": "bool",
-          "isFetched": "bool",
-          "<day>":
-          {
-            "entries": ["id"]
-          }
-        }
-      }
-    }
+    "dates": [
+      "year": "int",
+      "month": "int",
+      "day": "int",
+      "entries": ["id"]
+      ],
+    "fetching": [
+      "year": "int",
+      "month": "int"
+    ],
+    "fetched": [
+      "year": "int",
+      "month": "int"
+    ]
   },
   "ui": {
     "selectedYear": "int",
@@ -49,6 +51,8 @@
     "year": "int",
     "month": "month",
     "day": "day",
+    "thisUserEntry": "id",
+    "otherUserEntry": "id",
     "savedError": "bool",
     "ui": {
       "isInEditMode": "bool",

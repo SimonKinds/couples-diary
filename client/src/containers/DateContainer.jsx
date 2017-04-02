@@ -45,21 +45,14 @@ class DateContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   const { diary, couple, users } = state;
-  const { year, month, day } = diary.date;
+  const { year, month, day, thisUserEntry, otherUserEntry } = diary.date;
   const thisUser = users[couple.thisUser];
   const otherUser = users[couple.otherUser];
 
-  if (state.diary.dates[year] && state.diary.dates[year][month].isFetched) {
-    const entries = diary.dates[year][month][day].entries.map(
-      entryId => diary.entries[entryId]
-    );
+  if (diary.fetched.indexOf({year, month}) != -1) {
 
-    const thisUserEntry = entries.filter(
-      entry => entry.user == couple.thisUser
-    )[0] || { text: '' };
-    const otherUserEntry = entries.filter(
-      entry => entry.user == couple.otherUser
-    )[0] || { text: 'No entry for this day ;(' };
+    const thisUserEntry = diary.entries[thisUserEntry] || { text: '' };
+    const otherUserEntry = diary.entries[otherUserEntry] || { text: 'No entry for this day :(' };
 
     const thisUserText = diary.date.ui.isInEditMode
       ? diary.date.ui.updatedText

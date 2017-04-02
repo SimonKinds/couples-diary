@@ -11,26 +11,12 @@ import {
 
 import { URL_CHANGE } from '../actions/UrlActions';
 
-function defaultDates() {
-  const year = new Date().getFullYear();
-  const dates = {};
-  dates[year] = {};
-  for (let month = 1; month <= 12; ++month) {
-    // set to last day of current month
-    let date = new Date(year, month, 0);
-    dates[year][month] = { isFetching: false, isFetched: false };
-    // set to last date, so loop through all days
-    for (let day = 1; day <= date.getDate(); ++day) {
-      dates[year][month][day] = { entries: [] };
-    }
-  }
-  return dates;
-}
-
 function diary(
   state = {
     entries: {},
-    dates: defaultDates(),
+    dates: [],
+    fetching: [],
+    fetched: [],
     ui: {
       selectedYear: new Date().getFullYear(),
       // javacript 0-indexes, I don't
@@ -41,24 +27,56 @@ function diary(
   action
 ) {
   switch (action.type) {
-    case DIARY_GET_MONTH:
+    case DIARY_GET_MONTH: {
+      const { year, month } = action;
       return {
         ...state,
-        dates: updateIsFetching(action.year, action.month, true, state.dates)
+        fetching: state.fetching.concat({ year, month })
       };
-    case DIARY_GET_MONTH_FAIL:
+    }
+    case DIARY_GET_MONTH_FAIL: {
+      const { year, month } = action;
       return {
         ...state,
-        dates: updateIsFetching(action.year, action.month, false, state.dates)
+        fetching: state.fetching.filter(e => e == { year, month })
       };
-    case DIARY_GET_MONTH_SUCCESS:
+    }
+    case DIARY_GET_MONTH_SUCCESS: {
+      const { year, month, days } = action;
+
+      const dates = days.map(day => {
+        return {
+          ...day,
+          entries: day.entries.map(entry => entry._id)
+        };
+      });
+
+      let entries = { ...state.entries };
+      for (const day of days) {
+        for (const entry of day.entries) {
+          entries[entry._id] = { user: entry.user, text: entry.text };
+        }
+      }
+
       return {
         ...state,
-        entries: transformToEntriesMap(action.days),
-        dates: updateDates(action.year, action.month, action.days, state.dates)
+        entries,
+        dates: state.dates.concat(dates),
+        fetching: state.fetching.filter(e => e == { year, month }),
+        fetched: state.fetched.concat({year, month})
       };
-    case DIARY_SHOW_DATE:
+    }
+    case DIARY_SHOW_DATE: {
       const { year, month, day, user } = action;
+
+      const dateEntries = state.dates
+        .filter(
+          date => date.year == year && date.month == month && date.day == day
+        )
+        .map(date => date.entries);
+
+      const thisUserEntry = dateEntries.filter(e => e.user == user);
+      const otherUserEntry = dateEntries.filter(e => e.user != user);
 
       return {
         ...state,
@@ -66,18 +84,19 @@ function diary(
           year: year,
           month: month,
           day: day,
+          thisUserEntry,
+          otherUserEntry,
           saveError: false,
           ui: {
             isInEditMode: false
           }
         }
       };
+    }
     case ENTRY_ON_EDIT_MODE_CLICKED: {
-      const { year, month, day } = state.date;
+      const { year, month, day, thisUserEntryId } = state.date;
       const { user } = action;
-      const thisUserEntry = state.dates[year][month][day].entries
-        .map(entryId => state.entries[entryId])
-        .filter(entry => entry.user == user)[0] || { text: '' };
+      const thisUserEntry = state.entries[thisUserEntryId] || { text: '' };
 
       // set the updated text to the current value if it's empty
       const updatedText = state.ui.updatedText || thisUserEntry.text;
@@ -108,17 +127,17 @@ function diary(
       const { year, month, day, entry } = action;
 
       const entries = { ...state.entries };
+      const dates = { ...state.dates };
+
+      // only add if not update
+      if (!entries[entry._id]) {
+        dates.push({ year, month, day, entries: [entry] });
+      }
+
       entries[entry._id] = {
         user: entry.user,
         text: entry.text
       };
-
-      const dates = { ...state.dates };
-      // add only newly created, and not update
-      const dateEntries = dates[year][month][day].entries;
-      if (dateEntries.indexOf(entry._id) == -1) {
-        dateEntries.push(entry._id);
-      }
 
       return {
         ...state,
@@ -145,47 +164,6 @@ function diary(
     default:
       return state;
   }
-}
-
-function updateDates(year, month, days, dates) {
-  let datesCopy = { ...dates };
-  datesCopy[year][month].isFetching = false;
-  datesCopy[year][month].isFetched = true;
-  for (const day of days) {
-    let entryIds = [];
-    for (const entry of day.entries) {
-      entryIds.push(entry._id);
-    }
-    // currenty zero-indexed locally but not remotely
-    datesCopy[year][month][day.day].entries = entryIds;
-  }
-  return datesCopy;
-}
-
-function updateIsFetching(year, month, value, state) {
-  let stateCopy = { ...state };
-  if (!stateCopy[year]) {
-    stateCopy[year] = {};
-  }
-  if (!stateCopy[year][month]) {
-    stateCopy[year][month] = {};
-  }
-  stateCopy[year][month].isFetching = value;
-
-  return stateCopy;
-}
-
-function transformToEntriesMap(days) {
-  let entries = {};
-  for (const day of days) {
-    for (const entry of day.entries) {
-      entries[entry._id] = {
-        user: entry.user,
-        text: entry.text
-      };
-    }
-  }
-  return entries;
 }
 
 export default diary;

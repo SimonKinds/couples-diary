@@ -35,11 +35,14 @@ router.get('/:year/:month', (req, res) => {
           } else if (couple.users.indexOf(decodedToken.userId) == -1) {
             throw new Error(NOT_IN_COUPLE_ERROR);
           }
-          return Diary.find({
-            couple: coupleId,
-            year: parseInt(req.params.year),
-            month: parseInt(req.params.month)
-          }).populate('entries');
+          return Diary.find(
+            {
+              couple: coupleId,
+              year: parseInt(req.params.year),
+              month: parseInt(req.params.month)
+            },
+            { couple: 0 }
+          ).populate('entries');
         })
         .then(days => res.status(200).json(days));
     })

@@ -23,7 +23,7 @@ class MonthContainer extends React.Component {
         monthName={this.props.monthName}
         days={this.props.days}
         onClick={day =>
-            this.props.onClick(this.props.year, this.props.month, day)}
+          this.props.onClick(this.props.year, this.props.month, day)}
       />
     );
   }
@@ -45,7 +45,7 @@ function mapStateToProps(state) {
     // long = full name
     monthName: date.toLocaleString('en-us', { month: 'long' }),
     days: days(state),
-    isFetching: state.diary.dates[year][month].isFetching
+    isFetching: state.diary.fetching.indexOf({ year, month }) != -1
   };
 }
 
@@ -59,15 +59,14 @@ function days(state) {
     days.push({ day: dayIndex, entries: [] });
   }
 
-  for (const prop in state.diary.dates[year][month]) {
-    if (isNaN(prop)) continue;
-
-    const dayIndex = prop;
-    for (const entryId of state.diary.dates[year][month][dayIndex].entries) {
+  for (const date of state.diary.dates.filter(
+    date => date.year == year && date.month == month
+  )) {
+    for (const entryId of date.entries) {
       const entry = state.diary.entries[entryId];
       const user = state.users[entry.user];
 
-      days[dayIndex - 1].entries.push({
+      days[date.day - 1].entries.push({
         name: user.username,
         color: user.color,
         text: entry.text
