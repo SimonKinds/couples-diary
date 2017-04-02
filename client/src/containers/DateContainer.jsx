@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import {
   diaryGetMonth,
   entryOnChange,
@@ -45,14 +46,24 @@ class DateContainer extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   const { diary, couple, users } = state;
-  const { year, month, day, thisUserEntry, otherUserEntry } = diary.date;
+  const { year, month, day } = diary.date;
   const thisUser = users[couple.thisUser];
   const otherUser = users[couple.otherUser];
 
-  if (diary.fetched.indexOf({year, month}) != -1) {
+  if (_.some(diary.fetched, { year, month })) {
+    let entries = _.filter(diary.dates, date =>
+      _.isMatch(date, { year, month, day })).map(date =>
+        _.map(date.entries, entryId => diary.entries[entryId]));
+    entries = _.flatten(entries);
 
-    const thisUserEntry = diary.entries[thisUserEntry] || { text: '' };
-    const otherUserEntry = diary.entries[otherUserEntry] || { text: 'No entry for this day :(' };
+    const thisUserEntry = _.find(
+      entries,
+      {user: thisUser.id}
+    );
+    const otherUserEntry = _.find(
+      entries,
+      {user: otherUser.id}
+    ) || { text: 'No entry for this day :(' };
 
     const thisUserText = diary.date.ui.isInEditMode
       ? diary.date.ui.updatedText
@@ -84,7 +95,7 @@ function mapStateToProps(state, ownProps) {
     month,
     day,
     shouldFetch: true,
-    isFetching: true,
+    isFetching: true
   };
 }
 

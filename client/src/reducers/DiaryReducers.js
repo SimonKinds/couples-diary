@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import {
   DIARY_GET_MONTH,
   DIARY_GET_MONTH_SUCCESS,
@@ -38,7 +39,7 @@ function diary(
       const { year, month } = action;
       return {
         ...state,
-        fetching: state.fetching.filter(e => e == { year, month })
+        fetching: state.fetching.filter(e => !_.some(e, { year, month }))
       };
     }
     case DIARY_GET_MONTH_SUCCESS: {
@@ -54,7 +55,11 @@ function diary(
       let entries = { ...state.entries };
       for (const day of days) {
         for (const entry of day.entries) {
-          entries[entry._id] = { user: entry.user, text: entry.text };
+          entries[entry._id] = {
+            _id: entry._id,
+            user: entry.user,
+            text: entry.text
+          };
         }
       }
 
@@ -62,30 +67,19 @@ function diary(
         ...state,
         entries,
         dates: state.dates.concat(dates),
-        fetching: state.fetching.filter(e => e == { year, month }),
-        fetched: state.fetched.concat({year, month})
+        fetching: state.fetching.filter(e => !_.some(e, { year, month })),
+        fetched: state.fetched.concat({ year, month })
       };
     }
     case DIARY_SHOW_DATE: {
       const { year, month, day, user } = action;
 
-      const dateEntries = state.dates
-        .filter(
-          date => date.year == year && date.month == month && date.day == day
-        )
-        .map(date => date.entries);
-
-      const thisUserEntry = dateEntries.filter(e => e.user == user);
-      const otherUserEntry = dateEntries.filter(e => e.user != user);
-
       return {
         ...state,
         date: {
-          year: year,
-          month: month,
-          day: day,
-          thisUserEntry,
-          otherUserEntry,
+          year: parseInt(year),
+          month: parseInt(month),
+          day: parseInt(day),
           saveError: false,
           ui: {
             isInEditMode: false
@@ -94,9 +88,18 @@ function diary(
       };
     }
     case ENTRY_ON_EDIT_MODE_CLICKED: {
-      const { year, month, day, thisUserEntryId } = state.date;
+      const { year, month, day } = state.date;
       const { user } = action;
-      const thisUserEntry = state.entries[thisUserEntryId] || { text: '' };
+
+      let entries = _.filter(state.dates, date =>
+        _.isMatch(date, { year, month, day })).map(date =>
+          _.map(date.entries, entryId => state.entries[entryId]));
+      entries = _.flatten(entries);
+
+      const thisUserEntry = _.find(
+        entries,
+        {user}
+      );
 
       // set the updated text to the current value if it's empty
       const updatedText = state.ui.updatedText || thisUserEntry.text;
@@ -127,11 +130,11 @@ function diary(
       const { year, month, day, entry } = action;
 
       const entries = { ...state.entries };
-      const dates = { ...state.dates };
+      let dates = state.dates;
 
       // only add if not update
       if (!entries[entry._id]) {
-        dates.push({ year, month, day, entries: [entry] });
+        dates = dates.conat({ year, month, day, entries: [entry] });
       }
 
       entries[entry._id] = {

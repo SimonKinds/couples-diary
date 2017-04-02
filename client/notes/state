@@ -51,8 +51,6 @@
     "year": "int",
     "month": "month",
     "day": "day",
-    "thisUserEntry": "id",
-    "otherUserEntry": "id",
     "savedError": "bool",
     "ui": {
       "isInEditMode": "bool",

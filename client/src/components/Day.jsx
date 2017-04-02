@@ -9,7 +9,7 @@ function Day(props) {
       <span>
         {props.entries && props.entries.map((entry) => {
           return (
-            <p key={entry.name} style={{color: entry.color}}> 
+            <p key={entry.name + props.day} style={{color: entry.color}}> 
               <b >{entry.name + ' '}</b>
               <i style={{opacity: '0.7'}}>{entry.text}</i>
             </p>)
