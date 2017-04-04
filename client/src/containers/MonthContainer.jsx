@@ -35,8 +35,8 @@ function mapStateToProps(state) {
   // 0 = last date of previous month
   date.setDate(1);
 
-  const isFetching = _.some(state.diary.fetching, { year, month }) || 
-    !_.some(state.diary.fetched, {year, month});
+  const isFetching = _.some(state.diary.fetching, { year, month }) ||
+    !_.some(state.diary.fetched, { year, month });
 
   return {
     startIndex: date.getDay() - 1,
@@ -58,6 +58,8 @@ function days(state) {
   for (let dayIndex = 1; dayIndex <= daysInMonth; ++dayIndex) {
     days.push({ day: dayIndex, entries: [] });
   }
+
+  if (_.isEmpty(state.couple) || _.isEmpty(state.users)) return days;
 
   for (const date of state.diary.dates.filter(
     date => date.year == year && date.month == month

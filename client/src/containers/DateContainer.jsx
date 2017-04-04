@@ -50,7 +50,7 @@ function mapStateToProps(state, ownProps) {
   const thisUser = users[couple.thisUser];
   const otherUser = users[couple.otherUser];
 
-  if (_.some(diary.fetched, { year, month })) {
+  if (_.some(diary.fetched, { year, month }) && !_.isEmpty(couple) && !_.isEmpty(users)) {
     let entries = _.filter(diary.dates, date =>
       _.isMatch(date, { year, month, day })).map(date =>
         _.map(date.entries, entryId => diary.entries[entryId]));
