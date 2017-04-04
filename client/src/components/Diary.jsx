@@ -5,7 +5,15 @@ import MonthContainer from '../containers/MonthContainer';
 function Diary(props) {
   return (<div>
     <b>{props.year}</b>
-    <MonthContainer />
+    <div style={{display: 'flex', alignItems: 'center'}}>
+      <div onClick={() => props.showPrevMonth(props.year, props.month)}>
+        &lt;
+      </div>
+      <MonthContainer />
+      <div onClick={() => props.showNextMonth(props.year, props.month)}>
+        &gt;
+      </div>
+    </div>
   </div>)
 }
 

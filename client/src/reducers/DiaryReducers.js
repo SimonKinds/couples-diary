@@ -40,7 +40,7 @@ function diary(
       const { year, month } = action;
       return {
         ...state,
-        fetching: state.fetching.filter(e => !_.some(e, { year, month }))
+        fetching: _.filter(state.fetching, e => !_.isMatch(e, { year, month }))
       };
     }
     case DIARY_GET_MONTH_SUCCESS: {
@@ -68,7 +68,7 @@ function diary(
         ...state,
         entries,
         dates: state.dates.concat(dates),
-        fetching: state.fetching.filter(e => !_.some(e, { year, month })),
+        fetching: _.filter(state.fetching, e => !_.isMatch(e, { year, month })),
         fetched: state.fetched.concat({ year, month })
       };
     }
@@ -78,8 +78,8 @@ function diary(
         ...state,
         ui: {
           ...state.ui,
-          year,
-          month
+          year: parseInt(year),
+          month: parseInt(month)
         }
       };
     }

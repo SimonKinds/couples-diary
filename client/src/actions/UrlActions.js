@@ -12,6 +12,12 @@ function matchOnUrl(path, dispatch, state) {
 }
 
 function matchDiaryMonth(path, dispatch, state) {
+  if (path == '/diary' || path == '/diary/') {
+    const year = state.diary.ui.year;
+    const month = state.diary.ui.month;
+
+    dispatch(diaryShowMonth(year, month));
+  }
   const matches = path.match(/^\/diary\/(\d+)\/(\d+)/);
 
   if (matches) {

@@ -9,10 +9,6 @@ class MonthContainer extends React.Component {
     super(props);
   }
 
-  componentWillMount() {
-    this.props.getMonth(this.props.year, this.props.month);
-  }
-
   render() {
     if (this.props.isFetching) {
       return <div>loading...</div>;
@@ -38,6 +34,10 @@ function mapStateToProps(state) {
   date.setMonth(month - 1);
   // 0 = last date of previous month
   date.setDate(1);
+
+  const isFetching = _.some(state.diary.fetching, { year, month }) || 
+    !_.some(state.diary.fetched, {year, month});
+
   return {
     startIndex: date.getDay() - 1,
     year: year,
@@ -45,7 +45,7 @@ function mapStateToProps(state) {
     // long = full name
     monthName: date.toLocaleString('en-us', { month: 'long' }),
     days: days(state),
-    isFetching: state.diary.fetching.indexOf({ year, month }) != -1
+    isFetching
   };
 }
 
