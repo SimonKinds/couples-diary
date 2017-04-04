@@ -33,7 +33,7 @@
       "month": "int",
       "day": "int",
       "entries": ["id"]
-      ],
+    ],
     "fetching": [
       "year": "int",
       "month": "int"
@@ -41,20 +41,20 @@
     "fetched": [
       "year": "int",
       "month": "int"
-    ]
-  },
-  "ui": {
-    "selectedYear": "int",
-    "selectedMonth": "int"
-  },
-  "date": {
-    "year": "int",
-    "month": "month",
-    "day": "day",
-    "savedError": "bool",
+    ],
     "ui": {
-      "isInEditMode": "bool",
-      "updatedText": "String"
+      "selectedYear": "int",
+      "selectedMonth": "int"
+    },
+    "date": {
+      "year": "int",
+      "month": "month",
+      "day": "day",
+      "savedError": "bool",
+      "ui": {
+        "isInEditMode": "bool",
+        "updatedText": "String"
+      }
     }
   }
 }
