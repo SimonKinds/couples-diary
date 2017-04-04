@@ -36,6 +36,7 @@ ReactDOM.render(
       <Route path="/" component={App} onEnter={requireAuth}>
         <IndexRedirect to="/diary" />
         <Route path="/diary" component={DiaryContainer} />
+        <Route path="/diary/:year/:month" component={DiaryContainer} />
         <Route path="/diary/:year/:month/:day" component={DateContainer} />
         <Route path="/login" component={LoginContainer} />
       </Route>

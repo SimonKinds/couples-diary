@@ -3,6 +3,7 @@ import {
   DIARY_GET_MONTH,
   DIARY_GET_MONTH_SUCCESS,
   DIARY_GET_MONTH_FAIL,
+  DIARY_SHOW_MONTH,
   DIARY_SHOW_DATE,
   ENTRY_ON_EDIT_MODE_CLICKED,
   ENTRY_ON_CHANGE,
@@ -19,9 +20,9 @@ function diary(
     fetching: [],
     fetched: [],
     ui: {
-      selectedYear: new Date().getFullYear(),
+      year: new Date().getFullYear(),
       // javacript 0-indexes, I don't
-      selectedMonth: new Date().getMonth() + 1
+      month: new Date().getMonth() + 1
     },
     date: {}
   },
@@ -69,6 +70,17 @@ function diary(
         dates: state.dates.concat(dates),
         fetching: state.fetching.filter(e => !_.some(e, { year, month })),
         fetched: state.fetched.concat({ year, month })
+      };
+    }
+    case DIARY_SHOW_MONTH: {
+      const { year, month } = action;
+      return {
+        ...state,
+        ui: {
+          ...state.ui,
+          year,
+          month
+        }
       };
     }
     case DIARY_SHOW_DATE: {

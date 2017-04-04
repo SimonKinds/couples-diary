@@ -30,8 +30,8 @@ class MonthContainer extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const year = state.diary.ui.selectedYear;
-  const month = state.diary.ui.selectedMonth;
+  const year = state.diary.ui.year;
+  const month = state.diary.ui.month;
 
   const date = new Date();
   date.setYear(year);
@@ -50,8 +50,8 @@ function mapStateToProps(state) {
 }
 
 function days(state) {
-  const year = state.diary.ui.selectedYear;
-  const month = state.diary.ui.selectedMonth;
+  const year = state.diary.ui.year;
+  const month = state.diary.ui.month;
   const daysInMonth = new Date(year, month, 0).getDate();
 
   let days = [];

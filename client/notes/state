@@ -43,8 +43,8 @@
       "month": "int"
     ],
     "ui": {
-      "selectedYear": "int",
-      "selectedMonth": "int"
+      "year": "int",
+      "month": "int"
     },
     "date": {
       "year": "int",

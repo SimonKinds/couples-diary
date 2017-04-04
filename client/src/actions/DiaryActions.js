@@ -5,6 +5,7 @@ import { getJwtToken, buildUserFromToken } from '../utils/jwt';
 export const DIARY_GET_MONTH = 'DIARY_GET_MONTH';
 export const DIARY_GET_MONTH_SUCCESS = 'DIARY_GET_MONTH_SUCCESS';
 export const DIARY_GET_MONTH_FAIL = 'DIARY_GET_MONTH_FAIL';
+export const DIARY_SHOW_MONTH = 'DIARY_SHOW_MONTH';
 export const DIARY_SHOW_DATE = 'DIARY_SHOW_DATE';
 
 export const ENTRY_ON_CHANGE = 'ENTRY_ONCHANGE';
@@ -43,6 +44,18 @@ function diaryGetMonthSuccess(year, month, days) {
 
 function diaryGetMonthFail(year, month) {
   return { type: DIARY_GET_MONTH_FAIL, year, month };
+}
+
+export function diaryRouteMonth(year, month) {
+  return (dispatch, getState) => {
+    const { couple } = getState();
+    dispatch(diaryShowMonth(year, month));
+    dispatch(push('/diary/' + year + '/' + month));
+  };
+}
+
+export function diaryShowMonth(year, month) {
+  return { type: DIARY_SHOW_MONTH, year, month };
 }
 
 export function diaryRouteDate(year, month, day) {
