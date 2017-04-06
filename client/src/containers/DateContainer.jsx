@@ -59,7 +59,7 @@ function mapStateToProps(state, ownProps) {
     const thisUserEntry = _.find(
       entries,
       {user: thisUser.id}
-    );
+    ) || { text: '' };
     const otherUserEntry = _.find(
       entries,
       {user: otherUser.id}

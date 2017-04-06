@@ -111,7 +111,7 @@ function diary(
       const thisUserEntry = _.find(
         entries,
         {user}
-      );
+      ) || { text: '' };
 
       // set the updated text to the current value if it's empty
       const updatedText = state.ui.updatedText || thisUserEntry.text;
@@ -146,7 +146,7 @@ function diary(
 
       // only add if not update
       if (!entries[entry._id]) {
-        dates = dates.conat({ year, month, day, entries: [entry] });
+        dates = dates.concat({ year, month, day, entries: [entry._id] });
       }
 
       entries[entry._id] = {
