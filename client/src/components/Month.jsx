@@ -5,7 +5,7 @@ function Month(props) {
   return (
     <div>
       <b>{props.monthName}</b>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex'}}>
         {weekDays().map(name => (
           <div key={name} style={{ flex: 1, textAlign: 'center' }}>{name}</div>
         ))}

@@ -13,16 +13,16 @@ function matchOnUrl(path, dispatch, state) {
 
 function matchDiaryMonth(path, dispatch, state) {
   if (path == '/diary' || path == '/diary/') {
-    const year = state.diary.ui.year;
-    const month = state.diary.ui.month;
+    const year = parseInt(state.diary.ui.year);
+    const month = parseInt(state.diary.ui.month);
 
     dispatch(diaryShowMonth(year, month));
   }
   const matches = path.match(/^\/diary\/(\d+)\/(\d+)/);
 
   if (matches) {
-    const year = matches[1];
-    const month = matches[2];
+    const year = parseInt(matches[1]);
+    const month = parseInt(matches[2]);
 
     if (
       state.diary.ui.year == year &&
@@ -39,9 +39,9 @@ function matchDiaryDate(path, dispatch, state) {
   const matches = path.match(/^\/diary\/(\d+)\/(\d+)\/(\d+)$/);
 
   if (matches) {
-    const year = matches[1];
-    const month = matches[2];
-    const day = matches[3];
+    const year = parseInt(matches[1]);
+    const month = parseInt(matches[2]);
+    const day = parseInt(matches[3]);
 
     if (
       state.diary.date.year == year &&
