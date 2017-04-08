@@ -39,7 +39,8 @@ function mapStateToProps(state) {
     !_.some(state.diary.fetched, { year, month });
 
   return {
-    startIndex: date.getDay() - 1,
+    // make sure it's in the range [0, 6]
+    startIndex: ((date.getDay() - 1) % 7 + 7) % 7,
     year: year,
     month: month,
     // long = full name
