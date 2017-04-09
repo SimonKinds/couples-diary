@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 
 import { getJwtToken, buildUserFromToken } from './src/utils/jwt';
+import { renewToken } from './src/actions/TokenActions';
 import { getCouple } from './src/actions/CoupleActions';
 import { onUrlChange } from './src/actions/UrlActions';
 
@@ -38,22 +39,21 @@ ReactDOM.render(
         <Route path="/diary" component={DiaryContainer} />
         <Route path="/diary/:year/:month" component={DiaryContainer} />
         <Route path="/diary/:year/:month/:day" component={DateContainer} />
-        <Route path="/login" component={LoginContainer} />
       </Route>
+      <Route path="/login" component={LoginContainer} />
     </Router>
   </Provider>,
   document.getElementById('root')
 );
 
-let isTrapped = false;
 function requireAuth(nextState, replace) {
   const token = getJwtToken();
-  const user = buildUserFromToken(token);
-  // update some of the required information
-  if (user) {
+  if (token) {
+    const user = buildUserFromToken(token);
+    // get couple right away. If token is invalid we will fail in renew token
     store.dispatch(getCouple(user.coupleId, token));
+    store.dispatch(renewToken(token));
   } else {
-    isTrapped = true;
     replace({
       pathname: '/login',
       state: { nextPathName: nextState.location.pathname }

@@ -15,9 +15,10 @@ export const ENTRY_ON_SAVE_FAIL = 'ENTRY_ON_SAVE_FAIL';
 export const ENTRY_ON_SAVE_SUCCESS = 'ENTRY_ON_SAVE_SUCCESS';
 
 export function diaryGetMonth(year, month) {
-  const token = getJwtToken();
-  const coupleId = buildUserFromToken(token).coupleId;
   return dispatch => {
+    const token = getJwtToken();
+    if (!token) return;
+    const coupleId = buildUserFromToken(token).coupleId;
     dispatch({ type: DIARY_GET_MONTH, year, month });
     const url = 'http://localhost:8080/api/diary/' +
       year +

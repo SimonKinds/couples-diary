@@ -19,6 +19,8 @@ const user = require('./routes/user');
 app.use('/user', user);
 const login = require('./routes/login');
 app.use('/login', login);
+const token = require('./routes/token');
+app.use('/token', token);
 
 app.use('/', (req, res) => res.status(404).send());
 

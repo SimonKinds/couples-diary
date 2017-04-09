@@ -14,7 +14,7 @@ router.post('/', (request, response) => {
         if (user) {
           const token = jwt.sign(
               {userId: user._id, username: user.username, coupleId: user.couple}, jwtConfig.key,
-              {expiresIn: '30d'});
+              {expiresIn: '7d'});
           response.send(token);
         } else {
           response.status(404).send();
