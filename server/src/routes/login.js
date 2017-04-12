@@ -17,8 +17,6 @@ router.post('/', (request, response) => {
         const hashedPassword = hasher.hashPassword(password, user.salt);
 
         if (hashedPassword != user.password) {
-          console.log(hashedPassword);
-          console.log(user.password);
           response.status(404).send();
         } else {
           const token = jwt.sign(
