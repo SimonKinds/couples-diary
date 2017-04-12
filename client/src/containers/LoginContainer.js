@@ -1,22 +1,30 @@
 import { connect } from 'react-redux';
 
 import Login from '../components/Login';
-import { loginFormOnChange, login } from '../actions/LoginActions';
+import {
+  loginFormUsernameChange,
+  loginFormPasswordChange,
+  login
+} from '../actions/LoginActions';
 
 function mapStateToProps(state) {
   return {
     username: state.login.ui.username,
+    password: state.login.ui.password,
     loginError: state.login.loginError
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    onUsernameChange: event => {
-      dispatch(loginFormOnChange(event.target.value));
+    onUsernameChange: username => {
+      dispatch(loginFormUsernameChange(username));
     },
-    onSubmit: username => {
-      dispatch(login(username));
+    onPasswordChange: password => {
+      dispatch(loginFormPasswordChange(password));
+    },
+    onSubmit: (username, password) => {
+      dispatch(login(username, password));
     }
   };
 }

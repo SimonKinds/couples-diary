@@ -2,7 +2,8 @@
   "login": {
     "loginError": "bool",
     "ui": {
-      "username": "String"
+      "username": "String",
+      "password": "String"
     }
   },
   "users": {

@@ -4,12 +4,17 @@ import { push } from 'react-router-redux';
 import { setJwtToken, buildUserFromToken } from '../utils/jwt';
 import { getCouple } from './CoupleActions';
 
-export const LOGINFORM_ON_CHANGE = 'LOGINFORM_ON_CHANGE';
+export const LOGINFORM_ON_USERNAME_CHANGE = 'LOGINFORM_ON_USERNAME_CHANGE';
+export const LOGINFORM_ON_PASSWORD_CHANGE = 'LOGINFORM_ON_PASSWORD_CHANGE';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 
-export function loginFormOnChange(username) {
-  return { type: LOGINFORM_ON_CHANGE, username: username };
+export function loginFormUsernameChange(username) {
+  return { type: LOGINFORM_ON_USERNAME_CHANGE, username };
+}
+
+export function loginFormPasswordChange(password) {
+  return { type: LOGINFORM_ON_PASSWORD_CHANGE, password };
 }
 
 function loginFormSubmit() {
@@ -24,12 +29,12 @@ function loginFail() {
   return { type: LOGIN_FAIL };
 }
 
-export function login(username) {
+export function login(username, password) {
   return dispatch => {
     return fetch('http://localhost:8080/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username })
+      body: JSON.stringify({ username, password})
     })
       .then(response => {
         if (response.status == 200) {
