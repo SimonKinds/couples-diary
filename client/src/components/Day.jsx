@@ -6,7 +6,7 @@ function Day(props) {
       style={{
         flex: 1,
         border: '2px solid black',
-        height: 100,
+        height: 130,
         padding: 5,
         margin: -1
       }}
