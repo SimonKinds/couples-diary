@@ -35,12 +35,25 @@ function App(props) {
         height: '100%',
         width: '100%',
         display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        paddingTop: 100
+        flexDirection: 'column'
       }}
     >
-      {props.children}
+      <img
+        style={{ marginTop: 10, alignSelf: 'center' }}
+        src="http://localhost:8080/logo.png"
+      />
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          paddingTop: 100,
+          height: '100%',
+          width: '100%'
+        }}
+      >
+        {props.children}
+      </div>
     </div>
   );
 }
