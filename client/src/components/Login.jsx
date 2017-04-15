@@ -16,7 +16,7 @@ class LoginForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{background: 'white', flexShrink: 1}}>
         <form onSubmit={this.onSubmit}>
           <label>Username</label>
           <input

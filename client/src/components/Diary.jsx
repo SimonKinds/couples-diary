@@ -4,7 +4,7 @@ import MonthContainer from '../containers/MonthContainer';
 
 function Diary(props) {
   return (
-    <div>
+    <div style={{background: 'white', width:'80%', minSize: 800}}>
       <b>{props.year}</b>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <div

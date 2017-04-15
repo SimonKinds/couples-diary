@@ -28,7 +28,21 @@ store.dispatch(onUrlChange(history.getCurrentLocation().pathname));
 history.listen(location => store.dispatch(onUrlChange(location.pathname)));
 
 function App(props) {
-  return <div>{props.children}</div>;
+  return (
+    <div
+      style={{
+        background: '#ce9191',
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        paddingTop: 100
+      }}
+    >
+      {props.children}
+    </div>
+  );
 }
 
 ReactDOM.render(
@@ -40,7 +54,9 @@ ReactDOM.render(
         <Route path="/diary/:year/:month" component={DiaryContainer} />
         <Route path="/diary/:year/:month/:day" component={DateContainer} />
       </Route>
-      <Route path="/login" component={LoginContainer} />
+      <Route path="/" component={App}>
+        <Route path="/login" component={LoginContainer} />
+      </Route>
     </Router>
   </Provider>,
   document.getElementById('root')

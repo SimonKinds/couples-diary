@@ -2,7 +2,16 @@ import React, { PropTypes } from 'react';
 
 function DateComponent(props) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-around' }}>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        background: 'white',
+        width: '50%',
+        minWidth: 800,
+        height: '50%'
+      }}
+    >
       <div>
         <UserDateEntry
           user={props.thisUser}
@@ -16,11 +25,9 @@ function DateComponent(props) {
             <button onClick={() => props.onEntrySave(props.thisUser.text)}>
               Save
             </button>}
-            {
-              props.thisUser.isInEditMode &&
-                props.saveError &&
-                <p style={{ color: 'red' }}>Error saving entry</p>
-            }
+          {props.thisUser.isInEditMode &&
+            props.saveError &&
+            <p style={{ color: 'red' }}>Error saving entry</p>}
         </div>
       </div>
       <DateEntry
@@ -82,7 +89,8 @@ function DateEntry(props) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignSelf: 'flex-start'
       }}
     >
       <b style={{ textAlign: 'center', color: props.color }}>{props.name}</b>
@@ -97,11 +105,14 @@ function EditableDateEntry(props) {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        alignSelf: 'flex-start',
+        height: '100%'
       }}
     >
       <b style={{ textAlign: 'center', color: props.color }}>{props.name}</b>
       <textarea
+        style={{ height: '100%', background: '#F3F3F3' }}
         value={props.text}
         onChange={e => props.onChange(e.target.value)}
       />
