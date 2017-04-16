@@ -7,36 +7,44 @@ function DateComponent(props) {
         display: 'flex',
         justifyContent: 'space-around',
         background: 'white',
-        width: '50%',
+        width: '70%',
         minWidth: 800,
-        height: '50%'
+        minHeight: '50%',
+        maxHeight: '90%',
+        overflowY: 'auto'
       }}
     >
-      <div>
+      <div style={{ minWidth: '50%'}}>
         <UserDateEntry
           user={props.thisUser}
           onUserEntryChange={props.onUserEntryChange}
         />
-        <div>
-          <button style={{cursor: 'pointer'}} onClick={() => props.onEditModeClicked()}>
+        <div style={{margin: 10}}>
+          <button
+            style={{ cursor: 'pointer' }}
+            onClick={() => props.onEditModeClicked()}
+          >
             {editModeButtonName(props.thisUser.isInEditMode)}
           </button>
           {props.thisUser.isInEditMode &&
-            <button style={{cursor: 'pointer'}}  onClick={() => props.onEntrySave(props.thisUser.text)}>
-              Save
-            </button>}
-          {props.thisUser.isInEditMode &&
-            props.saveError &&
-            <p style={{ color: 'red' }}>Error saving entry</p>}
-        </div>
-      </div>
-      <DateEntry
-        name={props.otherUser.name}
-        color={props.otherUser.color}
-        text={props.otherUser.text}
-      />
-      {' '}
-    </div>
+              <button
+                style={{ cursor: 'pointer' }}
+                onClick={() => props.onEntrySave(props.thisUser.text)}
+              >
+                Save
+              </button>}
+              {props.thisUser.isInEditMode &&
+                  props.saveError &&
+                  <p style={{ color: 'red' }}>Error saving entry</p>}
+                </div>
+              </div>
+              <DateEntry
+                name={props.otherUser.name}
+                color={props.otherUser.color}
+                text={props.otherUser.text}
+              />
+              {' '}
+            </div>
   );
 }
 
@@ -90,11 +98,15 @@ function DateEntry(props) {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignSelf: 'flex-start'
+        alignSelf: 'flex-start',
+        minWidth: '50%',
+        margin: 10
       }}
     >
       <b style={{ textAlign: 'center', color: props.color }}>{props.name}</b>
-      <p>{props.text}</p>
+      <p style={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}>
+        {props.text}
+      </p>
     </div>
   );
 }
@@ -107,12 +119,12 @@ function EditableDateEntry(props) {
         flexDirection: 'column',
         justifyContent: 'center',
         alignSelf: 'flex-start',
-        height: '100%'
+        margin: 10
       }}
     >
       <b style={{ textAlign: 'center', color: props.color }}>{props.name}</b>
       <textarea
-        style={{ height: '100%', background: '#F3F3F3' }}
+        style={{ height: '100%', background: '#F3F3F3', marginTop: 10, resize: 'vertical' }}
         value={props.text}
         onChange={e => props.onChange(e.target.value)}
       />
