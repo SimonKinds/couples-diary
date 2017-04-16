@@ -18,11 +18,11 @@ function DateComponent(props) {
           onUserEntryChange={props.onUserEntryChange}
         />
         <div>
-          <button onClick={() => props.onEditModeClicked()}>
+          <button style={{cursor: 'pointer'}} onClick={() => props.onEditModeClicked()}>
             {editModeButtonName(props.thisUser.isInEditMode)}
           </button>
           {props.thisUser.isInEditMode &&
-            <button onClick={() => props.onEntrySave(props.thisUser.text)}>
+            <button style={{cursor: 'pointer'}}  onClick={() => props.onEntrySave(props.thisUser.text)}>
               Save
             </button>}
           {props.thisUser.isInEditMode &&

@@ -6,26 +6,22 @@ function Day(props) {
       style={{
         flex: 1,
         border: '2px solid black',
-        height: 130,
+        height: 80,
         padding: 5,
-        margin: -1
+        margin: -1,
+        cursor: 'pointer'
       }}
       onClick={props.onClick}
     >
       {props.day}
-      <span>
+      <div style={{display: 'flex', flexDirection: 'column'}}>
         {props.entries &&
           props.entries.map(entry => {
             return (
-              <p key={entry.name + props.day} style={{ color: entry.color, margin: 0 }}>
-                <b>{entry.name + ' '}</b>
-                <div>
-                  <i style={{ opacity: '0.7' }}>{entry.text}</i>
-                </div>
-              </p>
+              <b key={entry.name + props.day} style={{ color: entry.color}}>{entry.name + ' '}</b>
             );
           })}
-      </span>
+      </div>
     </div>
   );
 }
@@ -36,7 +32,6 @@ Day.propTypes = {
   entries: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      text: PropTypes.string.isRequired,
       color: PropTypes.string.isRequired
     })
   )

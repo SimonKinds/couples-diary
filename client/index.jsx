@@ -47,7 +47,7 @@ function App(props) {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'flex-start',
-          paddingTop: 100,
+          paddingTop: 10,
           height: '100%',
           width: '100%'
         }}
