@@ -6,7 +6,7 @@ import { getCouple } from './CoupleActions';
 
 export function renewToken(token) {
   return dispatch => {
-    return fetch('http://localhost:8080/api/token/renew', {
+    return fetch('http://couplesdiary.kindstrom.io/api/token/renew', {
       method: 'POST',
       headers: { 'Authorization': token },
     })

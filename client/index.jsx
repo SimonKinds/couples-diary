@@ -40,7 +40,7 @@ function App(props) {
     >
       <img
         style={{ marginTop: 10, alignSelf: 'center' }}
-        src="http://localhost:8080/logo.png"
+        src="http://couplesdiary.kindstrom.io/logo.png"
       />
       <div
         style={{

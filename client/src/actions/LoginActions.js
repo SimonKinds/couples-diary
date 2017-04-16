@@ -31,7 +31,7 @@ function loginFail() {
 
 export function login(username, password) {
   return dispatch => {
-    return fetch('http://localhost:8080/api/login', {
+    return fetch('http://couplesdiary.kindstrom.io/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password})

@@ -7,7 +7,7 @@ export const GET_COUPLE_FAIL = 'GET_COUPLE_FAIL';
 export function getCouple(coupleId, token) {
   return dispatch => {
     dispatch({ type: GET_COUPLE });
-    return fetch('http://localhost:8080/api/couple/' + coupleId, {
+    return fetch('http://couplesdiary.kindstrom.io/api/couple/' + coupleId, {
       headers: { Authorization: token }
     })
       .then(response => {
