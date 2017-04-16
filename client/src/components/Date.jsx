@@ -103,8 +103,8 @@ function DateEntry(props) {
         margin: 10
       }}
     >
-      <b style={{ color: props.color }}>{props.name}</b>
-      <p style={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}>
+      <b style={{ textAlign: 'center', color: props.color }}>{props.name}</b>
+      <p style={{ whiteSpace: 'pre-wrap'}}>
         {props.text}
       </p>
     </div>
@@ -119,6 +119,7 @@ function EditableDateEntry(props) {
         flexDirection: 'column',
         justifyContent: 'center',
         alignSelf: 'flex-start',
+        height: '100%',
         margin: 10
       }}
     >
