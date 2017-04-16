@@ -4,8 +4,8 @@ import Day from './Day';
 function Month(props) {
   return (
     <div>
-      <b style={{fontSize: 30}}>{props.monthName}</b>
-      <div style={{ display: 'flex'}}>
+      <b style={{ fontSize: 30 }}>{props.monthName}</b>
+      <div style={{ display: 'flex' }}>
         {weekDays().map(name => (
           <div key={name} style={{ flex: 1, textAlign: 'center' }}>{name}</div>
         ))}
@@ -77,8 +77,21 @@ function createDay(day, onClick) {
       day={day.day}
       onClick={() => onClick(day.day)}
       entries={day.entries}
+      isCurrentDay={isDayCurrentDay(day)}
     />
   );
+}
+
+function isDayCurrentDay(day) {
+  const currentDay = new Date();
+
+  const date = currentDay.getDate();
+  const month = currentDay.getMonth() + 1;
+  const year = currentDay.getFullYear();
+
+  return day.day == date &&
+    day.month == month &&
+    day.year == year;
 }
 
 function weekDays(locale = 'en-us') {

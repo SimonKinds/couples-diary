@@ -9,7 +9,8 @@ function Day(props) {
         height: 80,
         padding: 5,
         margin: -1,
-        cursor: 'pointer'
+        cursor: 'pointer',
+        background: props.isCurrentDay ? '#c7fce1' : 'white'
       }}
       onClick={props.onClick}
     >
@@ -34,7 +35,8 @@ Day.propTypes = {
       name: PropTypes.string.isRequired,
       color: PropTypes.string.isRequired
     })
-  )
+  ),
+  isCurrentDay: PropTypes.bool.isRequired
 };
 
 export default Day;

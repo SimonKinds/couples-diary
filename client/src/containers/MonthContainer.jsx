@@ -57,7 +57,7 @@ function days(state) {
 
   let days = [];
   for (let dayIndex = 1; dayIndex <= daysInMonth; ++dayIndex) {
-    days.push({ day: dayIndex, entries: [] });
+    days.push({ year, month, day: dayIndex, entries: [] });
   }
 
   if (_.isEmpty(state.couple) || _.isEmpty(state.users)) return days;
