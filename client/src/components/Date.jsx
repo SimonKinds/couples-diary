@@ -103,7 +103,7 @@ function DateEntry(props) {
         margin: 10
       }}
     >
-      <b style={{ textAlign: 'center', color: props.color }}>{props.name}</b>
+      <b style={{ color: props.color }}>{props.name}</b>
       <p style={{ whiteSpace: 'pre-wrap', textAlign: 'center' }}>
         {props.text}
       </p>
