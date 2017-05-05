@@ -15,6 +15,7 @@ import reducers from './src/reducers/reducers';
 import LoginContainer from './src/containers/LoginContainer';
 import DiaryContainer from './src/containers/DiaryContainer';
 import DateContainer from './src/containers/DateContainer';
+import Countdown from './src/components/Countdown';
 
 let store = createStore(
   reducers,
@@ -46,14 +47,22 @@ function App(props) {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'flex-start',
-          paddingTop: 10,
-          height: '100%',
-          width: '100%'
-        }}
-      >
-        {props.children}
-      </div>
+          alignItems: 'flex-start'
+        }}>
+      <Countdown/>
+    </div>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        paddingTop: 10,
+        height: '100%',
+        width: '100%'
+      }}
+    >
+      {props.children}
+    </div>
     </div>
   );
 }
