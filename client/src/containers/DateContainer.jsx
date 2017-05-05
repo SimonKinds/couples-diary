@@ -63,7 +63,7 @@ function mapStateToProps(state, ownProps) {
     const otherUserEntry = _.find(
       entries,
       {user: otherUser.id}
-    ) || { text: 'No entry for this day :(' };
+    ) || { text: 'How heavily to bed do I proceed\nWhen what I seek, my missing evening read,\nDoth teach that emptiness inside to say\nThus far the miles are measured from my bae!' };
 
     const thisUserText = diary.date.ui.isInEditMode
       ? diary.date.ui.updatedText
