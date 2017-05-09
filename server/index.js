@@ -1,10 +1,12 @@
 const express = require('express')
 const favicon = require('serve-favicon')
 const path = require('path')
+const compression = require('compression')
 
 const app = express()
 const api = require('./src/api')
 
+app.use(compression());
 app.use('/api', api)
 
 app.use(express.static('../client/build'))
