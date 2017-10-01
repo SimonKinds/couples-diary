@@ -5,5 +5,8 @@
   "main": "index.js",
   "repository": "https://github.com/simonkinds/couples-diary",
   "author": "Simon Kindström <simon.kindstrom@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "flow-bin": "^0.56.0"
+  }
 }
