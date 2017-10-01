@@ -1,0 +1,9 @@
+{
+  "name": "couples-diary",
+  "version": "0.0.1",
+  "description": "A platform where two loved ones may share their daily experiences",
+  "main": "index.js",
+  "repository": "https://github.com/simonkinds/couples-diary",
+  "author": "Simon Kindström <simon.kindstrom@gmail.com>",
+  "license": "MIT"
+}
