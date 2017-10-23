@@ -1,4 +1,10 @@
 // @flow
+import {
+  GraphQLScalarType,
+} from 'graphql';
+import {
+  Kind,
+} from 'graphql/language';
 
 const typeDefs = [`
   scalar Date
@@ -34,8 +40,8 @@ const typeDefs = [`
     couple(): Couple,
     # the posts by the couple, for the given date
     postsForDate(date: Date!), [Post],
-    #
-    postsForMonth(year: Int!, month: Int!): [Post]
+    # all posts by the couple, for the given year and month
+    postsForMonth(date: Date!): [Post]
   }
 `];
 
@@ -46,15 +52,21 @@ const resolvers = {
     name: 'Date',
     description: 'UTC milliseconds since epoch',
     parseValue(value) {
-      // Turn an input into a date which we want as a number
-      // value from the client
-      return new Date(value).valueOf();
+      if (value === 'number') {
+        // Turn an input into a date which we want as a number
+        // value from the client
+        return new Date(value).valueOf();
+      }
+      return null;
     },
     serialize(value) {
       // Convert Date to number primitive .getTime() or .valueOf()
       // value sent to the client
-      if (value instanceof Date) return value.valueOf();
-      return value;
+      if (value instanceof Date) {
+        return value.valueOf();
+      }
+      console.error('Trying to serialize invalid value');
+      return null;
     },
     parseLiteral(ast) {
       // ast value is always in string format
@@ -62,7 +74,8 @@ const resolvers = {
         // parseInt turns a string number into number of a certain base
         return parseInt(ast.value, 10);
       }
+      console.error('Trying to parse invalid literal');
       return null;
     },
   }),
-}
+};
