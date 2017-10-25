@@ -2,12 +2,18 @@
   "name": "couples-diary",
   "version": "0.0.1",
   "description": "A platform where two loved ones may share their daily experiences",
-  "main": "index.js",
+  "main": "lib/index.js",
+  "scripts": {
+    "build-server": "babel server/ -d lib/"
+  },
   "repository": "https://github.com/simonkinds/couples-diary",
   "author": "Simon Kindström <simon.kindstrom@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.1",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^16.0.0",
     "eslint-plugin-flowtype": "^2.39.1",

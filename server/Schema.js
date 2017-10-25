@@ -32,21 +32,27 @@ const typeDefs = [`
   type Couple {
     id: ID!,
     name: String!,
-    [users]: User!,
+    users: [User!]!,
     creationDate: Date!
   }
 
   type Query {
     # returns the couple for the logged-in user
-    couple(): Couple,
+    couple: Couple
     # the posts by the couple, for the given date
-    postsForDate(date: Date!), [Post],
+    postsForDate(date: Date!): [Post!]!
     # all posts by the couple, for the given year and month
-    postsForMonth(date: Date!): [Post]
+    postsForMonth(date: Date!): [Post!]!
   }
 `];
 
 const resolvers = {
+  // Query
+  Query: {
+    couple: () => {},
+    postsForDate: () => [],
+    postsForMonth: () => [],
+  },
   // Scalars
   Date: new GraphQLScalarType({
     // http://dev.apollodata.com/tools/graphql-tools/scalars.html#Date-as-a-scalar
