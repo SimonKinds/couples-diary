@@ -5,6 +5,7 @@ import {
 import {
   Kind,
 } from 'graphql/language';
+import { makeExecutableSchema } from 'graphql-tools';
 
 const typeDefs = [`
   scalar Date
@@ -79,3 +80,8 @@ const resolvers = {
     },
   }),
 };
+
+export default makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
