@@ -4,41 +4,47 @@
 
 // eslint-disable-next-line no-unused-vars
 import regeneratorRuntime from 'regenerator-runtime';
+import bcrypt from 'bcrypt';
 import getConnection from '../SqlDatabase';
+
+const HASH_ROUNDS = 10;
 
 export default class User {
   id: number;
+  username: string;
   firstName: string;
   lastName: string;
-  username: string;
   email: string;
   creationDate: Date;
 
   constructor(
-    id: number, firstName: string, lastName: string, username: string, email: string,
-    creationDate: Date,
+    id: number, username: string, firstName: string, lastName: string,
+    email: string, creationDate: Date,
   ) {
     this.id = id;
+    this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.username = username;
     this.email = email;
     this.creationDate = creationDate;
   }
 
   static async create(
-    firstName: string, lastName: string, username: string,
+    username: string, password: string, firstName: string, lastName: string,
     email: string,
   ): Promise<User> {
+    const hashedPassword = await bcrypt.hash(password, HASH_ROUNDS);
+
     const creationDate = new Date();
     const connection = await getConnection();
     const result =
       await connection.query(
         'INSERT INTO users SET ?, creation_date = now()',
         {
+          username,
+          password: hashedPassword,
           first_name: firstName,
           last_name: lastName,
-          username,
           email,
         },
       );
