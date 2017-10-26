@@ -6,7 +6,6 @@ import {
   Kind,
 } from 'graphql/language';
 import { makeExecutableSchema } from 'graphql-tools';
-import User from './models/User';
 
 const typeDefs = [`
   scalar Date
@@ -28,7 +27,6 @@ const typeDefs = [`
     lastName: String!,
     username: String!,
     email: String!,
-    couple: Couple,
     creationDate: Date!,
   }
 
@@ -53,7 +51,7 @@ const typeDefs = [`
 const resolvers = {
   // Query
   Query: {
-    user: () => User.getForId(1),
+    user: (root, data, context) => context.User.getForId(1),
     couple: () => ({
       id: 0,
       name: 'The best couple',
