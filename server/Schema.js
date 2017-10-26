@@ -6,6 +6,7 @@ import {
   Kind,
 } from 'graphql/language';
 import { makeExecutableSchema } from 'graphql-tools';
+import User from './models/User';
 
 const typeDefs = [`
   scalar Date
@@ -23,20 +24,23 @@ const typeDefs = [`
 
   type User {
     id: ID!,
-    name: String!,
+    firstName: String!,
+    lastName: String!,
     username: String!,
     email: String!,
+    couple: Couple,
     creationDate: Date!,
   }
 
   type Couple {
     id: ID!,
     name: String!,
-    users: [User!]!,
     creationDate: Date!
   }
 
   type Query {
+    # returns the currently logged-in user
+    user: User!
     # returns the couple for the logged-in user
     couple: Couple
     # the posts by the couple, for the given date
@@ -49,7 +53,12 @@ const typeDefs = [`
 const resolvers = {
   // Query
   Query: {
-    couple: () => {},
+    user: () => User.getForId(1),
+    couple: () => ({
+      id: 0,
+      name: 'The best couple',
+      creationDate: new Date(),
+    }),
     postsForDate: () => [],
     postsForMonth: () => [],
   },

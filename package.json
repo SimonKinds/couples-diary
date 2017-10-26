@@ -4,7 +4,7 @@
   "description": "A platform where two loved ones may share their daily experiences",
   "main": "lib/index.js",
   "scripts": {
-    "build-server": "babel server/ -d lib/"
+    "build-server": "babel server/ -d lib/server/"
   },
   "repository": "https://github.com/simonkinds/couples-diary",
   "author": "Simon Kindström <simon.kindstrom@gmail.com>",
@@ -12,6 +12,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.0.1",
+    "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
     "eslint": "^4.8.0",
@@ -20,7 +21,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0",
-    "flow-bin": "^0.56.0",
+    "flow-bin": "^0.57.3",
     "flow-typed": "^2.2.0"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "express": "^4.16.2",
     "graphql": "^0.11.6",
     "graphql-tools": "^2.6.1",
-    "mysql2": "^1.4.2"
+    "mysql2": "^1.4.2",
+    "regenerator-runtime": "^0.11.0"
   }
 }
