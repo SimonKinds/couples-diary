@@ -26,6 +26,28 @@ export default class User {
     this.creationDate = creationDate;
   }
 
+  static async create(
+    firstName: string, lastName: string, username: string,
+    email: string,
+  ): Promise<User> {
+    const creationDate = new Date();
+    const connection = await getConnection();
+    const result =
+      await connection.query(
+        'INSERT INTO users SET ?, creation_date = now()',
+        {
+          first_name: firstName,
+          last_name: lastName,
+          username,
+          email,
+        },
+      );
+    return new User(
+      result[0].insertId, firstName, lastName, username, email,
+      creationDate,
+    );
+  }
+
   static async getForId(id: number): Promise<?User> {
     const connection = await getConnection();
     const rows =
@@ -39,9 +61,11 @@ export default class User {
 
     if (rows.length > 2) {
       console.error(`User ID ${id} returned ${rows.length} users`);
+      return null;
     }
 
     if (rows.length === 0) {
+      console.error(`No user with ID ${id}`);
       return null;
     }
 

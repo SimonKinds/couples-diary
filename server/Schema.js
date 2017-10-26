@@ -46,6 +46,11 @@ const typeDefs = [`
     # all posts by the couple, for the given year and month
     postsForMonth(date: Date!): [Post!]!
   }
+
+  type Mutation {
+    createUser(firstName: String!, lastName: String!, username: String!,
+               email: String!): User!
+  }
 `];
 
 const resolvers = {
@@ -59,6 +64,14 @@ const resolvers = {
     }),
     postsForDate: () => [],
     postsForMonth: () => [],
+  },
+  // Mutations
+  Mutation: {
+    createUser: (root, {
+      firstName, lastName, username, email,
+    }, context) =>
+      context.User.create(firstName, lastName, username, email),
+
   },
   // Scalars
   Date: new GraphQLScalarType({
