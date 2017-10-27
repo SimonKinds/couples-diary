@@ -1,9 +1,7 @@
 // @flow
 
-// required for async functions
-
 // eslint-disable-next-line no-unused-vars
-import regeneratorRuntime from 'regenerator-runtime';
+import regeneratorRuntime from 'regenerator-runtime'; // required for async
 import bcrypt from 'bcrypt';
 import getConnection from '../SqlDatabase';
 

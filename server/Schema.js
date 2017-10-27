@@ -50,6 +50,7 @@ const typeDefs = [`
   type Mutation {
     createUser(username: String!, password: String!,
                firstName: String!, lastName: String, email: String!): User!
+    createCouple(name: String!): Couple!
   }
 `];
 
@@ -74,7 +75,7 @@ const resolvers = {
         username, password, firstName,
         lastName, username, email,
       ),
-
+    createCouple: (root, { name }, context) => context.Couple.create(name),
   },
   // Scalars
   Date: new GraphQLScalarType({
