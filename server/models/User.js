@@ -34,50 +34,60 @@ export default class User {
     const hashedPassword = await bcrypt.hash(password, HASH_ROUNDS);
 
     const creationDate = new Date();
-    const connection = await getConnection();
-    const result =
-      await connection.query(
-        'INSERT INTO users SET ?, creation_date = now()',
-        {
-          username,
-          password: hashedPassword,
-          first_name: firstName,
-          last_name: lastName,
-          email,
-        },
+    try {
+      const connection = await getConnection();
+      const result =
+        await connection.query(
+          'INSERT INTO users SET ?, creation_date = now()',
+          {
+            username,
+            password: hashedPassword,
+            first_name: firstName,
+            last_name: lastName,
+            email,
+          },
+        );
+
+      return new User(
+        result[0].insertId, firstName, lastName, username, email,
+        creationDate,
       );
-    return new User(
-      result[0].insertId, firstName, lastName, username, email,
-      creationDate,
-    );
+    } catch (e) {
+      console.error(e.message);
+      throw new Error('Could not create user');
+    }
   }
 
-  static async getForId(id: number): Promise<?User> {
-    const connection = await getConnection();
-    const rows =
-    (await connection.query(
-      'SELECT id, first_name, last_name, username, email, creation_date ' +
-      'FROM users ' +
-      'WHERE id = ?',
-      [id],
-    ))[0];
-    connection.release();
 
-    if (rows.length > 2) {
-      console.error(`User ID ${id} returned ${rows.length} users`);
-      return null;
+  static async getForId(id: number): Promise<User> {
+    try {
+      const connection = await getConnection();
+      const rows =
+      (await connection.query(
+        'SELECT id, first_name, last_name, username, email, creation_date ' +
+        'FROM users ' +
+        'WHERE id = ?',
+        [id],
+      ))[0];
+      connection.release();
+
+      if (rows.length > 2) {
+        throw new Error(`User ID ${id} returned ${rows.length} users`);
+      }
+
+      if (rows.length === 0) {
+        throw new Error(`No user with ID ${id}`);
+      }
+
+      const user = rows[0];
+
+      return new User(
+        user.id, user.first_name, user.last_name, user.username,
+        user.email, user.creation_date,
+      );
+    } catch (e) {
+      console.error(e.message);
+      throw new Error('Could not get user');
     }
-
-    if (rows.length === 0) {
-      console.error(`No user with ID ${id}`);
-      return null;
-    }
-
-    const user = rows[0];
-
-    return new User(
-      user.id, user.first_name, user.last_name, user.username,
-      user.email, user.creation_date,
-    );
   }
 }

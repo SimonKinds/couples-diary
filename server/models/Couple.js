@@ -16,16 +16,21 @@ export default class Couple {
 
   static async create(name: string): Promise<Couple> {
     const creationDate = new Date();
-    const connection = await getConnection();
-    const result =
+    try {
+      const connection = await getConnection();
+      const result =
       await connection.query(
-        'INSERT INTO couples SET ?, creation_date = now()',
-        {
-          name,
-        },
-      );
-    connection.release();
+          'INSERT INTO couples SET ?, creation_date = now()',
+          {
+            name,
+          },
+        );
+      connection.release();
 
-    return new Couple(result[0].insertId, name, creationDate);
+      return new Couple(result[0].insertId, name, creationDate);
+    } catch (e) {
+      console.error(e);
+      throw new Error('Could not create couple');
+    }
   }
 }
