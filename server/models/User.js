@@ -58,6 +58,8 @@ export default class User {
           },
         );
 
+      connection.release();
+
       return new User(
         result[0].insertId, email, firstName, lastName,
         creationDate,
