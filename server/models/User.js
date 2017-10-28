@@ -7,6 +7,14 @@ import getConnection from '../SqlDatabase';
 
 const HASH_ROUNDS = 10;
 
+const isEmailUnique = async (email: string, connection: any): Promise<boolean> => {
+  const result = await connection.query(
+    'SELECT COUNT(email) from users WHERE email = ?',
+    email,
+  );
+  return result[0][0]['COUNT(email)'] === 0;
+};
+
 export default class User {
   id: number;
   email: string;
@@ -35,6 +43,10 @@ export default class User {
     try {
       const connection = await getConnection();
 
+      if (!await isEmailUnique(email, connection)) {
+        throw new Error('Email is already in use');
+      }
+
       const result =
         await connection.query(
           'INSERT INTO users SET ?, creation_date = now()',
@@ -55,7 +67,6 @@ export default class User {
       throw new Error('Could not create user');
     }
   }
-
 
   static async getForId(id: number): Promise<User> {
     try {
