@@ -63,7 +63,7 @@ export default class User {
         creationDate,
       );
     } catch (e) {
-      console.error(e.message);
+      console.error(e);
       throw new Error('Could not create user');
     }
   }
@@ -95,7 +95,7 @@ export default class User {
         user.creation_date,
       );
     } catch (e) {
-      console.error(e.message);
+      console.error(e);
       throw new Error('Could not get user');
     }
   }
