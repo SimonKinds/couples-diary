@@ -1,14 +1,15 @@
 // @flow
 // eslint-disable-next-line no-unused-vars
 import regeneratorRuntime from 'regenerator-runtime'; // required for async
+import uuid from 'uuid/v4';
 import getConnection from '../SqlDatabase';
 
 export default class Couple {
-  id: number;
+  id: string;
   name: string;
   creationDate: Date;
 
-  constructor(id: number, name: string, creationDate: Date) {
+  constructor(id: string, name: string, creationDate: Date) {
     this.id = id;
     this.name = name;
     this.creationDate = creationDate;
@@ -18,16 +19,17 @@ export default class Couple {
     const creationDate = new Date();
     try {
       const connection = await getConnection();
-      const result =
+      const id = uuid();
       await connection.query(
-          'INSERT INTO couples SET ?, creation_date = now()',
-          {
-            name,
-          },
-        );
+        'INSERT INTO couples SET ?, creation_date = NOW()',
+        {
+          id,
+          name,
+        },
+      );
       connection.release();
 
-      return new Couple(result[0].insertId, name, creationDate);
+      return new Couple(id, name, creationDate);
     } catch (e) {
       console.error(e);
       throw new Error('Could not create couple');

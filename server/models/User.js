@@ -3,6 +3,7 @@
 // eslint-disable-next-line no-unused-vars
 import regeneratorRuntime from 'regenerator-runtime'; // required for async
 import bcrypt from 'bcrypt';
+import uuid from 'uuid/v4';
 import getConnection from '../SqlDatabase';
 
 const HASH_ROUNDS = 10;
@@ -16,14 +17,14 @@ const isEmailUnique = async (email: string, connection: any): Promise<boolean> =
 };
 
 export default class User {
-  id: number;
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
   creationDate: Date;
 
   constructor(
-    id: number, email: string, firstName: string, lastName: string,
+    id: string, email: string, firstName: string, lastName: string,
     creationDate: Date,
   ) {
     this.id = id;
@@ -47,30 +48,29 @@ export default class User {
         throw new Error('Email is already in use');
       }
 
-      const result =
-        await connection.query(
-          'INSERT INTO users SET ?, creation_date = now()',
-          {
-            email,
-            password: hashedPassword,
-            first_name: firstName,
-            last_name: lastName,
-          },
-        );
+      const id = uuid();
+
+      await connection.query(
+        'INSERT INTO users SET ?, creation_date = NOW()',
+        {
+          id,
+          email,
+          password: hashedPassword,
+          first_name: firstName,
+          last_name: lastName,
+        },
+      );
 
       connection.release();
 
-      return new User(
-        result[0].insertId, email, firstName, lastName,
-        creationDate,
-      );
+      return new User(id, email, firstName, lastName, creationDate);
     } catch (e) {
       console.error(e);
       throw new Error('Could not create user');
     }
   }
 
-  static async getForId(id: number): Promise<User> {
+  static async getForId(id: string): Promise<User> {
     try {
       const connection = await getConnection();
       const rows =

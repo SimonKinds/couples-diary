@@ -11,7 +11,7 @@ const typeDefs = [`
   scalar Date
 
   type Post {
-    id: ID!,
+    id: String!,
     author: User!,
     content: String!,
     # the date that the post is about
@@ -22,7 +22,7 @@ const typeDefs = [`
   }
 
   type User {
-    id: ID!,
+    id: String!,
     email: String!,
     firstName: String!,
     lastName: String!,
@@ -30,7 +30,7 @@ const typeDefs = [`
   }
 
   type Couple {
-    id: ID!,
+    id: String!,
     name: String!,
     creationDate: Date!
   }
@@ -56,7 +56,7 @@ const typeDefs = [`
 const resolvers = {
   // Query
   Query: {
-    user: (root, data, context) => context.User.getForId(1),
+    user: (root, data, context) => context.User.getForId('d9ab8f19-d837-4207-8da6-0abf86ba7872'),
     couple: () => ({
       id: 0,
       name: 'The best couple',
