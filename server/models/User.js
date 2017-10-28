@@ -9,47 +9,45 @@ const HASH_ROUNDS = 10;
 
 export default class User {
   id: number;
-  username: string;
+  email: string;
   firstName: string;
   lastName: string;
-  email: string;
   creationDate: Date;
 
   constructor(
-    id: number, username: string, firstName: string, lastName: string,
-    email: string, creationDate: Date,
+    id: number, email: string, firstName: string, lastName: string,
+    creationDate: Date,
   ) {
     this.id = id;
-    this.username = username;
+    this.email = email;
     this.firstName = firstName;
     this.lastName = lastName;
-    this.email = email;
     this.creationDate = creationDate;
   }
 
   static async create(
-    username: string, password: string, firstName: string, lastName: string,
-    email: string,
+    email: string, password: string, firstName: string,
+    lastName: string,
   ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, HASH_ROUNDS);
 
     const creationDate = new Date();
     try {
       const connection = await getConnection();
+
       const result =
         await connection.query(
           'INSERT INTO users SET ?, creation_date = now()',
           {
-            username,
+            email,
             password: hashedPassword,
             first_name: firstName,
             last_name: lastName,
-            email,
           },
         );
 
       return new User(
-        result[0].insertId, firstName, lastName, username, email,
+        result[0].insertId, email, firstName, lastName,
         creationDate,
       );
     } catch (e) {
@@ -64,7 +62,7 @@ export default class User {
       const connection = await getConnection();
       const rows =
       (await connection.query(
-        'SELECT id, first_name, last_name, username, email, creation_date ' +
+        'SELECT id, email, first_name, last_name, creation_date ' +
         'FROM users ' +
         'WHERE id = ?',
         [id],
@@ -82,8 +80,8 @@ export default class User {
       const user = rows[0];
 
       return new User(
-        user.id, user.first_name, user.last_name, user.username,
-        user.email, user.creation_date,
+        user.id, user.email, user.first_name, user.last_name,
+        user.creation_date,
       );
     } catch (e) {
       console.error(e.message);

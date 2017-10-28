@@ -23,10 +23,9 @@ const typeDefs = [`
 
   type User {
     id: ID!,
+    email: String!,
     firstName: String!,
     lastName: String!,
-    username: String!,
-    email: String!,
     creationDate: Date!,
   }
 
@@ -48,8 +47,8 @@ const typeDefs = [`
   }
 
   type Mutation {
-    createUser(username: String!, password: String!,
-               firstName: String!, lastName: String, email: String!): User!
+    createUser(email: String!, password: String!, firstName: String!,
+               lastName: String): User!
     createCouple(name: String!): Couple!
   }
 `];
@@ -69,12 +68,9 @@ const resolvers = {
   // Mutations
   Mutation: {
     createUser: (root, {
-      username, password, firstName, lastName, email,
+      email, password, firstName, lastName,
     }, context) =>
-      context.User.create(
-        username, password, firstName,
-        lastName, username, email,
-      ),
+      context.User.create(email, password, firstName, lastName),
     createCouple: (root, { name }, context) => context.Couple.create(name),
   },
   // Scalars
