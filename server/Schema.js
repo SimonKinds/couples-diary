@@ -11,28 +11,34 @@ const typeDefs = [`
   scalar Date
 
   type Post {
-    id: String!,
-    author: User!,
-    content: String!,
+    id: String!
+    author: User!
+    content: String!
     # the date that the post is about
-    date: Date!,
-    creationDate: Date!,
+    date: Date!
+    creationDate: Date!
     # the time at which the other user read the post
     readDate: Date!
   }
 
   type User {
-    id: String!,
-    email: String!,
-    firstName: String!,
-    lastName: String!,
-    creationDate: Date!,
+    id: String!
+    email: String!
+    firstName: String!
+    lastName: String!
+    creationDate: Date!
   }
 
   type Couple {
-    id: String!,
-    name: String!,
+    id: String!
+    name: String!
     creationDate: Date!
+  }
+
+  type LoginPayload {
+    user: User!
+    accessToken: String!
+    refreshToken: String!
   }
 
   type Query {
@@ -47,6 +53,9 @@ const typeDefs = [`
   }
 
   type Mutation {
+    # logs the user in, or throws an error if invalid data
+    login(email: String!, password: String!): LoginPayload!
+
     createUser(email: String!, password: String!, firstName: String!,
                lastName: String!): User!
     createCouple(name: String!): Couple!
@@ -67,6 +76,8 @@ const resolvers = {
   },
   // Mutations
   Mutation: {
+    login: (root, { email, password }, { Authentication }) =>
+      Authentication(email, password),
     createUser: (root, {
       email, password, firstName, lastName,
     }, context) =>

@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
 
 import GraphQlSchema from './Schema';
+import Authentication from './Authentication';
 import UserModel from './models/User';
 import CoupleModel from './models/Couple';
 
@@ -14,7 +15,7 @@ app.use(
   '/graphql', bodyParser.json(),
   graphqlExpress({
     schema: GraphQlSchema,
-    context: { User: UserModel, Couple: CoupleModel },
+    context: { Authentication, User: UserModel, Couple: CoupleModel },
   }),
 );
 

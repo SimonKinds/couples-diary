@@ -90,12 +90,51 @@ export default class User {
         throw new Error(`No user with ID ${id}`);
       }
 
-      const user = rows[0];
 
+      return User.createFromColumns(rows[0]);
+    } catch (e) {
+      console.error(e);
+      throw new Error('Could not get user');
+    }
+  }
+
+  // throws if invalid columns
+  static createFromColumns(columns: any): User {
+    if (typeof columns.id === 'string' &&
+        typeof columns.email === 'string' &&
+        typeof columns.first_name === 'string' &&
+        typeof columns.last_name === 'string' &&
+        columns.creation_date instanceof Date) {
       return new User(
-        user.id, user.email, user.first_name, user.last_name,
-        user.creation_date,
+        columns.id,
+        columns.email, columns.first_name,
+        columns.last_name, columns.creation_date,
       );
+    }
+    throw new Error('Got invalid object from database');
+  }
+
+  static async getUserAndPasswordForEmail(email: string): Promise<[User, string]> {
+    try {
+      const connection = await getConnection();
+      const rows =
+      (await connection.query(
+        'SELECT id, email, first_name, last_name, creation_date, password ' +
+        'FROM users ' +
+        'WHERE email = ?',
+        [email],
+      ))[0];
+      connection.release();
+
+      if (rows.length > 2) {
+        throw new Error(`Email ${email} returned ${rows.length} users`);
+      }
+
+      if (rows.length === 0) {
+        throw new Error(`No user with email ${email}`);
+      }
+
+      return [User.createFromColumns(rows[0]), rows[0].password.toString()];
     } catch (e) {
       console.error(e);
       throw new Error('Could not get user');

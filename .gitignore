@@ -1,3 +1,4 @@
 node_modules/
 lib/
 yarn-error.log
+server/Authentication/JwtSecret.js
