@@ -5,17 +5,17 @@ import regeneratorRuntime from 'regenerator-runtime'; // required for async
 import createConnection from '../SqlDatabase';
 
 export default class RefreshToken {
-  clientId: string;
   userId: string;
+  clientId: string;
   token: string;
 
-  constructor(clientId: string, userId: string, token: string) {
-    this.clientId = clientId;
+  constructor(userId: string, clientId: string, token: string) {
     this.userId = userId;
+    this.clientId = clientId;
     this.token = token;
   }
 
-  static async create(clientId: string, userId: string, token: string): Promise<void> {
+  static async create(userId: string, clientId: string, token: string): Promise<void> {
     try {
       const connection = await createConnection();
       await connection.query(
@@ -32,13 +32,13 @@ export default class RefreshToken {
   static async getForUser(userId: string): Promise<[RefreshToken]> {
     try {
       const connection = await createConnection();
-      const rows = await connection.query(
+      const result = await connection.query(
         'SELECT client_id, token, user_id FROM refresh_tokens WHERE user_id = ?',
         [userId],
-      )[0];
+      );
       connection.release();
 
-      return rows.map(RefreshToken.fromColumns)
+      return result[0].map(RefreshToken.fromColumns)
         .filter((a: ?RefreshToken) => a != null);
     } catch (e) {
       console.error(e);
@@ -47,10 +47,10 @@ export default class RefreshToken {
   }
 
   static fromColumns(cols: any): ?RefreshToken {
-    if (typeof cols.clientId === 'string' &&
+    if (typeof cols.client_id === 'string' &&
     typeof cols.token === 'string' &&
-    typeof cols.userId === 'string') {
-      return new RefreshToken(cols.clientId, cols.userId, cols.token);
+    typeof cols.user_id === 'string') {
+      return new RefreshToken(cols.client_id, cols.user_id, cols.token);
     }
     return null;
   }

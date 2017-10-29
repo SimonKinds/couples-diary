@@ -55,6 +55,8 @@ const typeDefs = [`
   type Mutation {
     # logs the user in, or throws an error if invalid data
     login(email: String!, password: String!): LoginPayload!
+    # returns a new access token if the refresh token belongs to the user and client
+    refreshAccessToken(refreshToken: String!): String!
 
     createUser(email: String!, password: String!, firstName: String!,
                lastName: String!): User!
@@ -78,6 +80,8 @@ const resolvers = {
   Mutation: {
     login: (root, { email, password }, { clientId, Authentication }) =>
       Authentication.login(email, password, clientId),
+    refreshAccessToken: (root, { refreshToken }, { clientId, Authentication }) =>
+      Authentication.refresh(clientId, refreshToken),
     createUser: (root, {
       email, password, firstName, lastName,
     }, context) =>
