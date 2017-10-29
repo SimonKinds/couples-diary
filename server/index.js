@@ -31,7 +31,9 @@ const buildOptions = async (req: $Request, res: $Response) => {
 
   return {
     schema: GraphQlSchema,
-    context: { Authentication, User: UserModel, Couple: CoupleModel },
+    context: {
+      clientId, Authentication, User: UserModel, Couple: CoupleModel,
+    },
   };
 };
 

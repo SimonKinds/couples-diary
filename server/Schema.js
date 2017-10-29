@@ -76,8 +76,8 @@ const resolvers = {
   },
   // Mutations
   Mutation: {
-    login: (root, { email, password }, { Authentication }) =>
-      Authentication(email, password),
+    login: (root, { email, password }, { clientId, Authentication }) =>
+      Authentication.login(email, password, clientId),
     createUser: (root, {
       email, password, firstName, lastName,
     }, context) =>
