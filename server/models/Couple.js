@@ -21,10 +21,11 @@ export default class Couple {
       const connection = await getConnection();
       const id = uuid();
       await connection.query(
-        'INSERT INTO couples SET ?, creation_date = NOW()',
+        'INSERT INTO couples SET ?',
         {
           id,
           name,
+          creation_date: creationDate,
         },
       );
       connection.release();

@@ -51,13 +51,14 @@ export default class User {
       const id = uuid();
 
       await connection.query(
-        'INSERT INTO users SET ?, creation_date = NOW()',
+        'INSERT INTO users SET ?',
         {
           id,
           email,
           password: hashedPassword,
           first_name: firstName,
           last_name: lastName,
+          creation_date: creationDate,
         },
       );
 
