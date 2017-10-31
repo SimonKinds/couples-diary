@@ -1,9 +1,6 @@
-# Motivation
-The reason for this project is that it's a great way to get my feet wet with javascript, REST and other web things.
+# Project
+[The Couple's Diary](http://couplesdiary.kindstrom.io) is a place where two people can write in a shared diary.
 
-# Goal
-Create an application (website or native) that enables two people to share their daily experiences with each other in an easy way.
-
-# Plan
-I've been thinking to create native clients for Windows, Linux and OS X with Electron.
-Furthermore by writing most of it in React.js I'm thinking that it shouldn't be too hard to create native mobile clients with React Native.
+# Version 2
+In the second version the focus will be on the looks of the website.
+It will also use GraphQL and Relay to learn some new web technologies.
