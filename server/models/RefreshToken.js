@@ -2,12 +2,13 @@
 
 // eslint-disable-next-line no-unused-vars
 import regeneratorRuntime from 'regenerator-runtime'; // required for async
+import crypto from 'crypto';
 import createConnection from '../SqlDatabase';
 
 export default class RefreshToken {
   userId: string;
   clientId: string;
-  token: string;
+  token: string; // sha256 hex representation of the refresh token
 
   constructor(userId: string, clientId: string, token: string) {
     this.userId = userId;
@@ -15,12 +16,19 @@ export default class RefreshToken {
     this.token = token;
   }
 
+  static hash(token: string) {
+    const hasher = crypto.createHash('sha256');
+    hasher.update(token);
+    return hasher.digest('hex');
+  }
+
   static async create(userId: string, clientId: string, token: string): Promise<void> {
     try {
       const connection = await createConnection();
+
       await connection.query(
         'INSERT INTO refresh_tokens SET ?',
-        { client_id: clientId, user_id: userId, token },
+        { client_id: clientId, user_id: userId, token: RefreshToken.hash(token) },
       );
       connection.release();
     } catch (e) {
