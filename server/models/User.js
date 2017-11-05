@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import uuid from 'uuid/v4';
 import getConnection from '../SqlDatabase';
 
-const HASH_ROUNDS = 20;
+const HASH_ROUNDS = 13;
 
 const isEmailUnique = async (email: string, connection: any): Promise<boolean> => {
   const result = await connection.query(
