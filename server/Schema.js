@@ -67,7 +67,12 @@ const typeDefs = [`
 const resolvers = {
   // Query
   Query: {
-    user: (root, data, context) => context.User.getForId('d9ab8f19-d837-4207-8da6-0abf86ba7872'),
+    user: (root, data, { user }) => {
+      if (!user) {
+        throw new Error('Not logged in');
+      }
+      return user;
+    },
     couple: () => ({
       id: 0,
       name: 'The best couple',
