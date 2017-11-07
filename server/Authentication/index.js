@@ -9,6 +9,8 @@ import RefreshToken from '../models/RefreshToken';
 import JwtSecret from './JwtSecret';
 
 
+const SIGNING_ALGORITHM = 'HS256';
+
 class LoginPayload {
   user: User;
   accessToken: string;
@@ -25,7 +27,7 @@ export default class Authentication {
   static getAccessToken(userId: string): string {
     return jwt.sign(
       { id: userId }, JwtSecret.accessTokenKey,
-      { algorithm: 'HS256', expiresIn: '1h' },
+      { algorithm: SIGNING_ALGORITHM, expiresIn: '1h' },
     );
   }
   static async login(email: string, password: string, clientId: string): Promise<LoginPayload> {
@@ -37,7 +39,7 @@ export default class Authentication {
       }
       const newRefreshToken: string = jwt.sign(
         { id: user.id }, JwtSecret.refreshTokenKey,
-        { algorithm: 'HS256' },
+        { algorithm: SIGNING_ALGORITHM },
       );
 
       await RefreshToken.create(user.id, clientId, newRefreshToken);
@@ -53,7 +55,9 @@ export default class Authentication {
   static async refresh(clientId: string, refreshToken: string): Promise<string> {
     try {
       const decoded: {id: string} =
-      jwt.verify(refreshToken, JwtSecret.refreshTokenKey, { algorithm: 'HS256' });
+        jwt.verify(refreshToken, JwtSecret.refreshTokenKey, {
+          algorithms: [SIGNING_ALGORITHM],
+        });
 
       const tokens = await RefreshToken.getForUser(decoded.id);
 
@@ -69,6 +73,27 @@ export default class Authentication {
     } catch (e) {
       console.error(e);
       throw new Error('Could not refresh token');
+    }
+  }
+
+  static async getUserFromHeader(authenticationHeader: string | void): Promise<?User> {
+    console.log(`Header: ${authenticationHeader}`);
+    if (authenticationHeader) {
+      return Authentication.getUserFromAccessToken(authenticationHeader);
+    }
+    return null;
+  }
+
+  static async getUserFromAccessToken(accessToken: string): Promise<User> {
+    try {
+      const decoded: {id: string} =
+        jwt.verify(accessToken, JwtSecret.accessTokenKey, {
+          algorithms: [SIGNING_ALGORITHM],
+        });
+      return User.getForId(decoded.id);
+    } catch (e) {
+      console.error(e);
+      throw new Error('Invalid access token');
     }
   }
 }

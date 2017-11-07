@@ -32,7 +32,11 @@ const buildOptions = async (req: $Request, res: $Response) => {
   return {
     schema: GraphQlSchema,
     context: {
-      clientId, Authentication, User: UserModel, Couple: CoupleModel,
+      clientId,
+      user: await Authentication.getUserFromHeader(req.header('Authorization')),
+      Authentication,
+      User: UserModel,
+      Couple: CoupleModel,
     },
   };
 };
