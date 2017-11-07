@@ -1,5 +1,5 @@
 # Project
-[The Couple's Diary](http://couplesdiary.kindstrom.io) is a place where two people can write in a shared diary.
+The Couple's Diary is a place where two people can write in a shared diary.
 
 # Version 2
 In the second version the focus will be on the looks of the website.
