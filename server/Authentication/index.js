@@ -77,7 +77,6 @@ export default class Authentication {
   }
 
   static async getUserFromHeader(authenticationHeader: string | void): Promise<?User> {
-    console.log(`Header: ${authenticationHeader}`);
     if (authenticationHeader) {
       return Authentication.getUserFromAccessToken(authenticationHeader);
     }
