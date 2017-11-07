@@ -83,8 +83,13 @@ const resolvers = {
   },
   // Mutations
   Mutation: {
-    login: (root, { email, password }, { clientId, Authentication }) =>
-      Authentication.login(email, password, clientId),
+    login: (root, { email, password }, { user, clientId, Authentication }) => {
+      if (user) {
+        throw new Error('Already logged in');
+      }
+      return Authentication.login(email, password, clientId);
+    },
+
     refreshAccessToken: (root, { refreshToken }, { clientId, Authentication }) =>
       Authentication.refresh(clientId, refreshToken),
     createUser: (root, {
