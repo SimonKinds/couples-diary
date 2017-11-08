@@ -6,6 +6,8 @@ import {
   Kind,
 } from 'graphql/language';
 import { makeExecutableSchema } from 'graphql-tools';
+// eslint-disable-next-line no-unused-vars
+import regeneratorRuntime from 'regenerator-runtime'; // required for async
 
 const typeDefs = [`
   scalar Date
@@ -59,7 +61,7 @@ const typeDefs = [`
     refreshAccessToken(refreshToken: String!): String!
 
     createUser(email: String!, password: String!, firstName: String!,
-               lastName: String!): User!
+               lastName: String!): LoginPayload!
     createCouple(name: String!): Couple!
   }
 `];
@@ -92,10 +94,17 @@ const resolvers = {
 
     refreshAccessToken: (root, { refreshToken }, { clientId, Authentication }) =>
       Authentication.refresh(clientId, refreshToken),
-    createUser: (root, {
+    createUser: async (root, {
       email, password, firstName, lastName,
-    }, context) =>
-      context.User.create(email, password, firstName, lastName),
+    }, {
+        user, clientId, Authentication, User,
+      }) => {
+      if (user) {
+        throw new Error('Already logged in');
+      }
+      await User.create(email, password, firstName, lastName);
+      return Authentication.login(email, password, clientId);
+    },
     createCouple: (root, { name }, context) => context.Couple.create(name),
   },
   // Scalars
