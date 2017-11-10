@@ -24,3 +24,9 @@ The storing strategy of the refresh token has yet to be decided, but one method 
 The other method is to simply store it in `localStorage`.
 The issue with the former is that it's vulnerable to Cross Site Request Forgery (CSRF/XSRF).
 The latter method is vulnerable to Cross Side Scripting (XSS).
+
+## Application flow
+The `access token` is sent as the value of the `Authorization` header.
+If the token is valid, the user gets fetched using the UUID in the token and propagated to the _resolvers_ via the GraphQL _context_.
+If the token is missing or invalid the user passed in the context will be null.
+It's then up to each resolver to ensure that the (now null) user is denied access.
