@@ -30,3 +30,4 @@ The `access token` is sent as the value of the `Authorization` header.
 If the token is valid, the user gets fetched using the UUID in the token and propagated to the _resolvers_ via the GraphQL _context_.
 If the token is missing or invalid the user passed in the context will be null.
 It's then up to each resolver to ensure that the (now null) user is denied access.
+If the user is denied, a custom GraphQL error will be thrown.
