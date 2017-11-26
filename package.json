@@ -1,10 +1,15 @@
 {
   "name": "couples-diary",
   "version": "0.0.1",
-  "main": "app.js",
+  "main": "lib/index.js",
   "repository": "git@github.com:simonkinds/couples-diary",
   "author": "Simon Kindström <simon.kindstrom@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "build": "babel server/ -d lib/",
+    "start": "node lib/index.js"
+  },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
@@ -14,9 +19,6 @@
     "flow-bin": "^0.59.0",
     "jest": "^21.2.1",
     "supertest": "^3.0.0"
-  },
-  "scripts": {
-    "test": "jest"
   },
   "dependencies": {
     "express": "^4.16.2"
