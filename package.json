@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
-    "build": "babel server/ -d lib/",
+    "build": "babel src/ -d lib/",
     "start": "node lib/index.js"
   },
   "devDependencies": {

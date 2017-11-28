@@ -13,4 +13,4 @@ export default (email: string) => {
     return true;
   }
   return false;
-}
+};
