@@ -16,21 +16,30 @@
     "babel-jest": "^21.2.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.2.0",
+    "enzyme-adapter-react-16": "^1.1.0",
     "flow-bin": "^0.59.0",
     "jest": "^21.2.1",
     "supertest": "^3.0.0"
   },
   "dependencies": {
-    "express": "^4.16.2     "
+    "express": "^4.16.2     ",
+    "react": "^16.1.1",
+    "react-dom": "^16.1.1"
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "/node_modules/",
+      "./node_modules/",
       "./lib"
     ],
     "coverageReporters": [
       "lcov",
       "html"
+    ],
+    "setupFiles": [
+      "<rootDir>/src/testSetup/shim.js",
+      "<rootDir>/src/testSetup/setup.js"
     ]
   }
 }
