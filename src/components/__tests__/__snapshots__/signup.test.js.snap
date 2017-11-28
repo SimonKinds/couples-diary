@@ -7,10 +7,12 @@ exports[`<Signup /> matches its snapshot 1`] = `
   Email:
   <input
     name="email"
+    onChange={[Function]}
     type="text"
   />
-  <buttom
+  <button
     name="submit"
+    onClick={[Function]}
     type="submit"
     value="Submit"
   />

@@ -8,18 +8,21 @@ import Signup from '../signup.js';
 describe('<Signup />', () => {
   it('matches its snapshot', () => {
     const tree = renderer
-      .create(<Signup />)
+      .create(<Signup onSubmit={() => {return}} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
   });
 
-  it('has an email input', () => {
-    const wrapper = shallow(<Signup />);
-    expect(wrapper.find(`input[name='email']`).length).toBe(1);
-  });
+  it('callback is called with email of input', done => {
+    const email = 'expected@gmail.com';
+    const callback = (inputEmail: string) => {
+      expect(inputEmail).toBe(email);
+      done();
+    }
+    const wrapper = shallow(<Signup onSubmit={callback}/>);
 
-  it('has a submit button', () => {
-    const wrapper = shallow(<Signup />);
-    expect(wrapper.find(`buttom[name='submit']`).length).toBe(1);
+    wrapper.find(`input[name='email']`)
+           .simulate('change', {target: {value: email}});
+    wrapper.find(`button[name='submit']`).simulate('click');
   });
 });
