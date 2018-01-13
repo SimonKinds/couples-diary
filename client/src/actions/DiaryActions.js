@@ -20,7 +20,7 @@ export function diaryGetMonth(year, month) {
     if (!token) return;
     const coupleId = buildUserFromToken(token).coupleId;
     dispatch({ type: DIARY_GET_MONTH, year, month });
-    const url = 'http://couplesdiary.kindstrom.io/api/diary/' +
+    const url = 'http://couplesdiary.simonkindstrom.com/api/diary/' +
       year +
       '/' +
       month +
@@ -96,7 +96,7 @@ export function entryOnSave(year, month, day, text) {
     dispatch({ type: ENTRY_ON_SAVE });
     const { couple } = getState();
 
-    const url = 'http://couplesdiary.kindstrom.io/api/diary/create';
+    const url = 'http://couplesdiary.simonkindstrom.com/api/diary/create';
     const headers = {
       Authorization: getJwtToken(),
       'Content-Type': 'application/json'
