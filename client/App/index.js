@@ -1,4 +1,14 @@
-import React from 'react';
-export default function App() {
-  return <h1>This is so much nicer</h1>;
+import React, { PureComponent } from "react";
+import Login from '../Login';
+
+import "./styles.css";
+
+export default class App extends PureComponent {
+  render() {
+    return (
+      <div className="container">
+        <Login />
+      </div>
+    );
+  }
 }

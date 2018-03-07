@@ -1,0 +1,9 @@
+body {
+  font-family: Arial, Verdana, Helvetica, sans-serif
+}
+
+.container {
+  width: 60%;
+  min-width: 768px;
+  margin: auto;
+}

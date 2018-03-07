@@ -1,0 +1,22 @@
+.login {
+  margin: auto;
+  width: 60%;
+  font-size: 1.2em;
+}
+
+.login h1 {
+  text-align: center;
+}
+
+.login label {
+  display: block;
+}
+
+.login input[type='email'], input[type='password'] {
+  display: block;
+  width: 100%;
+}
+
+.login input[type='button']{
+  margin-top: 20px;
+}
