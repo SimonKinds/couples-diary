@@ -1,8 +1,9 @@
+// @flow
 import React, { PureComponent } from "react";
 
 import "./styles.css";
 
-export default class App extends PureComponent {
+export default class App extends PureComponent<{}> {
   render() {
     return (
       <section>
