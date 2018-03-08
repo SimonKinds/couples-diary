@@ -1,7 +1,7 @@
 // @flow
-import React, { PureComponent } from "react";
+import React, { PureComponent } from 'react';
 
-import "./styles.css";
+import './styles.css';
 
 export default class App extends PureComponent<{}> {
   render() {
