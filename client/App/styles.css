@@ -1,9 +1,10 @@
 body {
-  font-family: Arial, Verdana, Helvetica, sans-serif
+  font-family: Arial, Verdana, Helvetica, sans-serif;
+  background-color: #fef;
 }
 
 .container {
   width: 60%;
-  min-width: 768px;
   margin: auto;
+  margin-top: 50px;
 }

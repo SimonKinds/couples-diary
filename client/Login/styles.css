@@ -1,7 +1,11 @@
 .login {
   margin: auto;
   width: 60%;
+  max-width:500px;
+  padding: 50px;
+  box-shadow: 0px 0px 20px #a9a9a9;
   font-size: 1.2em;
+  background-color: #fff;
 }
 
 .login h1 {
@@ -15,8 +19,17 @@
 .login input[type='email'], input[type='password'] {
   display: block;
   width: 100%;
+  margin: auto;
 }
 
 .login input[type='button']{
   margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ece;
+  border: none;
+  font-weight: bold;
+}
+
+.login input[type='button']:hover{
+  background-color: #eecceea0;
 }
