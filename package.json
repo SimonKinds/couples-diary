@@ -13,8 +13,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm lint",
-      "pre-push": "npm lint"
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint"
     }
   },
   "dependencies": {
@@ -35,7 +35,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "flow-bin": "^0.67.1",
-    "husky": "^0.14.3",
+    "husky": "^0.15.0-rc.8",
     "style-loader": "^0.20.2",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
