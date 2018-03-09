@@ -22,7 +22,7 @@
   margin: auto;
 }
 
-.login input[type='button']{
+.login input[type='submit']{
   margin-top: 20px;
   padding: 10px 20px;
   background-color: #ece;
@@ -30,6 +30,6 @@
   font-weight: bold;
 }
 
-.login input[type='button']:hover{
+.login input[type='submit']:hover, input[type='submit']:active {
   background-color: #eecceea0;
 }

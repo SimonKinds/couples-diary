@@ -19,7 +19,7 @@ export default class App extends PureComponent<{}> {
               Password
               <input id="password" type="password" />
             </label>
-            <input id="login-button" type="button" value="Login" />
+            <input id="login-button" type="submit" value="Login" />
           </form>
         </div>
       </section>
