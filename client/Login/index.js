@@ -10,11 +10,10 @@ export default class App extends PureComponent<{}> {
         <div className="login">
           <h1>Login</h1>
           <form>
-            <label htmlFor="email">
-              Email
-              <input id="email" type="email" />
+            <label htmlFor="username">
+              Username
+              <input id="username" type="text" />
             </label>
-            <br />
             <label htmlFor="password">
               Password
               <input id="password" type="password" />

@@ -14,16 +14,16 @@
 
 .login label {
   display: block;
+  margin-bottom: 20px;
 }
 
-.login input[type='email'], input[type='password'] {
+.login input[type='text'], input[type='password'] {
   display: block;
   width: 100%;
   margin: auto;
 }
 
 .login input[type='submit']{
-  margin-top: 20px;
   padding: 10px 20px;
   background-color: #ece;
   border: none;
