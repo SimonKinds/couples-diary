@@ -1,4 +1,9 @@
 {
   "presets": ["react", "flow"],
-  "plugins": ["react-hot-loader/babel"]
+  "plugins": ["react-hot-loader/babel"],
+  "env": {
+    "test": {
+      "presets": [["latest-node", { "target": "current" }], "react", "flow"]
+    }
+  }
 }
