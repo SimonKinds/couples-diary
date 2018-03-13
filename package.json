@@ -10,7 +10,7 @@
     "flow": "flow check",
     "lint": "eslint client",
     "lint:fix": "eslint --fix client",
-    "test:": "jest client",
+    "test": "jest",
     "test:watch": "jest -o --watch"
   },
   "husky": {
@@ -22,7 +22,8 @@
  "jest": {
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/client/__mocks__/styleMock.js"
-    }
+    },
+    "setupTestFrameworkScriptFile": "<rootDir>/client/test-setup.js"
   },
   "dependencies": {
     "react": "^16.2.0",
