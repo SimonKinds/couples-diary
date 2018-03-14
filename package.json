@@ -8,8 +8,8 @@
   "scripts": {
     "start": "webpack-dev-server --open",
     "flow": "flow check",
-    "lint": "eslint client",
-    "lint:fix": "eslint --fix client",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
     "test": "jest",
     "test:watch": "jest -o --watch"
   },
@@ -21,9 +21,9 @@
   },
  "jest": {
     "moduleNameMapper": {
-      "\\.(css|less)$": "<rootDir>/client/__mocks__/styleMock.js"
+      "\\.(css|less)$": "<rootDir>/src/client/__mocks__/styleMock.js"
     },
-    "setupTestFrameworkScriptFile": "<rootDir>/client/test-setup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/src/client/test-setup.js"
   },
   "dependencies": {
     "react": "^16.2.0",
