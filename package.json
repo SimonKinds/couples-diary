@@ -23,7 +23,7 @@
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/src/client/__mocks__/styleMock.js"
     },
-    "setupTestFrameworkScriptFile": "<rootDir>/src/client/test-setup.js"
+    "setupTestFrameworkScriptFile": "<rootDir>/config/enzyme-setup.js"
   },
   "dependencies": {
     "react": "^16.2.0",
