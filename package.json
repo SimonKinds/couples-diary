@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --open",
-    "start:server": "nodemon src/server/index.js",
+    "start:server": "nodemon --watch src/server src/server/index.js",
     "flow": "flow check",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
