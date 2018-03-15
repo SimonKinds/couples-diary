@@ -3,10 +3,10 @@
   width: 60%;
   max-width:350px;
   padding: 50px;
-  box-shadow: 0px 0px 20px #a9a9a9;
   font-size: 1.3em;
   background-color: #fff;
-  border-radius: 2%;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px #a9a9a9;
 }
 
 .login h1 {
