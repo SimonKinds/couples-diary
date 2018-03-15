@@ -10,7 +10,7 @@ describe('Login component', () => {
   let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<Login />);
+    wrapper = shallow(<Login onSubmit={() => {}} />);
   });
 
   test('Renders a login class', () => {

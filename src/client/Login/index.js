@@ -3,18 +3,14 @@
 import React, { PureComponent } from 'react';
 import Login from './component';
 
-type Props = {};
-type State = {
-  didLoginSuccess: boolean
+type Props = {
+  setIsLoggedIn: (status: boolean) => void
 };
+type State = {};
 
 export default class LoginContainer extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
-
-    this.state = {
-      didLoginSuccess: false,
-    };
 
     (this: any).onLoginSubmit = this.onLoginSubmit.bind(this);
   }
@@ -28,13 +24,14 @@ export default class LoginContainer extends PureComponent<Props, State> {
       body: JSON.stringify({ username, password }),
     })
       .then(response => response.status)
-      .then(status => this.setState({ didLoginSuccess: status === 200 }));
+      .then((status) => {
+        if (status === 200) {
+          this.props.setIsLoggedIn(true);
+        }
+      });
   }
 
   render() {
-    if (this.state.didLoginSuccess) {
-      return 'logged in!';
-    }
     return <Login onSubmit={this.onLoginSubmit} />;
   }
 }
