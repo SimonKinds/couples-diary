@@ -1,69 +1,40 @@
 // @flow
+
 import React, { PureComponent } from 'react';
+import Login from './component';
 
-import './styles.css';
-
+type Props = {};
 type State = {
-  username: string,
-  password: string
+  didLoginSuccess: boolean
 };
 
-export default class Login extends PureComponent<{}, State> {
-  constructor(props: {}) {
+export default class LoginContainer extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
-      username: '',
-      password: '',
+      didLoginSuccess: false,
     };
 
-    (this: any).onUsernameChange = this.onUsernameChange.bind(this);
-    (this: any).onPasswordChange = this.onPasswordChange.bind(this);
-    (this: any).onSubmit = this.onSubmit.bind(this);
+    (this: any).onLoginSubmit = this.onLoginSubmit.bind(this);
   }
 
-  onUsernameChange(event: SyntheticEvent<HTMLInputElement>) {
-    this.setState({ username: event.currentTarget.value });
-  }
-
-  onPasswordChange(event: SyntheticEvent<HTMLInputElement>) {
-    this.setState({ password: event.currentTarget.value });
-  }
-
-  onSubmit(event: SyntheticEvent<HTMLButtonElement>) {
-    event.preventDefault();
-    // eslint-disable-next-line
-    alert(JSON.stringify(this.state));
+  onLoginSubmit(username: string, password: string) {
+    fetch('/api/login', {
+      headers: {
+        'content-type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+    })
+      .then(response => response.status)
+      .then(status => this.setState({ didLoginSuccess: status === 200 }));
   }
 
   render() {
-    return (
-      <section>
-        <div className="login">
-          <h1>Login</h1>
-          <form onSubmit={this.onSubmit}>
-            <label htmlFor="username">
-              Username
-              <input
-                id="username"
-                type="text"
-                value={this.state.username}
-                onChange={this.onUsernameChange}
-              />
-            </label>
-            <label htmlFor="password">
-              Password
-              <input
-                id="password"
-                type="password"
-                value={this.state.password}
-                onChange={this.onPasswordChange}
-              />
-            </label>
-            <input id="login-button" type="submit" value="Login" />
-          </form>
-        </div>
-      </section>
-    );
+    if (this.state.didLoginSuccess) {
+      return 'logged in!';
+    }
+    return <Login onSubmit={this.onLoginSubmit} />;
   }
 }

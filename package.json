@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --open",
+    "start:server": "node src/server/index.js",
     "flow": "flow check",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
@@ -19,13 +20,15 @@
       "pre-push": "npm run lint && npm run test"
     }
   },
- "jest": {
+  "jest": {
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/src/client/__mocks__/styleMock.js"
     },
     "setupTestFrameworkScriptFile": "<rootDir>/config/enzyme-setup.js"
   },
   "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-hot-loader": "^4.0.0"
