@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --open",
-    "start:server": "node src/server/index.js",
+    "start:server": "nodemon src/server/index.js",
     "flow": "flow check",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
@@ -53,6 +53,7 @@
     "flow-bin": "^0.67.1",
     "husky": "^0.15.0-rc.8",
     "jest": "^22.4.2",
+    "nodemon": "^1.17.2",
     "style-loader": "^0.20.2",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
