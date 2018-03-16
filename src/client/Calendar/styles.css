@@ -7,7 +7,7 @@
   background-color: #fff;
   padding: 20px;
   width: 60%;
-  min-width: 300px;
+  min-width: 250px;
   box-shadow: 0px 0px 20px #a9a9a9;
   border-radius: 10px;
 }
@@ -19,4 +19,8 @@
 
 .calendar .day-entry {
   text-align: center;
+}
+
+.calendar .not-in-month {
+  color: #a9a9a9;
 }
