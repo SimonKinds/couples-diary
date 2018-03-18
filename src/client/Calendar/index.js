@@ -13,12 +13,20 @@ function getDaysFromPreviousMonth(date: Date) {
   const daysFromPreviousMonth = (date.getDay() + 6) % 7;
   date.setDate(startDate);
 
-  const daysInPrevMonth = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+  const daysInPrevMonth = new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    0
+  ).getDate();
 
   const prevMonth = date.getMonth() - 1;
 
   const days = [];
-  for (let i = daysInPrevMonth - daysFromPreviousMonth; i < daysInPrevMonth; i += 1) {
+  for (
+    let i = daysInPrevMonth - daysFromPreviousMonth;
+    i < daysInPrevMonth;
+    i += 1
+  ) {
     const div = (
       <div key={`M${prevMonth}-D${i}`} className="day-entry not-in-month">
         {i + 1}
