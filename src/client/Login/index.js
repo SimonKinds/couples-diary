@@ -24,7 +24,7 @@ export default class LoginContainer extends PureComponent<Props, State> {
       body: JSON.stringify({ username, password }),
     })
       .then(response => response.status)
-      .then(status => {
+      .then((status) => {
         if (status === 200) {
           this.props.setIsLoggedIn(true);
         }

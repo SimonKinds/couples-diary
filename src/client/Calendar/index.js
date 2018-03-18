@@ -16,7 +16,7 @@ function getDaysFromPreviousMonth(date: Date) {
   const daysInPrevMonth = new Date(
     date.getFullYear(),
     date.getMonth(),
-    0
+    0,
   ).getDate();
 
   const prevMonth = date.getMonth() - 1;
