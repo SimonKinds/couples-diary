@@ -10,18 +10,22 @@ type State = {};
 function getDaysFromPreviousMonth(date: Date) {
   const startDate = date.getDate();
   date.setDate(1);
-  const daysFromPreviousMonth = ((date.getDay() + 7) - 1) % 7;
+  const daysFromPreviousMonth = (date.getDay() + 6) % 7;
   date.setDate(startDate);
 
-  const daysInPrevMonth =
-    new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+  const daysInPrevMonth = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
 
   const prevMonth = date.getMonth() - 1;
 
   const days = [];
-  for (let i = daysInPrevMonth - daysFromPreviousMonth;
-    i < daysInPrevMonth; i += 1) {
-    days.push(<div key={`M${prevMonth}-D${i}`} className="day-entry not-in-month">{i + 1}</div>);
+  for (let i = daysInPrevMonth - daysFromPreviousMonth; i < daysInPrevMonth; i += 1) {
+    const div = (
+      <div key={`M${prevMonth}-D${i}`} className="day-entry not-in-month">
+        {i + 1}
+      </div>
+    );
+
+    days.push(div);
   }
 
   return days;
@@ -31,24 +35,26 @@ function getDaysFromNextMonth(date: Date) {
   date.setMonth(date.getMonth() + 1);
   date.setDate(0);
 
-
-  const daysFromNextMonth = 7 - ((date.getDay() + 7) % 7);
+  const daysFromNextMonth = (7 - date.getDay()) % 7;
   const nextMonth = date.getMonth() + 1;
-
 
   const days = [];
   for (let i = 0; i < daysFromNextMonth; i += 1) {
-    days.push(<div key={`M${nextMonth}-D${i}`} className="day-entry not-in-month">{i + 1}</div>);
+    const div = (
+      <div key={`M${nextMonth}-D${i}`} className="day-entry not-in-month">
+        {i + 1}
+      </div>
+    );
+    days.push(div);
   }
 
   return days;
 }
 
 function getDays() {
-  const date = new Date();
+  const date = new Date(2018, 1);
   date.setMonth(date.getMonth() + 1);
   date.setDate(0);
-
 
   const daysInMonth = date.getDate();
 
@@ -59,10 +65,12 @@ function getDays() {
   const daysFromPreviousMonth = days.length;
 
   for (let i = 0; i < daysInMonth; i += 1) {
-    days.push((
+    const div = (
       <div key={i + daysFromPreviousMonth} className="day-entry">
         {i + 1}
-      </div>));
+      </div>
+    );
+    days.push(div);
   }
 
   days = days.concat(getDaysFromNextMonth(date));
@@ -82,6 +90,7 @@ export default class Calendar extends PureComponent<Props, State> {
         <div className="day-name">Sat</div>
         <div className="day-name">Sun</div>
         {getDays()}
-      </div>);
+      </div>
+    );
   }
 }

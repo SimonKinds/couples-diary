@@ -4,13 +4,12 @@ import { hot } from 'react-hot-loader';
 import Login from '../Login';
 import Calendar from '../Calendar';
 
-
 import './styles.css';
 
-type Props = {}
+type Props = {};
 type State = {
-  isLoggedIn: boolean
-}
+  isLoggedIn: boolean,
+};
 
 class App extends PureComponent<Props, State> {
   constructor(props: Props) {
@@ -30,9 +29,11 @@ class App extends PureComponent<Props, State> {
   render() {
     return (
       <div className="container">
-        {this.state.isLoggedIn ?
-          <Calendar /> :
-          <Login setIsLoggedIn={this.setIsLoggedIn} />}
+        {this.state.isLoggedIn ? (
+          <Calendar />
+        ) : (
+          <Login setIsLoggedIn={this.setIsLoggedIn} />
+        )}
       </div>
     );
   }

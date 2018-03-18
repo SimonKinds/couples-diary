@@ -4,11 +4,11 @@ import React, { PureComponent } from 'react';
 import './styles.css';
 
 type Props = {
-  onSubmit: (username: string, password: string) => void
-}
+  onSubmit: (username: string, password: string) => void,
+};
 type State = {
   username: string,
-  password: string
+  password: string,
 };
 
 export default class Login extends PureComponent<Props, State> {

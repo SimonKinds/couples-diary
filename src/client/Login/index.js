@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import Login from './component';
 
 type Props = {
-  setIsLoggedIn: (status: boolean) => void
+  setIsLoggedIn: (status: boolean) => void,
 };
 type State = {};
 

@@ -9,6 +9,7 @@ module.exports = {
   plugins: ["flowtype", "jest"],
   rules: {
     "react/prefer-stateless-function": [true, { ignorePureComponents: true }],
-    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
+    "function-paren-newline": ["error", "multiline"],
   }
 };
