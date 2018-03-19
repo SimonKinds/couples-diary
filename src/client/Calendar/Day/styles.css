@@ -1,0 +1,7 @@
+.calendar .day-entry {
+  text-align: center;
+}
+
+.calendar .not-in-month {
+  color: #a9a9a9;
+}

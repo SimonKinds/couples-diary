@@ -10,7 +10,8 @@ module.exports = {
   rules: {
     "react/prefer-stateless-function": [true, { ignorePureComponents: true }],
     "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
-    "function-paren-newline": ["error", "multiline"],
-    "no-use-before-define": ["error", { "functions": false, "classes": false }]
+    "function-paren-newline": ["error", "consistent"],
+    "no-use-before-define": ["error", { "functions": false, "classes": false }],
+    "max-len": ["error", { "code": 80 }]
   }
 };

@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import Day from './Day';
 
 import './styles.css';
 
@@ -34,16 +35,15 @@ function getDays() {
   date.setDate(1);
 
   let days = [];
-  days = days.concat(getDaysFromPreviousMonth(date.getFullYear(), date.getMonth()));
-  const daysFromPreviousMonth = days.length;
+  days = days.concat(
+    getDaysFromPreviousMonth(date.getFullYear(), date.getMonth()),
+  );
 
   for (let i = 0; i < daysInMonth; i += 1) {
-    const div = (
-      <div key={i + daysFromPreviousMonth} className="day-entry">
-        {i + 1}
-      </div>
+    const day = (
+      <Day key={`M${date.getMonth()}-D${i}`} day={i + 1} currentMonth />
     );
-    days.push(div);
+    days.push(day);
   }
 
   days = days.concat(getDaysFromNextMonth(date.getFullYear(), date.getMonth()));
@@ -69,13 +69,11 @@ function getDaysFromPreviousMonth(year: number, month: number) {
     i < daysInPrevMonth;
     i += 1
   ) {
-    const div = (
-      <div key={`M${prevMonth}-D${i}`} className="day-entry not-in-month">
-        {i + 1}
-      </div>
+    const day = (
+      <Day key={`M${prevMonth}-D${i}`} day={i + 1} currentMonth={false} />
     );
 
-    days.push(div);
+    days.push(day);
   }
 
   return days;
@@ -90,12 +88,11 @@ function getDaysFromNextMonth(year: number, month: number) {
 
   const days = [];
   for (let i = 0; i < daysFromNextMonth; i += 1) {
-    const div = (
-      <div key={`M${nextMonth}-D${i}`} className="day-entry not-in-month">
-        {i + 1}
-      </div>
+    const day = (
+      <Day key={`M${nextMonth}-D${i}`} day={i + 1} currentMonth={false} />
     );
-    days.push(div);
+
+    days.push(day);
   }
 
   return days;
