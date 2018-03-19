@@ -11,5 +11,6 @@ module.exports = {
     "react/prefer-stateless-function": [true, { ignorePureComponents: true }],
     "react/jsx-filename-extension": [1, { extensions: [".js", ".jsx"] }],
     "function-paren-newline": ["error", "multiline"],
+    "no-use-before-define": ["error", { "functions": false, "classes": false }]
   }
 };
