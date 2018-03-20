@@ -11,23 +11,12 @@ type Props = {
 type State = {};
 
 export default class CalendarDay extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.setClassNames(this.props.currentMonth);
-  }
-
-  componentWillReceiveProps(nextProps: Props) {
-    this.setClassNames(nextProps.currentMonth);
-  }
-
-  setClassNames(currentMonth: boolean) {
-    this.classNames = `day-entry${currentMonth ? '' : ' not-in-month'}`;
-  }
-
-  classNames: string;
-
   render() {
-    return <div className={this.classNames}>{this.props.day}</div>;
+    const { currentMonth, day } = this.props;
+    return <div className={getClassNames(currentMonth)}>{day}</div>;
   }
+}
+
+function getClassNames(currentMonth: boolean) {
+  return `day-entry${currentMonth ? '' : ' not-in-month'}`;
 }
