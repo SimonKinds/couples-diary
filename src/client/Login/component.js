@@ -3,11 +3,13 @@ import React, { PureComponent } from 'react';
 import Form from './Form';
 import Input from './Input';
 import SubmitButton from './SubmitButton';
+import Loader from './Loader';
 
 import './styles.css';
 
 type Props = {
   onSubmit: (username: string, password: string) => void,
+  isLoggingIn: boolean,
 };
 type State = {
   username: string,
@@ -60,7 +62,20 @@ export default class Login extends PureComponent<Props, State> {
               value={this.state.password}
               onChange={this.onPasswordChange}
             />
-            <SubmitButton id="login-button" value="Login" />
+            <div style={{ display: 'flex' }}>
+              <div>
+                <SubmitButton id="login-button" value="Login" />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                <Loader active={this.props.isLoggingIn} />
+              </div>
+            </div>
           </Form>
         </div>
       </section>
