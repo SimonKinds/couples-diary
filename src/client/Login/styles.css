@@ -12,29 +12,3 @@
 .login h1 {
   text-align: center;
 }
-
-.login label {
-  display: block;
-  margin-bottom: 20px;
-  font-size: 1.1em;
-}
-
-.login input[type='text'], input[type='password'] {
-  display: block;
-  width: 100%;
-  margin: auto;
-  padding: 10px;
-  font-size: 0.9em;
-}
-
-.login input[type='submit']{
-  padding: 15px 30px;
-  background-color: #ece;
-  border: none;
-  font-weight: bold;
-  font-size: 0.9em;
-}
-
-.login input[type='submit']:hover, input[type='submit']:active {
-  background-color: #eecceea0;
-}

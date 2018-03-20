@@ -1,6 +1,8 @@
 // @flow
 import React, { PureComponent } from 'react';
+import Form from './Form';
 import Input from './Input';
+import SubmitButton from './SubmitButton';
 
 import './styles.css';
 
@@ -34,8 +36,7 @@ export default class Login extends PureComponent<Props, State> {
     this.setState({ password });
   }
 
-  onSubmit(event: SyntheticEvent<HTMLButtonElement>) {
-    event.preventDefault();
+  onSubmit() {
     this.props.onSubmit(this.state.username, this.state.password);
   }
 
@@ -44,7 +45,7 @@ export default class Login extends PureComponent<Props, State> {
       <section>
         <div className="login">
           <h1>Login</h1>
-          <form onSubmit={this.onSubmit}>
+          <Form onSubmit={this.onSubmit}>
             <Input
               id="username"
               type="text"
@@ -59,8 +60,8 @@ export default class Login extends PureComponent<Props, State> {
               value={this.state.password}
               onChange={this.onPasswordChange}
             />
-            <input id="login-button" type="submit" value="Login" />
-          </form>
+            <SubmitButton id="login-button" value="Login" />
+          </Form>
         </div>
       </section>
     );
