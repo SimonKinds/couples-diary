@@ -28,7 +28,6 @@ describe('Login component', () => {
     });
 
     test('has username field', () => {
-      expect(form.find("label[htmlFor='username']")).toHaveLength(1);
       expect(form.find('#username')).toHaveLength(1);
     });
 
@@ -48,14 +47,13 @@ describe('Login component', () => {
         expect(username.props().value).toEqual('yup');
       });
       test('updates state onChange', () => {
-        username.simulate('change', { currentTarget: { value: 'hmm' } });
+        username.simulate('change', 'hmm');
         username = wrapper.find('#username');
         expect(username.props().value).toEqual('hmm');
       });
     });
 
     test('has a password field', () => {
-      expect(form.find("label[htmlFor='password']")).toHaveLength(1);
       expect(form.find('#password')).toHaveLength(1);
     });
 
@@ -75,7 +73,7 @@ describe('Login component', () => {
         expect(password.props().value).toEqual('yup');
       });
       test('updates state onChange', () => {
-        password.simulate('change', { currentTarget: { value: 'hmm' } });
+        password.simulate('change', 'hmm');
         password = wrapper.find('#password');
         expect(password.props().value).toEqual('hmm');
       });
@@ -83,10 +81,6 @@ describe('Login component', () => {
 
     test('has a submit button', () => {
       expect(form.find("input[type='submit']")).toHaveLength(1);
-    });
-
-    test('has no other fields', () => {
-      expect(form.find('input')).toHaveLength(3);
     });
   });
 });

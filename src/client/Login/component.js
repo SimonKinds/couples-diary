@@ -1,5 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
+import Input from './Input';
 
 import './styles.css';
 
@@ -25,12 +26,12 @@ export default class Login extends PureComponent<Props, State> {
     (this: any).onSubmit = this.onSubmit.bind(this);
   }
 
-  onUsernameChange(event: SyntheticEvent<HTMLInputElement>) {
-    this.setState({ username: event.currentTarget.value });
+  onUsernameChange(username: string) {
+    this.setState({ username });
   }
 
-  onPasswordChange(event: SyntheticEvent<HTMLInputElement>) {
-    this.setState({ password: event.currentTarget.value });
+  onPasswordChange(password: string) {
+    this.setState({ password });
   }
 
   onSubmit(event: SyntheticEvent<HTMLButtonElement>) {
@@ -44,24 +45,20 @@ export default class Login extends PureComponent<Props, State> {
         <div className="login">
           <h1>Login</h1>
           <form onSubmit={this.onSubmit}>
-            <label htmlFor="username">
-              Username
-              <input
-                id="username"
-                type="text"
-                value={this.state.username}
-                onChange={this.onUsernameChange}
-              />
-            </label>
-            <label htmlFor="password">
-              Password
-              <input
-                id="password"
-                type="password"
-                value={this.state.password}
-                onChange={this.onPasswordChange}
-              />
-            </label>
+            <Input
+              id="username"
+              type="text"
+              label="Username"
+              value={this.state.username}
+              onChange={this.onUsernameChange}
+            />
+            <Input
+              id="password"
+              type="password"
+              label="Password"
+              value={this.state.password}
+              onChange={this.onPasswordChange}
+            />
             <input id="login-button" type="submit" value="Login" />
           </form>
         </div>
