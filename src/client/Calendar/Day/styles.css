@@ -3,5 +3,5 @@
 }
 
 .calendar .not-in-month {
-  color: #a9a9a9;
+  opacity: 0.4;
 }

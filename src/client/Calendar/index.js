@@ -9,15 +9,7 @@ import './styles.css';
 type Props = {};
 type State = {};
 
-const NAMES_OF_DAYS = [
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
-  'Sun',
-];
+const NAMES_OF_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export default class Calendar extends PureComponent<Props, State> {
   render() {
@@ -35,7 +27,7 @@ function getDayNames() {
 }
 
 function getDays() {
-  const date = new Date(2018, 1);
+  const date = new Date();
   date.setMonth(date.getMonth() + 1);
   date.setDate(0);
 
@@ -50,7 +42,12 @@ function getDays() {
 
   for (let i = 0; i < daysInMonth; i += 1) {
     const day = (
-      <Day key={`M${date.getMonth()}-D${i}`} day={i + 1} currentMonth />
+      <Day
+        key={`M${date.getMonth()}-D${i}`}
+        day={i + 1}
+        currentMonth
+        entryHer
+      />
     );
     days.push(day);
   }
@@ -79,7 +76,13 @@ function getDaysFromPreviousMonth(year: number, month: number) {
     i += 1
   ) {
     const day = (
-      <Day key={`M${prevMonth}-D${i}`} day={i + 1} currentMonth={false} />
+      <Day
+        key={`M${prevMonth}-D${i}`}
+        day={i + 1}
+        currentMonth={false}
+        entryHim
+        entryHer
+      />
     );
 
     days.push(day);
