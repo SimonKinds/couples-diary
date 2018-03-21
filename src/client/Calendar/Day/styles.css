@@ -1,7 +1,13 @@
 .calendar .day-entry {
   text-align: center;
+  padding: 10px 0px;
+  border: 1px solid #a9a9a9;
 }
 
 .calendar .not-in-month {
   opacity: 0.4;
+}
+
+.calendar .current-day {
+  background-color: rgba(201, 233, 248, 0.5);
 }

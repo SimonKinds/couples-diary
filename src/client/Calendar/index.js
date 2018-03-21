@@ -28,6 +28,7 @@ function getDayNames() {
 
 function getDays() {
   const date = new Date();
+  const dateToday = date.getDate();
   date.setMonth(date.getMonth() + 1);
   date.setDate(0);
 
@@ -46,6 +47,7 @@ function getDays() {
         key={`M${date.getMonth()}-D${i}`}
         day={i + 1}
         currentMonth
+        currentDay={i === dateToday}
         entryHer
       />
     );
@@ -80,6 +82,7 @@ function getDaysFromPreviousMonth(year: number, month: number) {
         key={`M${prevMonth}-D${i}`}
         day={i + 1}
         currentMonth={false}
+        currentDay={false}
         entryHim
         entryHer
       />
@@ -101,7 +104,12 @@ function getDaysFromNextMonth(year: number, month: number) {
   const days = [];
   for (let i = 0; i < daysFromNextMonth; i += 1) {
     const day = (
-      <Day key={`M${nextMonth}-D${i}`} day={i + 1} currentMonth={false} />
+      <Day
+        key={`M${nextMonth}-D${i}`}
+        day={i + 1}
+        currentMonth={false}
+        currentDay={false}
+      />
     );
 
     days.push(day);
