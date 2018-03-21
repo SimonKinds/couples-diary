@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import DayName from './DayName';
 import Day from './Day';
 
 import './styles.css';
@@ -8,21 +9,29 @@ import './styles.css';
 type Props = {};
 type State = {};
 
+const NAMES_OF_DAYS = [
+  'Mon',
+  'Tue',
+  'Wed',
+  'Thu',
+  'Fri',
+  'Sat',
+  'Sun',
+];
+
 export default class Calendar extends PureComponent<Props, State> {
   render() {
     return (
       <div className="calendar">
-        <div className="day-name">Mon</div>
-        <div className="day-name">Tue</div>
-        <div className="day-name">Wed</div>
-        <div className="day-name">Thu</div>
-        <div className="day-name">Fri</div>
-        <div className="day-name">Sat</div>
-        <div className="day-name">Sun</div>
+        {getDayNames()}
         {getDays()}
       </div>
     );
   }
+}
+
+function getDayNames() {
+  return NAMES_OF_DAYS.map(name => <DayName key={name} name={name} />);
 }
 
 function getDays() {
