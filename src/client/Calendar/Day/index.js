@@ -18,8 +18,8 @@ export default class CalendarDay extends PureComponent<Props, State> {
   render() {
     const { currentMonth, currentDay, day } = this.props;
     return (
-      <div className={getClassNames(currentMonth, currentDay)}>
-        {day}
+      <div className={getClassNamesEntry(currentMonth)}>
+        <div className={getClassNamesText(currentDay)}>{day}</div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           {this.props.entryHer && <EntryMarker by="her" />}
           {this.props.entryHim && <EntryMarker by="him" />}
@@ -29,8 +29,10 @@ export default class CalendarDay extends PureComponent<Props, State> {
   }
 }
 
-function getClassNames(currentMonth: boolean, currentDay: boolean) {
-  return `day-entry${currentDay ? ' current-day' : ''}${
-    currentMonth ? '' : ' not-in-month'
-  }`;
+function getClassNamesEntry(currentMonth: boolean) {
+  return `day-entry${currentMonth ? '' : ' not-in-month'}`;
+}
+
+function getClassNamesText(currentDay: boolean) {
+  return `day-text${currentDay ? ' today' : ''}`;
 }

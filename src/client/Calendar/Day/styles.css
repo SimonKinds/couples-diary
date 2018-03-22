@@ -8,6 +8,15 @@
   opacity: 0.4;
 }
 
-.calendar .current-day {
-  background-color: rgba(201, 233, 248, 0.5);
+.calendar .day-text {
+  display: inline-block;
+  font-size: 1em;
+  line-height: 2em;
+  width: 2em;
+  height: 2em;
+}
+
+.calendar .today {
+  background-color: hsl(165, 34%, 85%);
+  border-radius: 50%;
 }

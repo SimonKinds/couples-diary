@@ -5,7 +5,7 @@ import React, { PureComponent } from 'react';
 import './styles.css';
 
 type Props = {
-  name: string
+  name: string,
 };
 type State = {};
 

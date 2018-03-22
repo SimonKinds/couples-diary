@@ -5,7 +5,7 @@ import React, { PureComponent } from 'react';
 import './styles.css';
 
 type Props = {
-  by: 'him' | 'her'
+  by: 'him' | 'her',
 };
 type State = {};
 
