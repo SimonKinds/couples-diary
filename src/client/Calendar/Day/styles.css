@@ -2,6 +2,8 @@
   text-align: center;
   padding: 10px 0px;
   border: 1px solid #a9a9a9;
+  margin-left: -1px;
+  margin-top: -1px;
 }
 
 .calendar .not-in-month {
