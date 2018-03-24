@@ -10,24 +10,48 @@ type Props = {};
 type State = {};
 
 const NAMES_OF_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const NAME_OF_MONTHS = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
 
 export default class Calendar extends PureComponent<Props, State> {
   render() {
+    const year = 2018;
+    const month = 2;
     return (
-      <div className="calendar">
-        {getDayNames()}
-        {getDays()}
-      </div>
-    );
+      <section>
+        <div className="calendar">
+          <div className="month">{getMonthName(month)}</div>
+          <div className="grid">
+            {getDayNames()}
+            {getDays(year, month)}
+          </div>
+        </div>
+      </section>);
   }
+}
+
+function getMonthName(month: number) {
+  return NAME_OF_MONTHS[month];
 }
 
 function getDayNames() {
   return NAMES_OF_DAYS.map(name => <DayName key={name} name={name} />);
 }
 
-function getDays() {
-  const date = new Date();
+function getDays(year: number, month: number) {
+  const date = new Date(year, month);
   const dateToday = date.getDate();
   date.setMonth(date.getMonth() + 1);
   date.setDate(0);

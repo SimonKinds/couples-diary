@@ -1,7 +1,5 @@
 .calendar {
-  display: grid;
   margin: auto;
-  grid-template-columns: repeat(7, 1fr);
   background-color: #fff;
   padding: 20px;
   width: 80%;
@@ -10,4 +8,17 @@
   max-height: 600px;
   box-shadow: 0px 0px 20px #a9a9a9;
   border-radius: 10px;
+}
+
+.calendar .grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar .month {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  margin-top: 5px;
+  margin-bottom: 20px;
 }
