@@ -85,7 +85,8 @@ function getDays(year: number, month: number) {
 
 function getDaysFromPreviousMonth(year: number, month: number) {
   const date = new Date(year, month);
-  const daysFromPreviousMonth = (7 - date.getDay()) % 7;
+  date.setDate(1);
+  const daysFromPreviousMonth = toDateStartingMonday(date.getDay());
 
   const daysInPrevMonth = new Date(
     date.getFullYear(),
@@ -122,7 +123,7 @@ function getDaysFromNextMonth(year: number, month: number) {
   const date = new Date(year, month + 1);
   date.setDate(0);
 
-  const daysFromNextMonth = (7 - date.getDay()) % 7;
+  const daysFromNextMonth = 7 - toDateStartingMonday(date.getDay()) - 1;
   const nextMonth = date.getMonth() + 1;
 
   const days = [];
@@ -140,4 +141,13 @@ function getDaysFromNextMonth(year: number, month: number) {
   }
 
   return days;
+}
+
+function toDateStartingMonday(day: number) {
+  const startingMonday = day - 1;
+  if (startingMonday === -1) {
+    return 6;
+  }
+
+  return startingMonday;
 }
