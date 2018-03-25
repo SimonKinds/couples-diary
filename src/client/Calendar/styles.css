@@ -14,11 +14,3 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
-
-.calendar .month {
-  text-align: center;
-  font-size: 1.5em;
-  font-weight: bold;
-  margin-top: 5px;
-  margin-bottom: 20px;
-}

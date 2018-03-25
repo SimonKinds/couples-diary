@@ -3,6 +3,7 @@
 import React, { PureComponent } from 'react';
 import DayName from './DayName';
 import Day from './Day';
+import MonthHeader from './MonthHeader';
 
 import './styles.css';
 
@@ -10,20 +11,6 @@ type Props = {};
 type State = {};
 
 const NAMES_OF_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const NAME_OF_MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
 
 export default class Calendar extends PureComponent<Props, State> {
   render() {
@@ -32,7 +19,7 @@ export default class Calendar extends PureComponent<Props, State> {
     return (
       <section>
         <div className="calendar">
-          <div className="month">{getMonthName(month)}</div>
+          <MonthHeader month={month} />
           <div className="grid">
             {getDayNames()}
             {getDays(year, month)}
@@ -40,10 +27,6 @@ export default class Calendar extends PureComponent<Props, State> {
         </div>
       </section>);
   }
-}
-
-function getMonthName(month: number) {
-  return NAME_OF_MONTHS[month];
 }
 
 function getDayNames() {
