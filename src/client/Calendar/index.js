@@ -25,7 +25,8 @@ export default class Calendar extends PureComponent<Props, State> {
             {getDays(year, month)}
           </div>
         </div>
-      </section>);
+      </section>
+    );
   }
 }
 

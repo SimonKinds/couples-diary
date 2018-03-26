@@ -1,7 +1,17 @@
 .calendar .month-header {
   text-align: center;
-  font-size: 1.5em;
   font-weight: bold;
-  margin-top: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+}
+
+.month-header .main {
+  display:inline;  
+  margin: auto;
+  font-size: 1.5em;
+  margin: 0 15px;
+}
+
+.month-header .secondary {
+  display: inline;
+  color: #a9a9a9;
 }
