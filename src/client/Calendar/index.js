@@ -1,137 +1,41 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import DayName from './DayName';
-import Day from './Day';
-import MonthHeader from './MonthHeader';
-
-import './styles.css';
+import Calendar from './component';
 
 type Props = {};
-type State = {};
+type State = {
+  selectedMonth: number,
+  selectedYear: number,
+  today: Date,
+};
 
-const NAMES_OF_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+export default class CalendarContainer extends PureComponent<Props, State> {
+  constructor(props: Props) {
+    super(props);
 
-export default class Calendar extends PureComponent<Props, State> {
+    const today = new Date();
+    this.state = {
+      selectedMonth: today.getMonth(),
+      selectedYear: today.getFullYear(),
+      today,
+    };
+
+    (this: any).selectDate = this.selectDate.bind(this);
+  }
+
+  selectDate(year: number, month: number) {
+    this.setState({ selectedYear: year, selectedMonth: month });
+  }
+
   render() {
-    const year = 2018;
-    const month = 2;
     return (
-      <section>
-        <div className="calendar">
-          <MonthHeader month={month} />
-          <div className="grid">
-            {getDayNames()}
-            {getDays(year, month)}
-          </div>
-        </div>
-      </section>
-    );
-  }
-}
-
-function getDayNames() {
-  return NAMES_OF_DAYS.map(name => <DayName key={name} name={name} />);
-}
-
-function getDays(year: number, month: number) {
-  const date = new Date(year, month);
-  const dateToday = date.getDate();
-  date.setMonth(date.getMonth() + 1);
-  date.setDate(0);
-
-  const daysInMonth = date.getDate();
-
-  date.setDate(1);
-
-  let days = [];
-  days = days.concat(
-    getDaysFromPreviousMonth(date.getFullYear(), date.getMonth()),
-  );
-
-  for (let i = 0; i < daysInMonth; i += 1) {
-    const day = (
-      <Day
-        key={`M${date.getMonth()}-D${i}`}
-        day={i + 1}
-        currentMonth
-        currentDay={i === dateToday}
-        entryHer
+      <Calendar
+        selectedYear={this.state.selectedYear}
+        selectedMonth={this.state.selectedMonth}
+        today={this.state.today}
+        selectDate={this.selectDate}
       />
     );
-    days.push(day);
   }
-
-  days = days.concat(getDaysFromNextMonth(date.getFullYear(), date.getMonth()));
-
-  return days;
-}
-
-function getDaysFromPreviousMonth(year: number, month: number) {
-  const date = new Date(year, month);
-  date.setDate(1);
-  const daysFromPreviousMonth = toDateStartingMonday(date.getDay());
-
-  const daysInPrevMonth = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    0,
-  ).getDate();
-
-  const prevMonth = date.getMonth() - 1;
-
-  const days = [];
-  for (
-    let i = daysInPrevMonth - daysFromPreviousMonth;
-    i < daysInPrevMonth;
-    i += 1
-  ) {
-    const day = (
-      <Day
-        key={`M${prevMonth}-D${i}`}
-        day={i + 1}
-        currentMonth={false}
-        currentDay={false}
-        entryHim
-        entryHer
-      />
-    );
-
-    days.push(day);
-  }
-
-  return days;
-}
-
-function getDaysFromNextMonth(year: number, month: number) {
-  const date = new Date(year, month + 1);
-  date.setDate(0);
-
-  const daysFromNextMonth = 7 - toDateStartingMonday(date.getDay()) - 1;
-  const nextMonth = date.getMonth() + 1;
-
-  const days = [];
-  for (let i = 0; i < daysFromNextMonth; i += 1) {
-    const day = (
-      <Day
-        key={`M${nextMonth}-D${i}`}
-        day={i + 1}
-        currentMonth={false}
-        currentDay={false}
-      />
-    );
-
-    days.push(day);
-  }
-
-  return days;
-}
-
-function toDateStartingMonday(day: number) {
-  const startingMonday = day - 1;
-  if (startingMonday === -1) {
-    return 6;
-  }
-
-  return startingMonday;
 }
