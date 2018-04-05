@@ -9,7 +9,7 @@ type Props = {
 };
 type State = {};
 
-export default class Component extends PureComponent<Props, State> {
+export default class Loader extends PureComponent<Props, State> {
   render() {
     return this.props.active ? <div className="loader" /> : null;
   }

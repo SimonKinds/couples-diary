@@ -9,7 +9,7 @@ type Props = {
 };
 type State = {};
 
-export default class Component extends PureComponent<Props, State> {
+export default class EntryMarker extends PureComponent<Props, State> {
   render() {
     return <div className={`entry-marker ${this.props.by}`} />;
   }
