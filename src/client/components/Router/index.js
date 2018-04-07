@@ -63,7 +63,7 @@ function matchesAnyRoute(path: string): boolean {
 }
 
 function matchesCalendarPath(path: string): boolean {
-  const rgx = new RegExp('^(/|/calendar(/d+/d+)?)$');
+  const rgx = new RegExp('^(/|/calendar(/\\d+/\\d+)?)$');
   const matches = path.match(rgx);
   return matches != null && matches.length > 0;
 }

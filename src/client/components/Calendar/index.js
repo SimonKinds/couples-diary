@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import { getPath, pushPath } from '../../location';
 import Calendar from './component';
 
 type Props = {};
@@ -15,9 +16,18 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     super(props);
 
     const today = new Date();
+    let selectedMonth = today.getMonth();
+    let selectedYear = today.getFullYear();
+
+    const fromPath = getDateFromPath(getPath());
+    if (fromPath) {
+      selectedMonth = fromPath.month - 1;
+      selectedYear = fromPath.year;
+    }
+
     this.state = {
-      selectedMonth: today.getMonth(),
-      selectedYear: today.getFullYear(),
+      selectedMonth,
+      selectedYear,
       today,
     };
 
@@ -26,6 +36,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
 
   selectDate(year: number, month: number) {
     this.setState({ selectedYear: year, selectedMonth: month });
+    pushPath(`/calendar/${year}/${month + 1}`);
   }
 
   render() {
@@ -38,4 +49,22 @@ export default class CalendarContainer extends PureComponent<Props, State> {
       />
     );
   }
+}
+
+function getDateFromPath(
+  path: string,
+): null | { year: number, month: number } {
+  const rgx = /^\/calendar\/(\d+)\/(\d+)$/;
+  const matches = path.match(rgx);
+
+  if (matches == null) {
+    return null;
+  }
+
+  const [year, month] = matches.slice(1).map(parseFloat);
+  if (Number.isNaN(year) || Number.isNaN(month)) {
+    return null;
+  }
+
+  return { year, month };
 }
