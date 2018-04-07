@@ -110,6 +110,6 @@ function getMonthWrapping(index: number) {
 function wasValidEvent(event: SyntheticEvent<*>) {
   return (
     event.type !== 'keyup' ||
-    (event.type === 'keyup' && (event.key === 'Enter' ||
-      event.key === ' ')));
+    (event.type === 'keyup' && (event.key === 'Enter' || event.key === ' '))
+  );
 }

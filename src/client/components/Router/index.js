@@ -9,10 +9,10 @@ import FourOhFour from '../FourOhFour';
 
 type Props = {
   isLoggedIn: boolean,
-  setIsLoggedIn: (status: boolean) => void
+  setIsLoggedIn: (status: boolean) => void,
 };
 type State = {
-  path: string
+  path: string,
 };
 
 export default class Router extends PureComponent<Props, State> {

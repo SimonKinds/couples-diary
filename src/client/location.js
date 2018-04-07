@@ -11,9 +11,7 @@ export function subscribeToLocation(callback: LocationCallback) {
 export function pushPath(path: string) {
   window.history.pushState({}, '', path);
 
-  callbacks.forEach((callback) => {
-    callback(path);
-  });
+  callbacks.forEach(callback => callback(path));
 }
 
 export function getPath() {

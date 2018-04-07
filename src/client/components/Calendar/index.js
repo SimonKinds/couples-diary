@@ -51,9 +51,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
   }
 }
 
-function getDateFromPath(
-  path: string,
-): null | { year: number, month: number } {
+function getDateFromPath(path: string): null | { year: number, month: number } {
   const rgx = /^\/calendar\/(\d+)\/(\d+)$/;
   const matches = path.match(rgx);
 
