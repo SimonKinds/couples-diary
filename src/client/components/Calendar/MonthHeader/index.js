@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import Link from '../../Link';
 
 import './styles.css';
 
@@ -22,80 +23,30 @@ const NAME_OF_MONTHS = [
 type Props = {
   year: number,
   month: number,
-  selectDate: (year: number, month: number) => void,
 };
 type State = {};
 
 export default class MonthHeader extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    (this: any).selectPrevMonth = this.selectPrevMonth.bind(this);
-    (this: any).selectNextMonth = this.selectNextMonth.bind(this);
-  }
-
-  selectPrevMonth(event: SyntheticEvent<*>) {
-    if (!wasValidEvent(event)) {
-      return;
-    }
-
-    const { year, selectDate, month: currentMonth } = this.props;
-    const prevMonth = getMonthIndexWrapping(currentMonth - 1);
-    if (prevMonth < currentMonth) {
-      selectDate(year, prevMonth);
-    } else {
-      selectDate(year - 1, prevMonth);
-    }
-  }
-
-  selectNextMonth(event: SyntheticEvent<*>) {
-    if (!wasValidEvent(event)) {
-      return;
-    }
-
-    const { year, selectDate, month: currentMonth } = this.props;
-    const nextMonth = getMonthIndexWrapping(currentMonth + 1);
-    if (nextMonth > currentMonth) {
-      selectDate(year, nextMonth);
-    } else {
-      selectDate(year + 1, nextMonth);
-    }
-  }
-
   render() {
+    const { year, month } = this.props;
     return (
       <div className="month-header">
-        <div
-          role="button"
-          tabIndex="0"
-          className="secondary"
-          onClick={this.selectPrevMonth}
-          onKeyUp={this.selectPrevMonth}
-        >
-          {getMonthWrapping(this.props.month - 1)}
+        <div className="secondary">
+          <Link
+            href={getCalendarPath(year, month - 1)}
+            text={getMonthWrapping(month - 1)}
+          />
         </div>
         <div className="main">{getMonthWrapping(this.props.month)}</div>
-        <div
-          role="button"
-          tabIndex="0"
-          className="secondary"
-          onClick={this.selectNextMonth}
-          onKeyUp={this.selectNextMonth}
-        >
-          {getMonthWrapping(this.props.month + 1)}
+        <div className="secondary">
+          <Link
+            href={getCalendarPath(year, month + 1)}
+            text={getMonthWrapping(month + 1)}
+          />
         </div>
       </div>
     );
   }
-}
-
-function getMonthIndexWrapping(index: number) {
-  if (index === -1) {
-    return 11;
-  } else if (index === 12) {
-    return 0;
-  }
-  return index;
 }
 
 function getMonthWrapping(index: number) {
@@ -107,9 +58,12 @@ function getMonthWrapping(index: number) {
   return NAME_OF_MONTHS[index];
 }
 
-function wasValidEvent(event: SyntheticEvent<*>) {
-  return (
-    event.type !== 'keyup' ||
-    (event.type === 'keyup' && (event.key === 'Enter' || event.key === ' '))
-  );
+function getCalendarPath(year: number, month: number): string {
+  if (month === -1) {
+    return `/calendar/${year - 1}/12`;
+  } else if (month === 12) {
+    return `/calendar/${year + 1}/01`;
+  }
+
+  return `/calendar/${year}/${month + 1}`;
 }

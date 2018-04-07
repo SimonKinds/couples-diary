@@ -49,7 +49,7 @@ export default class Router extends PureComponent<Props, State> {
     }
 
     if (matchesCalendarPath(path)) {
-      return <Calendar key="calendar" />;
+      return <Calendar key="calendar" path={this.state.path} />;
     } else if (path === '/login') {
       return this.renderLogin();
     }

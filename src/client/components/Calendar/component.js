@@ -11,7 +11,6 @@ type Props = {
   today: Date,
   selectedYear: number,
   selectedMonth: number,
-  selectDate: (year: number, month: number) => void,
 };
 type State = {};
 
@@ -23,11 +22,7 @@ export default class Calendar extends PureComponent<Props, State> {
     return (
       <section>
         <div className="calendar">
-          <MonthHeader
-            year={selectedYear}
-            month={selectedMonth}
-            selectDate={this.props.selectDate}
-          />
+          <MonthHeader year={selectedYear} month={selectedMonth} />
           <div className="grid">
             {getDayNames()}
             {getDays(selectedYear, selectedMonth, today)}

@@ -1,10 +1,13 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { getPath, pushPath } from '../../location';
 import Calendar from './component';
 
-type Props = {};
+type Props = {
+  // it really is used, but doesn't get picked up in getDerivedStateFromProps
+  // eslint-disable-next-line react/no-unused-prop-types
+  path: string,
+};
 type State = {
   selectedMonth: number,
   selectedYear: number,
@@ -12,31 +15,27 @@ type State = {
 };
 
 export default class CalendarContainer extends PureComponent<Props, State> {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    const fromPath = getDateFromPath(nextProps.path);
+    if (fromPath) {
+      const { year, month } = fromPath;
+      return Object.assign(prevState, {
+        selectedMonth: month - 1,
+        selectedYear: year,
+      });
+    }
+    return null;
+  }
+
   constructor(props: Props) {
     super(props);
 
     const today = new Date();
-    let selectedMonth = today.getMonth();
-    let selectedYear = today.getFullYear();
-
-    const fromPath = getDateFromPath(getPath());
-    if (fromPath) {
-      selectedMonth = fromPath.month - 1;
-      selectedYear = fromPath.year;
-    }
-
     this.state = {
-      selectedMonth,
-      selectedYear,
+      selectedMonth: today.getMonth(),
+      selectedYear: today.getFullYear(),
       today,
     };
-
-    (this: any).selectDate = this.selectDate.bind(this);
-  }
-
-  selectDate(year: number, month: number) {
-    this.setState({ selectedYear: year, selectedMonth: month });
-    pushPath(`/calendar/${year}/${month + 1}`);
   }
 
   render() {
@@ -45,7 +44,6 @@ export default class CalendarContainer extends PureComponent<Props, State> {
         selectedYear={this.state.selectedYear}
         selectedMonth={this.state.selectedMonth}
         today={this.state.today}
-        selectDate={this.selectDate}
       />
     );
   }

@@ -13,6 +13,9 @@
 
 .month-header .secondary {
   display: inline;
+}
+
+.month-header .secondary a {
+  text-decoration: inherit;
   color: #a9a9a9;
-  cursor: pointer;
 }
