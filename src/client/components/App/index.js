@@ -1,8 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import { hot } from 'react-hot-loader';
-import Login from '../Login';
-import Calendar from '../Calendar';
+import Router from '../Router';
 
 import './styles.css';
 
@@ -29,11 +28,10 @@ class App extends PureComponent<Props, State> {
   render() {
     return (
       <div className="container">
-        {this.state.isLoggedIn ? (
-          <Calendar />
-        ) : (
-          <Login setIsLoggedIn={this.setIsLoggedIn} />
-        )}
+        <Router
+          isLoggedIn={this.state.isLoggedIn}
+          setIsLoggedIn={this.setIsLoggedIn}
+        />
       </div>
     );
   }

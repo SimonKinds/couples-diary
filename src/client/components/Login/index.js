@@ -2,6 +2,7 @@
 
 import React, { PureComponent } from 'react';
 import Login from './component';
+import { pushPath } from '../../location';
 
 type Props = {
   setIsLoggedIn: (status: boolean) => void,
@@ -35,6 +36,7 @@ export default class LoginContainer extends PureComponent<Props, State> {
         this.finishApiCall();
         if (status === 200) {
           this.props.setIsLoggedIn(true);
+          pushPath('/');
         }
       })
       .catch(() => this.finishApiCall());
