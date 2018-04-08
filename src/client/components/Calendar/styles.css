@@ -1,4 +1,6 @@
 .calendar {
+  display: flex;
+  flex-direction: column;
   margin: auto;
   background-color: #fff;
   padding: 20px;
@@ -10,7 +12,14 @@
   border-radius: 10px;
 }
 
-.calendar .grid {
+.calendar .day-names {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar .grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 1fr;
 }

@@ -1,6 +1,5 @@
 .calendar .day-entry {
-  text-align: center;
-  padding: 10px 0;
+  padding: 7px 0;
   border: 1px solid #a9a9a9;
   margin-left: -1px;
   margin-top: -1px;
@@ -11,14 +10,21 @@
 }
 
 .calendar .day-text {
-  display: inline-block;
+  text-align: center;
   font-size: 1em;
-  line-height: 2em;
-  width: 2em;
-  height: 2em;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  margin: 0 auto 5px auto;
 }
 
 .calendar .today {
   background-color: hsl(165, 34%, 85%);
   border-radius: 50%;
+}
+
+.calendar .entry-markers {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }

@@ -20,7 +20,7 @@ export default class CalendarDay extends PureComponent<Props, State> {
     return (
       <div className={getClassNamesEntry(currentMonth)}>
         <div className={getClassNamesText(currentDay)}>{day}</div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className="entry-markers">
           {this.props.entryHer && <EntryMarker by="her" />}
           {this.props.entryHim && <EntryMarker by="him" />}
         </div>

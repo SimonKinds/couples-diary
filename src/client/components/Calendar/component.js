@@ -23,8 +23,8 @@ export default class Calendar extends PureComponent<Props, State> {
       <section>
         <div className="calendar">
           <MonthHeader year={selectedYear} month={selectedMonth} />
+          <div className="day-names">{getDayNames()}</div>
           <div className="grid">
-            {getDayNames()}
             {getDays(selectedYear, selectedMonth, today)}
           </div>
         </div>
