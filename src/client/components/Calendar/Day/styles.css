@@ -1,4 +1,6 @@
 .calendar .day-entry {
+  display: flex;
+  flex-direction: column;
   padding: 7px 0;
   border: 1px solid #a9a9a9;
   margin-left: -1px;
@@ -25,6 +27,8 @@
 
 .calendar .entry-markers {
   flex: 1;
+  margin: auto;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
