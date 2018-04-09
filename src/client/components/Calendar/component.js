@@ -57,7 +57,11 @@ function getDays(year: number, month: number, today: Date) {
         key={`M${date.getMonth()}-D${i}`}
         day={i + 1}
         currentMonth
-        currentDay={i + 1 === today.getDate()}
+        currentDay={
+          i + 1 === today.getDate() &&
+          month === today.getMonth() &&
+          year === today.getFullYear()
+        }
         entryHer
       />
     );

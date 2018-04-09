@@ -7,6 +7,24 @@
   margin-top: -1px;
 }
 
+.calendar .day-entry:first-child {
+  border-top-left-radius: var(--calendar-border-radius);
+}
+
+.calendar .day-entry:nth-child(7) {
+  border-top-right-radius: var(--calendar-border-radius);
+}
+
+.calendar .day-entry:nth-last-child(7) {
+  border-bottom-left-radius: var(--calendar-border-radius);
+}
+
+.calendar .day-entry:last-child {
+  border-bottom-right-radius: var(--calendar-border-radius);
+}
+
+
+
 .calendar .not-in-month {
   opacity: 0.4;
 }
