@@ -23,8 +23,6 @@
   border-bottom-right-radius: var(--calendar-border-radius);
 }
 
-
-
 .calendar .not-in-month {
   opacity: 0.4;
 }
@@ -32,10 +30,10 @@
 .calendar .day-text {
   text-align: center;
   font-size: 1em;
-  width: 1.5em;
-  height: 1.5em;
-  line-height: 1.5em;
-  margin: 0 auto 5px auto;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  margin: 0 auto;
 }
 
 .calendar .today {
