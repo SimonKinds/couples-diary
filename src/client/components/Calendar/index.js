@@ -1,6 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+
 import Calendar from './component';
 
 type Props = {

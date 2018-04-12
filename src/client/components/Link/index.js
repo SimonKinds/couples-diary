@@ -1,15 +1,18 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import type { Node as ReactNode } from 'react';
 import { pushPath } from '../../location';
 
 type Props = {
+  className?: string,
   href: string,
-  text: string,
+  text?: string,
+  children?: ReactNode,
 };
 type State = {};
 
-export default class Component extends PureComponent<Props, State> {
+export default class Link extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -22,10 +25,12 @@ export default class Component extends PureComponent<Props, State> {
   }
 
   render() {
-    const { href, text } = this.props;
+    const {
+      href, text, className, children,
+    } = this.props;
     return (
-      <a href={href} onClick={this.onClick}>
-        {text}
+      <a href={href} onClick={this.onClick} className={className}>
+        {text || children}
       </a>
     );
   }

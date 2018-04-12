@@ -4,6 +4,7 @@ import React, { PureComponent } from 'react';
 import { subscribeToLocation, getPath } from '../../location';
 
 import Calendar from '../Calendar';
+import Entry from '../Entry';
 import Login from '../Login';
 import FourOhFour from '../FourOhFour';
 
@@ -40,30 +41,34 @@ export default class Router extends PureComponent<Props, State> {
 
   render() {
     const { path } = this.state;
-    if (!matchesAnyRoute(path)) {
-      return <FourOhFour />;
-    }
-
-    if (!this.props.isLoggedIn) {
+    if (!this.props.isLoggedIn && matchesAnyRoute(path)) {
       return this.renderLogin();
     }
 
     if (matchesCalendarPath(path)) {
       return <Calendar key="calendar" path={this.state.path} />;
+    } else if (matchesEntryPath(path)) {
+      return <Entry key="entry" />;
     } else if (path === '/login') {
       return this.renderLogin();
     }
 
-    return '404';
+    return <FourOhFour />;
   }
 }
 
 function matchesAnyRoute(path: string): boolean {
-  return path === '/login' || matchesCalendarPath(path);
+  return (
+    path === '/login' || matchesCalendarPath(path) || matchesEntryPath(path)
+  );
 }
 
 function matchesCalendarPath(path: string): boolean {
   const rgx = new RegExp('^(/|/calendar(/\\d+/\\d+)?)$');
   const matches = path.match(rgx);
   return matches != null && matches.length > 0;
+}
+
+function matchesEntryPath(path: string): boolean {
+  return path.includes('/entry');
 }

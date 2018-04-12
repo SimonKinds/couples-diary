@@ -85,6 +85,8 @@ function getDays(year: number, month: number, today: Date) {
     const day = (
       <Day
         key={`M${date.getMonth()}-D${i}`}
+        year={date.getFullYear()}
+        month={date.getMonth()}
         day={i + 1}
         currentMonth
         currentDay={
@@ -125,6 +127,8 @@ function getDaysFromPreviousMonth(year: number, month: number) {
     const day = (
       <Day
         key={`M${prevMonth}-D${i}`}
+        year={date.getFullYear()}
+        month={date.getMonth()}
         day={i + 1}
         currentMonth={false}
         currentDay={false}
@@ -151,6 +155,8 @@ function getDaysFromNextMonth(year: number, month: number) {
     const day = (
       <Day
         key={`M${nextMonth}-D${i}`}
+        year={date.getFullYear()}
+        month={date.getMonth()}
         day={i + 1}
         currentMonth={false}
         currentDay={false}
