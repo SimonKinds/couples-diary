@@ -1,11 +1,12 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import type { RouterHistory } from 'react-router-dom';
 import Login from './component';
-import { pushPath } from '../../location';
 
 type Props = {
   setIsLoggedIn: (status: boolean) => void,
+  history: RouterHistory,
 };
 type State = {
   isLoggingIn: boolean,
@@ -35,8 +36,9 @@ export default class LoginContainer extends PureComponent<Props, State> {
       .then((status) => {
         this.finishApiCall();
         if (status === 200) {
-          this.props.setIsLoggedIn(true);
-          pushPath('/');
+          const { history, setIsLoggedIn } = this.props;
+          setIsLoggedIn(true);
+          history.push('/');
         }
       })
       .catch(() => this.finishApiCall());

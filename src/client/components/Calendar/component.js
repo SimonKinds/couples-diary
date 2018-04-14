@@ -1,7 +1,6 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { pushPath } from '../../location';
 
 import DayName from './DayName';
 import Day from './Day';
@@ -19,34 +18,6 @@ type State = {};
 const NAMES_OF_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export default class Calendar extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    (this: any).onKeyDown = this.onKeyDown.bind(this);
-  }
-
-  componentDidMount() {
-    window.addEventListener('keydown', this.onKeyDown);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onKeyDown);
-  }
-
-  onKeyDown(event: SyntheticKeyboardEvent<Document>) {
-    const { selectedYear, selectedMonth } = this.props;
-    switch (event.key) {
-      case 'ArrowLeft':
-        pushPath(getCalendarPath(selectedYear, selectedMonth - 1));
-        break;
-      case 'ArrowRight':
-        pushPath(getCalendarPath(selectedYear, selectedMonth + 1));
-        break;
-      default:
-        break;
-    }
-  }
-
   render() {
     const { today, selectedYear, selectedMonth } = this.props;
     return (
@@ -176,14 +147,4 @@ function toDateStartingMonday(day: number) {
   }
 
   return startingMonday;
-}
-
-function getCalendarPath(year: number, month: number): string {
-  if (month === -1) {
-    return `/calendar/${year - 1}/12`;
-  } else if (month === 12) {
-    return `/calendar/${year + 1}/01`;
-  }
-
-  return `/calendar/${year}/${month + 1}`;
 }

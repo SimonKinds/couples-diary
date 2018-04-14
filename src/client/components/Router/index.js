@@ -1,7 +1,8 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { subscribeToLocation, getPath } from '../../location';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import type { ContextRouter } from 'react-router-dom';
 
 import Calendar from '../Calendar';
 import Entry from '../Entry';
@@ -20,55 +21,48 @@ export default class Router extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {
-      path: getPath(),
-    };
-
-    (this: any).onUpdatedPath = this.onUpdatedPath.bind(this);
+    (this: any).renderLoginComponent = this.renderLoginComponent.bind(this);
   }
 
-  componentDidMount() {
-    subscribeToLocation(this.onUpdatedPath);
-  }
-
-  onUpdatedPath(path: string) {
-    this.setState({ path });
-  }
-
-  renderLogin() {
-    return <Login key="login" {...this.props} />;
+  renderLoginComponent(props: ContextRouter) {
+    return (
+      <Login key="login" setIsLoggedIn={this.props.setIsLoggedIn} {...props} />
+    );
   }
 
   render() {
-    const { path } = this.state;
-    if (!this.props.isLoggedIn && matchesAnyRoute(path)) {
-      return this.renderLogin();
-    }
-
-    if (matchesCalendarPath(path)) {
-      return <Calendar key="calendar" path={this.state.path} />;
-    } else if (matchesEntryPath(path)) {
-      return <Entry key="entry" />;
-    } else if (path === '/login') {
-      return this.renderLogin();
-    }
-
-    return <FourOhFour />;
+    const { isLoggedIn } = this.props;
+    return (
+      <BrowserRouter>
+        <Switch>
+          {isLoggedIn ? (
+            [
+              <Route exact path="/" key="calendarPath" component={Calendar} />,
+              <Route
+                exact
+                path="/calendar/:year/:month"
+                key="calendarPath"
+                component={Calendar}
+              />,
+              <Route
+                exact
+                path="/entry/:year/:month/:day"
+                key="entryPath"
+                component={Entry}
+              />,
+              <Route
+                exact
+                path="/login"
+                key="loginPath"
+                render={this.renderLoginComponent}
+              />,
+            ]
+          ) : (
+            <Route exact path="/(|login)" render={this.renderLoginComponent} />
+          )}
+          <Route component={FourOhFour} />
+        </Switch>
+      </BrowserRouter>
+    );
   }
-}
-
-function matchesAnyRoute(path: string): boolean {
-  return (
-    path === '/login' || matchesCalendarPath(path) || matchesEntryPath(path)
-  );
-}
-
-function matchesCalendarPath(path: string): boolean {
-  const rgx = new RegExp('^(/|/calendar(/\\d+/\\d+)?)$');
-  const matches = path.match(rgx);
-  return matches != null && matches.length > 0;
-}
-
-function matchesEntryPath(path: string): boolean {
-  return path.includes('/entry');
 }

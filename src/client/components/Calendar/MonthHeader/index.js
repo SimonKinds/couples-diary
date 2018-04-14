@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import Link from '../../Link';
+import { Link } from 'react-router-dom';
 
 import './styles.css';
 
@@ -32,17 +32,15 @@ export default class MonthHeader extends PureComponent<Props, State> {
     return (
       <div className="month-header">
         <div className="secondary">
-          <Link
-            href={getCalendarPath(year, month - 1)}
-            text={getMonthWrapping(month - 1)}
-          />
+          <Link to={getCalendarPath(year, month - 1)}>
+            {getMonthWrapping(month - 1)}
+          </Link>
         </div>
         <div className="main">{getMonthWrapping(this.props.month)}</div>
         <div className="secondary">
-          <Link
-            href={getCalendarPath(year, month + 1)}
-            text={getMonthWrapping(month + 1)}
-          />
+          <Link to={getCalendarPath(year, month + 1)}>
+            {getMonthWrapping(month + 1)}
+          </Link>
         </div>
       </div>
     );

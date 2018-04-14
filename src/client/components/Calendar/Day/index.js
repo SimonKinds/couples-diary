@@ -1,8 +1,8 @@
 // @flow
 
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
 import EntryMarker from './EntryMarker';
-import Link from '../../Link';
 
 import './styles.css';
 
@@ -25,7 +25,7 @@ export default class CalendarDay extends PureComponent<Props, State> {
     return (
       <Link
         className={getClassNamesEntry(currentMonth)}
-        href={`/entry/${year}/${month}/${day}`}
+        to={`/entry/${year}/${month}/${day}`}
       >
         <div className={getClassNamesText(currentDay)}>{day}</div>
         <div className="entry-markers">
