@@ -52,30 +52,18 @@ export default class Router extends PureComponent<Props, State> {
     return (
       <BrowserRouter>
         <Switch>
-          <Route
-            exact
-            path="/"
-            key="main"
-            render={this.renderCalendarComponent}
-          />
+          <Route exact path="/" render={this.renderCalendarComponent} />
           <Route
             exact
             path="/calendar/:year/:month"
-            key="calendarPath"
             render={this.renderCalendarComponent}
           />
           <Route
             exact
             path="/entry/:year/:month/:day"
-            key="entryPath"
             render={this.renderEntryComponent}
           />
-          <Route
-            exact
-            path="/login"
-            key="loginPath"
-            render={this.renderLoginComponent}
-          />
+          <Route exact path="/login" render={this.renderLoginComponent} />
           <Route component={FourOhFour} />
         </Switch>
       </BrowserRouter>

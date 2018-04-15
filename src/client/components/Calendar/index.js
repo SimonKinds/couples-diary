@@ -19,14 +19,12 @@ type State = {
 export default class CalendarContainer extends PureComponent<Props, State> {
   static getDerivedStateFromProps(nextProps: Props, prevState: State) {
     const fromPath = getDateFromPath(nextProps.match);
-    if (fromPath) {
-      const { year, month } = fromPath;
-      return Object.assign(prevState, {
-        selectedMonth: month - 1,
-        selectedYear: year,
-      });
-    }
-    return null;
+
+    const { year, month } = fromPath;
+    return Object.assign(prevState, {
+      selectedMonth: month - 1,
+      selectedYear: year,
+    });
   }
 
   constructor(props: Props) {
@@ -50,6 +48,10 @@ export default class CalendarContainer extends PureComponent<Props, State> {
   }
 
   onKeyDown(event: SyntheticKeyboardEvent<Document>) {
+    if (hadModifierKey(event)) {
+      return;
+    }
+
     const { history } = this.props;
     const { selectedYear, selectedMonth } = this.state;
     switch (event.key) {
@@ -83,7 +85,8 @@ function getDateFromPath(match: Match): null | { year: number, month: number } {
     };
   }
 
-  return null;
+  const now = new Date();
+  return { year: now.getFullYear(), month: now.getMonth() + 1 };
 }
 
 function getCalendarPath(year: number, month: number): string {
@@ -94,4 +97,8 @@ function getCalendarPath(year: number, month: number): string {
   }
 
   return `/calendar/${year}/${month + 1}`;
+}
+
+function hadModifierKey(event: SyntheticKeyboardEvent<*>) {
+  return event.ctrlKey || event.shiftKey || event.altKey || event.metaKey;
 }
