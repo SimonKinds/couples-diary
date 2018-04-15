@@ -1,7 +1,7 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
 
 import Calendar from '../Calendar';
@@ -22,6 +22,10 @@ export default class Router extends PureComponent<Props, State> {
     super(props);
 
     (this: any).renderLoginComponent = this.renderLoginComponent.bind(this);
+    (this: any).renderCalendarComponent = this.renderCalendarComponent.bind(
+      this,
+    );
+    (this: any).renderEntryComponent = this.renderEntryComponent.bind(this);
   }
 
   renderLoginComponent(props: ContextRouter) {
@@ -30,36 +34,48 @@ export default class Router extends PureComponent<Props, State> {
     );
   }
 
+  renderCalendarComponent(props: ContextRouter) {
+    if (this.props.isLoggedIn) {
+      return <Calendar {...props} />;
+    }
+    return <Redirect to="/login" />;
+  }
+
+  renderEntryComponent(props: ContextRouter) {
+    if (this.props.isLoggedIn) {
+      return <Entry {...props} />;
+    }
+    return <Redirect to="/login" />;
+  }
+
   render() {
-    const { isLoggedIn } = this.props;
     return (
       <BrowserRouter>
         <Switch>
-          {isLoggedIn ? (
-            [
-              <Route exact path="/" key="calendarPath" component={Calendar} />,
-              <Route
-                exact
-                path="/calendar/:year/:month"
-                key="calendarPath"
-                component={Calendar}
-              />,
-              <Route
-                exact
-                path="/entry/:year/:month/:day"
-                key="entryPath"
-                component={Entry}
-              />,
-              <Route
-                exact
-                path="/login"
-                key="loginPath"
-                render={this.renderLoginComponent}
-              />,
-            ]
-          ) : (
-            <Route exact path="/(|login)" render={this.renderLoginComponent} />
-          )}
+          <Route
+            exact
+            path="/"
+            key="main"
+            render={this.renderCalendarComponent}
+          />
+          <Route
+            exact
+            path="/calendar/:year/:month"
+            key="calendarPath"
+            render={this.renderCalendarComponent}
+          />
+          <Route
+            exact
+            path="/entry/:year/:month/:day"
+            key="entryPath"
+            render={this.renderEntryComponent}
+          />
+          <Route
+            exact
+            path="/login"
+            key="loginPath"
+            render={this.renderLoginComponent}
+          />
           <Route component={FourOhFour} />
         </Switch>
       </BrowserRouter>
