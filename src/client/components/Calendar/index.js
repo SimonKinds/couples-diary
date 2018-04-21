@@ -77,7 +77,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
   }
 }
 
-function getDateFromPath(match: Match): null | { year: number, month: number } {
+function getDateFromPath(match: Match): { year: number, month: number } {
   if (match.params.year != null && match.params.month != null) {
     return {
       year: parseFloat(match.params.year),
