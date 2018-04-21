@@ -3,7 +3,11 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 
+import { previousMonth, nextMonth } from '../../../../domain/calendar';
+
 import './styles.css';
+
+type CalendarFunction = typeof previousMonth;
 
 const NAME_OF_MONTHS = [
   'January',
@@ -31,37 +35,27 @@ export default class MonthHeader extends PureComponent<Props, State> {
     const { year, month } = this.props;
     return (
       <div className="month-header">
-        <div className="secondary">
-          <Link to={getCalendarPath(year, month - 1)}>
-            {getMonthWrapping(month - 1)}
-          </Link>
-        </div>
-        <div className="main">{getMonthWrapping(this.props.month)}</div>
-        <div className="secondary">
-          <Link to={getCalendarPath(year, month + 1)}>
-            {getMonthWrapping(month + 1)}
-          </Link>
-        </div>
+        <div className="secondary">{link(year, month, previousMonth)}</div>
+        <div className="main">{monthName(month)}</div>
+        <div className="secondary">{link(year, month, nextMonth)}</div>
       </div>
     );
   }
 }
 
-function getMonthWrapping(index: number) {
-  if (index === -1) {
-    return NAME_OF_MONTHS[11];
-  } else if (index === 12) {
-    return NAME_OF_MONTHS[0];
-  }
-  return NAME_OF_MONTHS[index];
+function link(
+  currentYear: number,
+  currentMonth: number,
+  calendarFunction: CalendarFunction,
+) {
+  const { year, month } = calendarFunction(currentYear, currentMonth);
+  return <Link to={getCalendarPath(year, month)}>{monthName(month)}</Link>;
+}
+
+function monthName(month: number) {
+  return NAME_OF_MONTHS[month - 1];
 }
 
 function getCalendarPath(year: number, month: number): string {
-  if (month === -1) {
-    return `/calendar/${year - 1}/12`;
-  } else if (month === 12) {
-    return `/calendar/${year + 1}/01`;
-  }
-
-  return `/calendar/${year}/${month + 1}`;
+  return `/calendar/${year}/${month}`;
 }
