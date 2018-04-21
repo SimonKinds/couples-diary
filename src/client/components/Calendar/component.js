@@ -3,13 +3,15 @@
 import React, { PureComponent } from 'react';
 
 import DayName from './DayName';
-import Day from './Day';
+import CalendarDate from './Date';
 import MonthHeader from './MonthHeader';
+
+import { calendarMonth } from '../../../domain/calendar';
 
 import './styles.css';
 
 type Props = {
-  today: Date,
+  today: SimpleDate,
   selectedYear: number,
   selectedMonth: number,
 };
@@ -26,7 +28,7 @@ export default class Calendar extends PureComponent<Props, State> {
           <MonthHeader year={selectedYear} month={selectedMonth} />
           <div className="day-names">{getDayNames()}</div>
           <div className="grid">
-            {getDays(selectedYear, selectedMonth, today)}
+            {getDates(selectedYear, selectedMonth, today)}
           </div>
         </div>
       </section>
@@ -38,113 +40,26 @@ function getDayNames() {
   return NAMES_OF_DAYS.map(name => <DayName key={name} name={name} />);
 }
 
-function getDays(year: number, month: number, today: Date) {
-  const date = new Date(year, month);
-  date.setMonth(date.getMonth() + 1);
-  date.setDate(0);
-
-  const daysInMonth = date.getDate();
-
-  date.setDate(1);
-
-  let days = [];
-  days = days.concat(
-    getDaysFromPreviousMonth(date.getFullYear(), date.getMonth()),
-  );
-
-  for (let i = 0; i < daysInMonth; i += 1) {
-    const day = (
-      <Day
-        key={`M${date.getMonth()}-D${i}`}
-        year={date.getFullYear()}
-        month={date.getMonth()}
-        day={i + 1}
-        currentMonth
-        currentDay={
-          i + 1 === today.getDate() &&
-          month === today.getMonth() &&
-          year === today.getFullYear()
+function getDates(
+  currentYear: number,
+  currentMonth: number,
+  today: SimpleDate,
+) {
+  return calendarMonth(currentYear, currentMonth).map(
+    ({
+      year, month, date, inMonth,
+    }) => (
+      <CalendarDate
+        key={`${year}:${month}:${date}`}
+        year={year}
+        month={month}
+        date={date}
+        currentMonth={inMonth}
+        currentDate={
+          year === today.year && month === today.month && date === today.date
         }
-        entryHer
-      />
-    );
-    days.push(day);
-  }
-
-  days = days.concat(getDaysFromNextMonth(date.getFullYear(), date.getMonth()));
-
-  return days;
-}
-
-function getDaysFromPreviousMonth(year: number, month: number) {
-  const date = new Date(year, month);
-  date.setDate(1);
-  const daysFromPreviousMonth = toDateStartingMonday(date.getDay());
-
-  const daysInPrevMonth = new Date(
-    date.getFullYear(),
-    date.getMonth(),
-    0,
-  ).getDate();
-
-  const prevMonth = date.getMonth() - 1;
-
-  const days = [];
-  for (
-    let i = daysInPrevMonth - daysFromPreviousMonth;
-    i < daysInPrevMonth;
-    i += 1
-  ) {
-    const day = (
-      <Day
-        key={`M${prevMonth}-D${i}`}
-        year={date.getFullYear()}
-        month={date.getMonth()}
-        day={i + 1}
-        currentMonth={false}
-        currentDay={false}
         entryHim
-        entryHer
       />
-    );
-
-    days.push(day);
-  }
-
-  return days;
-}
-
-function getDaysFromNextMonth(year: number, month: number) {
-  const date = new Date(year, month + 1);
-  date.setDate(0);
-
-  const daysFromNextMonth = 7 - toDateStartingMonday(date.getDay()) - 1;
-  const nextMonth = date.getMonth() + 1;
-
-  const days = [];
-  for (let i = 0; i < daysFromNextMonth; i += 1) {
-    const day = (
-      <Day
-        key={`M${nextMonth}-D${i}`}
-        year={date.getFullYear()}
-        month={date.getMonth()}
-        day={i + 1}
-        currentMonth={false}
-        currentDay={false}
-      />
-    );
-
-    days.push(day);
-  }
-
-  return days;
-}
-
-function toDateStartingMonday(day: number) {
-  const startingMonday = day - 1;
-  if (startingMonday === -1) {
-    return 6;
-  }
-
-  return startingMonday;
+    ),
+  );
 }

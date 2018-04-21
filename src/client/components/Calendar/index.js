@@ -3,6 +3,8 @@
 import React, { PureComponent } from 'react';
 import type { Match, RouterHistory } from 'react-router-dom';
 
+import { previousMonth, nextMonth, today } from '../../../domain/calendar';
+
 import Calendar from './component';
 
 type Props = {
@@ -13,7 +15,7 @@ type Props = {
 type State = {
   selectedMonth: number,
   selectedYear: number,
-  today: Date,
+  today: SimpleDate,
 };
 
 export default class CalendarContainer extends PureComponent<Props, State> {
@@ -22,7 +24,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
 
     const { year, month } = fromPath;
     return Object.assign(prevState, {
-      selectedMonth: month - 1,
+      selectedMonth: month,
       selectedYear: year,
     });
   }
@@ -30,11 +32,11 @@ export default class CalendarContainer extends PureComponent<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const today = new Date();
+    const todayDate = today();
     this.state = {
-      selectedMonth: today.getMonth(),
-      selectedYear: today.getFullYear(),
-      today,
+      selectedMonth: todayDate.month,
+      selectedYear: todayDate.year,
+      today: todayDate,
     };
     (this: any).onKeyDown = this.onKeyDown.bind(this);
   }
@@ -56,10 +58,10 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     const { selectedYear, selectedMonth } = this.state;
     switch (event.key) {
       case 'ArrowLeft':
-        history.push(getCalendarPath(selectedYear, selectedMonth - 1));
+        routeToPreviousMonth(history, selectedYear, selectedMonth);
         break;
       case 'ArrowRight':
-        history.push(getCalendarPath(selectedYear, selectedMonth + 1));
+        routeToNextMonth(history, selectedYear, selectedMonth);
         break;
       default:
         break;
@@ -85,18 +87,29 @@ function getDateFromPath(match: Match): { year: number, month: number } {
     };
   }
 
-  const now = new Date();
-  return { year: now.getFullYear(), month: now.getMonth() + 1 };
+  return today();
+}
+
+function routeToPreviousMonth(
+  history: RouterHistory,
+  currentYear: number,
+  currentMonth: number,
+) {
+  const { year, month } = previousMonth(currentYear, currentMonth);
+  history.push(getCalendarPath(year, month));
+}
+
+function routeToNextMonth(
+  history: RouterHistory,
+  currentYear: number,
+  currentMonth: number,
+) {
+  const { year, month } = nextMonth(currentYear, currentMonth);
+  history.push(getCalendarPath(year, month));
 }
 
 function getCalendarPath(year: number, month: number): string {
-  if (month === -1) {
-    return `/calendar/${year - 1}/12`;
-  } else if (month === 12) {
-    return `/calendar/${year + 1}/01`;
-  }
-
-  return `/calendar/${year}/${month + 1}`;
+  return `/calendar/${year}/${month}`;
 }
 
 function hadModifierKey(event: SyntheticKeyboardEvent<*>) {

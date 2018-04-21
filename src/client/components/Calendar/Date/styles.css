@@ -1,4 +1,4 @@
-.calendar .day-entry {
+.calendar .date-entry {
   display: flex;
   flex-direction: column;
   padding: 7px 0;
@@ -9,19 +9,19 @@
   color: black;
 }
 
-.calendar .day-entry:first-child {
+.calendar .date-entry:first-child {
   border-top-left-radius: var(--calendar-border-radius);
 }
 
-.calendar .day-entry:nth-child(7) {
+.calendar .date-entry:nth-child(7) {
   border-top-right-radius: var(--calendar-border-radius);
 }
 
-.calendar .day-entry:nth-last-child(7) {
+.calendar .date-entry:nth-last-child(7) {
   border-bottom-left-radius: var(--calendar-border-radius);
 }
 
-.calendar .day-entry:last-child {
+.calendar .date-entry:last-child {
   border-bottom-right-radius: var(--calendar-border-radius);
 }
 
@@ -29,7 +29,7 @@
   opacity: 0.4;
 }
 
-.calendar .day-text {
+.calendar .date-text {
   text-align: center;
   font-size: 1em;
   width: 2em;

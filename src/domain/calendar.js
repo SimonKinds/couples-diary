@@ -1,8 +1,5 @@
 // @flow
 
-export type SimpleDate = { year: number, month: number, date: number };
-export type CalendarDate = SimpleDate & { inMonth: boolean };
-
 export function datesOfMonth(year: number, month: number): Array<SimpleDate> {
   const dates = [];
 
@@ -62,7 +59,7 @@ function toDateStartingMonday(day: number) {
   return startingMonday;
 }
 
-function previousMonth(
+export function previousMonth(
   year: number,
   month: number,
 ): { year: number, month: number } {
@@ -72,7 +69,7 @@ function previousMonth(
   return { year, month: month - 1 };
 }
 
-function nextMonth(
+export function nextMonth(
   year: number,
   month: number,
 ): { year: number, month: number } {
@@ -80,4 +77,13 @@ function nextMonth(
     return { year: year + 1, month: 1 };
   }
   return { year, month: month + 1 };
+}
+
+export function today(): SimpleDate {
+  const now = new Date();
+  return {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    date: now.getDate(),
+  };
 }

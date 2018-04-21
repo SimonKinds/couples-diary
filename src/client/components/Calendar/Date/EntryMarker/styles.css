@@ -1,16 +1,16 @@
-.calendar .day-entry .entry-marker {
+.calendar .date-entry .entry-marker {
   height: 10px;
   width: 10px;
   border-radius: 50%;
 }
 
-.calendar .day-entry .entry-marker:nth-child(2) {
+.calendar .date-entry .entry-marker:nth-child(2) {
   margin-left: 5px;
 }
 
-.calendar .day-entry .him {
+.calendar .date-entry .him {
   background-color: rgb(0, 0, 128);
 }
-.calendar .day-entry .her {
+.calendar .date-entry .her {
   background-color: rgb(127, 26, 26);
 }
