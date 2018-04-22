@@ -80,14 +80,10 @@ export default class CalendarContainer extends PureComponent<Props, State> {
 }
 
 function getDateFromPath(match: Match): { year: number, month: number } {
-  if (match.params.year != null && match.params.month != null) {
-    return {
-      year: parseFloat(match.params.year),
-      month: parseFloat(match.params.month),
-    };
-  }
-
-  return today();
+  return {
+    year: parseFloat(match.params.year),
+    month: parseFloat(match.params.month),
+  };
 }
 
 function routeToPreviousMonth(

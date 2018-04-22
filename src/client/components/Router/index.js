@@ -8,6 +8,7 @@ import Calendar from '../Calendar';
 import Entry from '../Entry';
 import Login from '../Login';
 import FourOhFour from '../FourOhFour';
+import { today } from '../../../domain/calendar';
 
 type Props = {
   isLoggedIn: boolean,
@@ -26,6 +27,7 @@ export default class Router extends PureComponent<Props, State> {
       this,
     );
     (this: any).renderEntryComponent = this.renderEntryComponent.bind(this);
+    (this: any).renderDefault = this.renderDefault.bind(this);
   }
 
   renderLoginComponent(props: ContextRouter) {
@@ -48,11 +50,15 @@ export default class Router extends PureComponent<Props, State> {
     return <Redirect to="/login" />;
   }
 
+  renderDefault() {
+    return redirectToFitting(this.props.isLoggedIn);
+  }
+
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route exact path="/" render={this.renderCalendarComponent} />
+          <Route exact path="/" render={this.renderDefault} />
           <Route
             exact
             path="/calendar/:year/:month"
@@ -69,4 +75,13 @@ export default class Router extends PureComponent<Props, State> {
       </BrowserRouter>
     );
   }
+}
+
+function redirectToFitting(isLoggedIn: boolean) {
+  if (isLoggedIn) {
+    const { year, month } = today();
+    return <Redirect to={`/calendar/${year}/${month}`} />;
+  }
+
+  return <Redirect to="/login" />;
 }
