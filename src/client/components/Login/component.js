@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import Form from './Form';
 import Input from './Input';
 import SubmitButton from './SubmitButton';
-import Loader from './Loader';
+import Loader from '../Loader';
 
 import './styles.css';
 

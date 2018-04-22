@@ -1,12 +1,11 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 
+import Loader from '../Loader';
 import DayName from './DayName';
 import CalendarDate from './Date';
 import MonthHeader from './MonthHeader';
-
-import { calendarMonth } from '../../../domain/calendar';
 
 import './styles.css';
 
@@ -14,40 +13,19 @@ type Props = {
   today: SimpleDate,
   selectedYear: number,
   selectedMonth: number,
+  entries: Array<SummarizedEntry>,
+  loading: boolean,
 };
 type State = {};
 
 const NAMES_OF_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 export default class Calendar extends PureComponent<Props, State> {
-  render() {
-    const { today, selectedYear, selectedMonth } = this.props;
-    return (
-      <section>
-        <div className="calendar">
-          <MonthHeader year={selectedYear} month={selectedMonth} />
-          <div className="day-names">{getDayNames()}</div>
-          <div className="grid">
-            {getDates(selectedYear, selectedMonth, today)}
-          </div>
-        </div>
-      </section>
-    );
-  }
-}
+  getDates() {
+    const { entries, today } = this.props;
 
-function getDayNames() {
-  return NAMES_OF_DAYS.map(name => <DayName key={name} name={name} />);
-}
-
-function getDates(
-  currentYear: number,
-  currentMonth: number,
-  today: SimpleDate,
-) {
-  return calendarMonth(currentYear, currentMonth).map(
-    ({
-      year, month, date, inMonth,
+    return entries.map(({
+      year, month, date, entryHim, entryHer, inMonth,
     }) => (
       <CalendarDate
         key={`${year}:${month}:${date}`}
@@ -58,8 +36,38 @@ function getDates(
         currentDate={
           year === today.year && month === today.month && date === today.date
         }
-        entryHim
+        entryHim={entryHim}
+        entryHer={entryHer}
       />
-    ),
-  );
+    ));
+  }
+
+  renderCalendar() {
+    return (
+      <Fragment>
+        <div className="day-names">{getDayNames()}</div>
+        <div className="grid">{this.getDates()}</div>
+      </Fragment>
+    );
+  }
+
+  render() {
+    const { selectedYear, selectedMonth, loading } = this.props;
+    return (
+      <section>
+        <div className="calendar">
+          <MonthHeader year={selectedYear} month={selectedMonth} />
+          {loading ? (
+            <Loader active className="centered-loader" />
+          ) : (
+            this.renderCalendar()
+          )}
+        </div>
+      </section>
+    );
+  }
+}
+
+function getDayNames() {
+  return NAMES_OF_DAYS.map(name => <DayName key={name} name={name} />);
 }

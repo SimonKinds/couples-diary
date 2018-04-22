@@ -1,6 +1,6 @@
 // @flow
 
-export function datesOfMonth(year: number, month: number): Array<SimpleDate> {
+function datesOfMonth(year: number, month: number): Array<SimpleDate> {
   const dates = [];
 
   const dateCount = numberOfDatesInMonth(year, month);
@@ -10,10 +10,7 @@ export function datesOfMonth(year: number, month: number): Array<SimpleDate> {
   return dates;
 }
 
-export function calendarMonth(
-  year: number,
-  month: number,
-): Array<CalendarDate> {
+function calendarMonth(year: number, month: number): Array<CalendarDate> {
   const currentMonth = datesOfMonth(year, month).map(d =>
     Object.assign({}, d, { inMonth: true }));
 
@@ -59,7 +56,7 @@ function toDateStartingMonday(day: number) {
   return startingMonday;
 }
 
-export function previousMonth(
+function previousMonth(
   year: number,
   month: number,
 ): { year: number, month: number } {
@@ -69,7 +66,7 @@ export function previousMonth(
   return { year, month: month - 1 };
 }
 
-export function nextMonth(
+function nextMonth(
   year: number,
   month: number,
 ): { year: number, month: number } {
@@ -79,7 +76,7 @@ export function nextMonth(
   return { year, month: month + 1 };
 }
 
-export function today(): SimpleDate {
+function today(): SimpleDate {
   const now = new Date();
   return {
     year: now.getFullYear(),
@@ -87,3 +84,11 @@ export function today(): SimpleDate {
     date: now.getDate(),
   };
 }
+
+module.exports = {
+  datesOfMonth,
+  calendarMonth,
+  previousMonth,
+  nextMonth,
+  today,
+};

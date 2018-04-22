@@ -16,6 +16,9 @@ type State = {
   selectedMonth: number,
   selectedYear: number,
   today: SimpleDate,
+  entries: Array<SummarizedEntry>,
+  shouldLoad: boolean,
+  loading: boolean,
 };
 
 export default class CalendarContainer extends PureComponent<Props, State> {
@@ -26,6 +29,8 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     return Object.assign(prevState, {
       selectedMonth: month,
       selectedYear: year,
+      shouldLoad: true,
+      loading: true,
     });
   }
 
@@ -37,12 +42,23 @@ export default class CalendarContainer extends PureComponent<Props, State> {
       selectedMonth: todayDate.month,
       selectedYear: todayDate.year,
       today: todayDate,
+      entries: [],
+      shouldLoad: true,
+      loading: true,
     };
     (this: any).onKeyDown = this.onKeyDown.bind(this);
+    (this: any).loadCalendar = this.loadCalendar.bind(this);
   }
 
   componentDidMount() {
+    this.loadCalendar();
     window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  componentDidUpdate() {
+    if (this.state.shouldLoad) {
+      this.loadCalendar();
+    }
   }
 
   componentWillUnmount() {
@@ -68,14 +84,17 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     }
   }
 
+  loadCalendar() {
+    const { selectedYear: year, selectedMonth: month } = this.state;
+    fetch(`/api/calendar/${year}/${month}`)
+      .then(res => res.json())
+      .then(entries =>
+        this.setState({ entries, shouldLoad: false, loading: false }))
+      .catch(e => console.error(e));
+  }
+
   render() {
-    return (
-      <Calendar
-        selectedYear={this.state.selectedYear}
-        selectedMonth={this.state.selectedMonth}
-        today={this.state.today}
-      />
-    );
+    return <Calendar {...this.state} />;
   }
 }
 
