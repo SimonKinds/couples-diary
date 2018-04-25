@@ -9,3 +9,14 @@ declare type SummarizedEntry = {
   entryHim: boolean,
   entryHer: boolean,
 };
+
+declare type User = {
+  username: string,
+  name: string,
+  color: string,
+  couple: ?string,
+};
+
+declare type UserWithPassword = User & {
+  password: string,
+};

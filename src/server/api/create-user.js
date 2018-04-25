@@ -1,17 +1,9 @@
 // @flow
 
-type User = {
-  username: string,
-  name: string,
-  color: string,
-  couple: ?string,
-};
-
-type UserWithPassword = User & {
-  password: string,
-};
-
-function createUser(requestBody: mixed, users: Array<UserWithPassword>) {
+export default function createUser(
+  requestBody: mixed,
+  users: Array<UserWithPassword>,
+) {
   const user = parse(requestBody);
 
   if (!user) {
@@ -49,13 +41,13 @@ function parse(body: mixed): ?UserWithPassword {
     } = body;
 
     return {
-      username, name, color, password, couple: null,
+      username,
+      name,
+      color,
+      password,
+      couple: null,
     };
   }
 
   return null;
 }
-
-module.exports = {
-  createUser,
-};

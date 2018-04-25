@@ -1,21 +1,10 @@
 // @flow
-import api from './api';
-
-type User = {
-  username: string,
-  name: string,
-  color: string,
-  couple: ?string,
-};
-
-type UserWithPassword = User & {
-  password: string,
-};
+import createUser from './create-user';
 
 describe('API', () => {
   describe('create user', () => {
     test('success', () => {
-      expect(api.createUser(userWithPassword(), [])).toEqual({
+      expect(createUser(userWithPassword(), [])).toEqual({
         status: 200,
         body: user(),
       });
@@ -24,7 +13,7 @@ describe('API', () => {
     test('username taken', () => {
       const users = [userWithPassword()];
 
-      expect(api.createUser(userWithPassword(), users)).toEqual({
+      expect(createUser(userWithPassword(), users)).toEqual({
         status: 409,
         body: { reason: 'Username is taken' },
       });
@@ -32,7 +21,7 @@ describe('API', () => {
 
     describe('invalid body', () => {
       test('empty', () => {
-        expect(api.createUser({}, [])).toEqual({
+        expect(createUser({}, [])).toEqual({
           status: 400,
         });
       });
@@ -40,12 +29,7 @@ describe('API', () => {
       test('missing username', () => {
         const body = userWithPassword();
         delete body.username;
-        expect(
-          api.createUser(
-            body,
-            [],
-          ),
-        ).toEqual({
+        expect(createUser(body, [])).toEqual({
           status: 400,
         });
       });
@@ -53,12 +37,7 @@ describe('API', () => {
       test('missing name', () => {
         const body = userWithPassword();
         delete body.name;
-        expect(
-          api.createUser(
-            body,
-            [],
-          ),
-        ).toEqual({
+        expect(createUser(body, [])).toEqual({
           status: 400,
         });
       });
@@ -66,12 +45,7 @@ describe('API', () => {
       test('missing password', () => {
         const body = userWithPassword();
         delete body.password;
-        expect(
-          api.createUser(
-            body,
-            [],
-          ),
-        ).toEqual({
+        expect(createUser(body, [])).toEqual({
           status: 400,
         });
       });
