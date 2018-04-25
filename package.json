@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --open",
-    "start:server": "nodemon --exec babel-node --watch src/server src/server/index.js",
+    "start:server": "BABEL_ENV=server nodemon --exec babel-node --watch src/server src/server/index.js",
     "flow": "flow check",
     "lint": "eslint src",
     "lint:fix": "npm run format && eslint --fix src",

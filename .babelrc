@@ -4,6 +4,9 @@
   "env": {
     "test": {
       "presets": [["latest-node", { "target": "current" }], "react", "flow"]
+    },
+    "server": {
+      "presets": [["latest-node", { "target": "current" }], "react", "flow"]
     }
   }
 }
