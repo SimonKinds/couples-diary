@@ -1,38 +1,72 @@
 // @flow
 
-import type { $Request } from 'express';
+import type { $Request, $Response } from 'express';
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import expressSession from 'express-session';
 
 import calendar from '../domain/calendar';
 import api from './api';
+import { hash, comparePasswordToHash } from './api/password';
 
 const app = express();
 app.use(bodyParser.json());
+app.use(
+  expressSession({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
 
 const users = [];
 
 app.post('/api/user/create', (req: $Request, res) => {
-  const result = api.createUser(req.body, users);
-  res.status(result.status);
+  send(api.createUser(req.body, users, hash), res);
+});
 
+app.post('/api/login', (req: $Request, res) => {
+  send(
+    api.loginUser(
+      req.body,
+      users,
+      saveUserInSession(req),
+      comparePasswordToHash,
+    ),
+    res,
+  );
+});
+
+function saveUserInSession(req: $Request) {
+  return (user: User) => {
+    // $FlowFixMe: Not in flow-typed
+    req.session.user = user;
+  };
+}
+
+function send(
+  result: | { status: number, body?: mixed }
+    | Promise<{ status: number, body?: mixed }>,
+  res: $Response,
+) {
+  if (result instanceof Promise) {
+    result
+      .then(plain => sendPlain(plain, res))
+      .catch(() => sendPlain({ status: 500 }, res));
+  } else {
+    sendPlain(result, res);
+  }
+}
+
+function sendPlain(result: { status: number, body?: mixed }, res: $Response) {
+  res.status(result.status);
   if (result.body) {
     res.send(result.body);
   } else {
     res.send();
   }
-});
-
-app.post('/api/login', (req: $Request, res) => {
-  // $FlowFixMe
-  const { username, password } = req.body;
-  if (username === 'Simon' && password === 'password') {
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(404);
-  }
-});
+}
 
 app.get('/api/calendar/:year/:month', (req: Request, res) => {
   // $FlowFixMe

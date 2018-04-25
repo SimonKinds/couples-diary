@@ -3,7 +3,8 @@
 export default function createUser(
   requestBody: mixed,
   users: Array<UserWithPassword>,
-) {
+  hash: (password: string) => Promise<string>,
+): ApiResponse | Promise<ApiResponse> {
   const user = parse(requestBody);
 
   if (!user) {
@@ -14,9 +15,13 @@ export default function createUser(
     return { status: 409, body: { reason: 'Username is taken' } };
   }
 
-  users.push(user);
-  const { password, ...rest } = user;
-  return { status: 200, body: rest };
+  return hash(user.password).then((hashed) => {
+    user.password = hashed;
+    users.push(user);
+
+    const { password, ...rest } = user;
+    return { status: 200, body: rest };
+  });
 }
 
 function usernameTaken(username: string, users: Array<UserWithPassword>) {

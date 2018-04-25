@@ -20,3 +20,14 @@ declare type User = {
 declare type UserWithPassword = User & {
   password: string,
 };
+
+
+declare type Credentials = {
+  username: string,
+  password: string,
+};
+
+declare type ApiResponse = {
+  status: number,
+  body?: mixed,
+};
