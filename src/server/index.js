@@ -45,11 +45,7 @@ function saveUserInSession(req: $Request) {
   };
 }
 
-function send(
-  result: | { status: number, body?: mixed }
-    | Promise<{ status: number, body?: mixed }>,
-  res: $Response,
-) {
+function send(result: ApiResponse | Promise<ApiResponse>, res: $Response) {
   if (result instanceof Promise) {
     result
       .then(plain => sendPlain(plain, res))
@@ -59,7 +55,7 @@ function send(
   }
 }
 
-function sendPlain(result: { status: number, body?: mixed }, res: $Response) {
+function sendPlain(result: ApiResponse, res: $Response) {
   res.status(result.status);
   if (result.body) {
     res.send(result.body);
