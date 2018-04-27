@@ -30,10 +30,11 @@ export default class CalendarContainer extends PureComponent<Props, State> {
       selectedMonth: month,
       selectedYear: year,
       shouldLoad: true,
-      loading: true,
+      loading: prevState.loading,
     });
   }
 
+  loadingTimer: ?TimeoutID;
   calendarFetch: ?CancelablePromise<Response>;
 
   constructor(props: Props) {
@@ -48,6 +49,8 @@ export default class CalendarContainer extends PureComponent<Props, State> {
       shouldLoad: true,
       loading: true,
     };
+
+    this.loadingTimer = null;
     this.calendarFetch = null;
     (this: any).onKeyDown = this.onKeyDown.bind(this);
     (this: any).loadCalendar = this.loadCalendar.bind(this);
@@ -94,18 +97,25 @@ export default class CalendarContainer extends PureComponent<Props, State> {
   }
 
   fetchCalendar(year: number, month: number) {
+    this.loadingTimer = setTimeout(() => this.setState({ loading: true }), 50);
+
     this.calendarFetch = makeCancelable(
       fetch(`/api/calendar/${year}/${month}`),
     );
 
     this.calendarFetch.promise
       .then(res => res.json())
-      .then(entries =>
-        this.setState({ entries, shouldLoad: false, loading: false }))
+      .then((entries) => {
+        this.cancelFetch();
+        this.setState({ entries, shouldLoad: false, loading: false });
+      })
       .catch(() => {});
   }
 
   cancelFetch() {
+    if (this.loadingTimer != null) {
+      clearTimeout(this.loadingTimer);
+    }
     if (this.calendarFetch != null) {
       this.calendarFetch.cancel();
     }
