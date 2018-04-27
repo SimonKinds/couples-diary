@@ -5,7 +5,7 @@ import type { RouterHistory } from 'react-router-dom';
 import Login from './component';
 
 type Props = {
-  setIsLoggedIn: (status: boolean) => void,
+  setUser: (user: ?User) => void,
   history: RouterHistory,
 };
 type State = {
@@ -32,12 +32,13 @@ export default class LoginContainer extends PureComponent<Props, State> {
       method: 'POST',
       body: JSON.stringify({ username, password }),
     })
-      .then(response => response.status)
-      .then((status) => {
+      .then(response => Promise.all([response.status, response.json()]))
+      .then(([status, user]) => {
         this.finishApiCall();
         if (status === 200) {
-          const { history, setIsLoggedIn } = this.props;
-          setIsLoggedIn(true);
+          const { history, setUser } = this.props;
+          // TODO: parse User
+          setUser(user);
           history.push('/');
         }
       })

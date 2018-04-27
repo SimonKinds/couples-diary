@@ -7,7 +7,7 @@ import './styles.css';
 
 type Props = {};
 type State = {
-  isLoggedIn: boolean,
+  user: ?User,
 };
 
 class App extends PureComponent<Props, State> {
@@ -15,23 +15,20 @@ class App extends PureComponent<Props, State> {
     super(props);
 
     this.state = {
-      isLoggedIn: false,
+      user: null,
     };
 
-    (this: any).setIsLoggedIn = this.setIsLoggedIn.bind(this);
+    (this: any).setUser = this.setUser.bind(this);
   }
 
-  setIsLoggedIn(status: boolean) {
-    this.setState({ isLoggedIn: status });
+  setUser(user: ?User) {
+    this.setState({ user });
   }
 
   render() {
     return (
       <div className="container">
-        <Router
-          isLoggedIn={this.state.isLoggedIn}
-          setIsLoggedIn={this.setIsLoggedIn}
-        />
+        <Router user={this.state.user} setUser={this.setUser} />
       </div>
     );
   }

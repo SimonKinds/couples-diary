@@ -11,8 +11,8 @@ import FourOhFour from '../FourOhFour';
 import { today } from '../../../domain/calendar';
 
 type Props = {
-  isLoggedIn: boolean,
-  setIsLoggedIn: (status: boolean) => void,
+  user: ?User,
+  setUser: (user: ?User) => void,
 };
 type State = {
   path: string,
@@ -31,27 +31,25 @@ export default class Router extends PureComponent<Props, State> {
   }
 
   renderLoginComponent(props: ContextRouter) {
-    return (
-      <Login key="login" setIsLoggedIn={this.props.setIsLoggedIn} {...props} />
-    );
+    return <Login key="login" setUser={this.props.setUser} {...props} />;
   }
 
   renderCalendarComponent(props: ContextRouter) {
-    if (this.props.isLoggedIn) {
+    if (this.props.user) {
       return <Calendar {...props} />;
     }
     return <Redirect to="/login" />;
   }
 
   renderEntryComponent(props: ContextRouter) {
-    if (this.props.isLoggedIn) {
+    if (this.props.user) {
       return <Entry {...props} />;
     }
     return <Redirect to="/login" />;
   }
 
   renderDefault() {
-    return redirectToFitting(this.props.isLoggedIn);
+    return redirectToFitting(this.props.user);
   }
 
   render() {
@@ -77,8 +75,8 @@ export default class Router extends PureComponent<Props, State> {
   }
 }
 
-function redirectToFitting(isLoggedIn: boolean) {
-  if (isLoggedIn) {
+function redirectToFitting(user: ?User) {
+  if (user) {
     const { year, month } = today();
     return <Redirect to={`/calendar/${year}/${month}`} />;
   }
