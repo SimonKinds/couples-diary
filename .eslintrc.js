@@ -21,5 +21,17 @@ module.exports = {
         aspects: ['noHref'],
       },
     ],
+    'react/sort-comp': [
+      2,
+      {
+        order: [
+          'static-methods',
+          'type-annotations',
+          'lifecycle',
+          'everything-else',
+          'render',
+        ],
+      },
+    ],
   },
 };

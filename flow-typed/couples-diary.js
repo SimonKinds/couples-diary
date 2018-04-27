@@ -1,5 +1,10 @@
-declare type SimpleDate = { year: number, month: number, date: number };
-declare type CalendarDate = SimpleDate & { inMonth: boolean };
+declare type CancelablePromise<T> = {
+  promise: Promise<T>,
+  cancel: () => void,
+}
+
+declare type SimpleDate = { year: number, month: number, date: number }
+declare type CalendarDate = SimpleDate & { inMonth: boolean }
 
 declare type SummarizedEntry = {
   year: number,
@@ -8,26 +13,26 @@ declare type SummarizedEntry = {
   inMonth: boolean,
   entryHim: boolean,
   entryHer: boolean,
-};
+}
 
 declare type User = {
   username: string,
   name: string,
   color: string,
   couple: ?string,
-};
+}
 
 declare type UserWithPassword = User & {
   password: string,
-};
+}
 
 
 declare type Credentials = {
   username: string,
   password: string,
-};
+}
 
 declare type ApiResponse = {
   status: number,
   body?: mixed,
-};
+}

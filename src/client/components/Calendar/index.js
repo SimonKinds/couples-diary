@@ -6,9 +6,9 @@ import type { Match, RouterHistory } from 'react-router-dom';
 import { previousMonth, nextMonth, today } from '../../../domain/calendar';
 
 import Calendar from './component';
+import makeCancelable from '../../make-cancelable';
 
 type Props = {
-  // eslint-disable-next-line react/no-unused-prop-types
   match: Match,
   history: RouterHistory,
 };
@@ -34,6 +34,8 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     });
   }
 
+  calendarFetch: ?CancelablePromise<Response>;
+
   constructor(props: Props) {
     super(props);
 
@@ -46,6 +48,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
       shouldLoad: true,
       loading: true,
     };
+    this.calendarFetch = null;
     (this: any).onKeyDown = this.onKeyDown.bind(this);
     (this: any).loadCalendar = this.loadCalendar.bind(this);
   }
@@ -63,6 +66,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.onKeyDown);
+    this.cancelFetch();
   }
 
   onKeyDown(event: SyntheticKeyboardEvent<Document>) {
@@ -85,12 +89,25 @@ export default class CalendarContainer extends PureComponent<Props, State> {
   }
 
   loadCalendar() {
-    const { selectedYear: year, selectedMonth: month } = this.state;
-    fetch(`/api/calendar/${year}/${month}`)
+    this.cancelFetch();
+    this.fetchCalendar(this.state.selectedYear, this.state.selectedMonth);
+  }
+
+  fetchCalendar(year: number, month: number) {
+    this.calendarFetch = makeCancelable(
+      fetch(`/api/calendar/${year}/${month}`),
+    );
+
+    this.calendarFetch.promise
       .then(res => res.json())
       .then(entries =>
-        this.setState({ entries, shouldLoad: false, loading: false }))
-      .catch(e => console.error(e));
+        this.setState({ entries, shouldLoad: false, loading: false }));
+  }
+
+  cancelFetch() {
+    if (this.calendarFetch != null) {
+      this.calendarFetch.cancel();
+    }
   }
 
   render() {
