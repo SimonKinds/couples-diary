@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, StrictMode } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
 
@@ -31,19 +31,31 @@ export default class Router extends PureComponent<Props, State> {
   }
 
   renderLoginComponent(props: ContextRouter) {
-    return <Login key="login" setUser={this.props.setUser} {...props} />;
+    return (
+      <StrictMode>
+        <Login key="login" setUser={this.props.setUser} {...props} />
+      </StrictMode>
+    );
   }
 
   renderCalendarComponent(props: ContextRouter) {
     if (this.props.user) {
-      return <Calendar {...props} />;
+      return (
+        <StrictMode>
+          <Calendar {...props} />
+        </StrictMode>
+      );
     }
     return <Redirect to="/login" />;
   }
 
   renderEntryComponent(props: ContextRouter) {
     if (this.props.user) {
-      return <Entry {...props} />;
+      return (
+        <StrictMode>
+          <Entry {...props} />
+        </StrictMode>
+      );
     }
     return <Redirect to="/login" />;
   }

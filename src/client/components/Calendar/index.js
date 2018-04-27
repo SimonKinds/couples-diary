@@ -101,7 +101,8 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     this.calendarFetch.promise
       .then(res => res.json())
       .then(entries =>
-        this.setState({ entries, shouldLoad: false, loading: false }));
+        this.setState({ entries, shouldLoad: false, loading: false }))
+      .catch(() => {});
   }
 
   cancelFetch() {
