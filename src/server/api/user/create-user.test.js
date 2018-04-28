@@ -1,5 +1,5 @@
 // @flow
-import { user, userWithPassword } from '../../test/utils';
+import { user, userWithPassword } from '../../../test/utils';
 import createUser from './create-user';
 
 describe('create user route', () => {

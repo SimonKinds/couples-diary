@@ -1,9 +1,9 @@
 // @flow
 
-import createUser from './create-user';
-import loginUser from './login-user';
+import { Router } from 'express';
+import userRoute from './user';
 
-module.exports = {
-  createUser,
-  loginUser,
-};
+const router = Router();
+router.use('/user', userRoute);
+
+export default router;

@@ -42,7 +42,7 @@ export default class LoginContainer extends PureComponent<Props, State> {
 
   login(username: string, password: string) {
     this.loginFetch = makeCancelable(
-      fetch('/api/login', {
+      fetch('/api/user/login', {
         headers: {
           'content-type': 'application/json',
         },
