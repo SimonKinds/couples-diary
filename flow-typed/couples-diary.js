@@ -15,15 +15,28 @@ declare type SummarizedEntry = {
   entryHer: boolean,
 }
 
+declare type UserId = string;
+declare type CoupleId = string;
+
 declare type User = {
+  id: UserId,
   username: string,
   name: string,
   color: string,
-  couple: ?string,
+  couple: ?CoupleId,
 }
 
 declare type UserWithPassword = User & {
   password: string,
+}
+
+declare type Entry = {
+  author: UserId,
+  couple: CoupleId,
+  date: SimpleDate,
+  text: string,
+  dateCreated: Date,
+  dateRead: Date,
 }
 
 

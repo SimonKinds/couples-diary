@@ -1,12 +1,12 @@
 // @flow
-import { user, userWithPassword } from '../../../test/utils';
+import { userWithPassword, userWithoutCouple } from '../../../test/utils';
 import createUser from './create-user';
 
 describe('create user route', () => {
   test('success', () =>
     expect(createUser(userWithPassword(), [], hash)).resolves.toEqual({
       status: 200,
-      body: user(),
+      body: userWithoutCouple(),
     }));
 
   test('username taken', () => {

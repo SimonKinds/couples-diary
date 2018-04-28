@@ -32,6 +32,8 @@ function parse(body: mixed): ?UserWithPassword {
   if (
     body != null &&
     typeof body === 'object' &&
+    body.id != null &&
+    typeof body.id === 'string' &&
     body.username != null &&
     typeof body.username === 'string' &&
     body.name != null &&
@@ -42,10 +44,11 @@ function parse(body: mixed): ?UserWithPassword {
     typeof body.password === 'string'
   ) {
     const {
-      username, name, color, password,
+      id, username, name, color, password,
     } = body;
 
     return {
+      id,
       username,
       name,
       color,
