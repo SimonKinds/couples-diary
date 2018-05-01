@@ -13,12 +13,14 @@
     "lint:fix": "npm run format && eslint --fix src",
     "format": "prettier --write \"src/**/*.js\"",
     "test": "jest",
-    "test:watch": "jest -o --watch"
+    "test:watch": "jest -o --watch",
+    "flow:check": "flow check",
+    "validate": "npm run lint && npm run flow:check && npm run test"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run test",
-      "pre-push": "npm run lint && npm run test"
+      "pre-commit": "npm run validate",
+      "pre-push": "npm run validate"
     }
   },
   "jest": {
