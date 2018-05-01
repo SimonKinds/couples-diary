@@ -1,5 +1,6 @@
 // @flow
 
+// $FlowFixMe: StrictMode not yet introduced
 import React, { PureComponent, StrictMode } from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import type { ContextRouter } from 'react-router-dom';
