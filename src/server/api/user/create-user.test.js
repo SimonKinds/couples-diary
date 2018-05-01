@@ -1,10 +1,10 @@
 // @flow
-import { userWithPassword, userWithoutCouple } from '../../../test/utils';
+import { userWithPassword, userWithoutCouple, user } from '../../../test/utils';
 import createUser from './create-user';
 
 describe('create user route', () => {
   test('success', () =>
-    expect(createUser(userWithPassword(), [], hash)).resolves.toEqual({
+    expect(createUserTest(userWithPassword(), [])).resolves.toEqual({
       status: 200,
       body: userWithoutCouple(),
     }));
@@ -12,7 +12,7 @@ describe('create user route', () => {
   test('username taken', () => {
     const users = [userWithPassword()];
 
-    expect(createUser(userWithPassword(), users, hash)).toEqual({
+    expect(createUserTest(userWithPassword(), users)).toEqual({
       status: 409,
       body: { reason: 'Username is taken' },
     });
@@ -20,7 +20,7 @@ describe('create user route', () => {
 
   describe('invalid body', () => {
     test('empty', () => {
-      expect(createUser({}, [], hash)).toEqual({
+      expect(createUserTest({}, [])).toEqual({
         status: 400,
       });
     });
@@ -28,7 +28,7 @@ describe('create user route', () => {
     test('missing username', () => {
       const body = userWithPassword();
       delete body.username;
-      expect(createUser(body, [], hash)).toEqual({
+      expect(createUserTest(body, [])).toEqual({
         status: 400,
       });
     });
@@ -36,7 +36,7 @@ describe('create user route', () => {
     test('missing name', () => {
       const body = userWithPassword();
       delete body.name;
-      expect(createUser(body, [], hash)).toEqual({
+      expect(createUserTest(body, [])).toEqual({
         status: 400,
       });
     });
@@ -44,13 +44,21 @@ describe('create user route', () => {
     test('missing password', () => {
       const body = userWithPassword();
       delete body.password;
-      expect(createUser(body, [], hash)).toEqual({
+      expect(createUserTest(body, [])).toEqual({
         status: 400,
       });
     });
   });
 });
 
+function createUserTest(body: mixed, users: Array<UserWithPassword>) {
+  return createUser(body, users, generateId, hash);
+}
+
 function hash(password: string) {
   return Promise.resolve(password);
+}
+
+function generateId() {
+  return user().id;
 }

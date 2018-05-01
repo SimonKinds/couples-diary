@@ -3,6 +3,7 @@
 export default function createUser(
   requestBody: mixed,
   users: Array<UserWithPassword>,
+  generateId: () => string,
   hash: (password: string) => Promise<string>,
 ): ApiResponse | Promise<ApiResponse> {
   const user = parse(requestBody);
@@ -15,11 +16,15 @@ export default function createUser(
     return { status: 409, body: { reason: 'Username is taken' } };
   }
 
-  return hash(user.password).then((hashed) => {
-    user.password = hashed;
-    users.push(user);
+  return hash(user.password).then((hashedPassword) => {
+    const hydratedUser = {
+      ...user,
+      id: generateId(),
+      password: hashedPassword,
+    };
+    users.push(hydratedUser);
 
-    const { password, ...rest } = user;
+    const { password, ...rest } = hydratedUser;
     return { status: 200, body: rest };
   });
 }
@@ -28,12 +33,10 @@ function usernameTaken(username: string, users: Array<UserWithPassword>) {
   return users.some(user => username === user.username);
 }
 
-function parse(body: mixed): ?UserWithPassword {
+function parse(body: mixed) {
   if (
     body != null &&
     typeof body === 'object' &&
-    body.id != null &&
-    typeof body.id === 'string' &&
     body.username != null &&
     typeof body.username === 'string' &&
     body.name != null &&
@@ -44,11 +47,10 @@ function parse(body: mixed): ?UserWithPassword {
     typeof body.password === 'string'
   ) {
     const {
-      id, username, name, color, password,
+      username, name, color, password,
     } = body;
 
     return {
-      id,
       username,
       name,
       color,
