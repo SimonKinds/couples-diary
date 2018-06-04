@@ -1,7 +1,7 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
+Object.defineProperty(exports, '__esModule', {
+  value: true,
 });
 exports.default = createEntry;
 function createEntry(user, body, entries) {
@@ -10,28 +10,28 @@ function createEntry(user, body, entries) {
   if (entry == null) {
     return {
       status: 400,
-      body: { reason: 'Invalid request body' }
+      body: { reason: 'Invalid request body' },
     };
   }
 
   if (!user) {
     return {
       status: 403,
-      body: { reason: 'Not logged in' }
+      body: { reason: 'Not logged in' },
     };
   }
 
   if (user.id !== entry.author) {
     return {
       status: 403,
-      body: { reason: 'You may not create entries for others' }
+      body: { reason: 'You may not create entries for others' },
     };
   }
 
   if (user.couple !== entry.couple) {
     return {
       status: 403,
-      body: { reason: 'You may not create entries for other couples' }
+      body: { reason: 'You may not create entries for other couples' },
     };
   }
 
@@ -40,10 +40,22 @@ function createEntry(user, body, entries) {
 }
 
 function parse(body) {
-  if (body != null && typeof body === 'object' && body.author != null && typeof body.author === 'string' && body.couple != null && typeof body.couple === 'string' && isSimpleDate(body.date) && body.text != null && typeof body.text === 'string' && body.dateCreated != null && body.dateCreated instanceof Date && body.dateRead != null && body.dateRead instanceof Date) {
-    const {
-      author, couple, date, text, dateCreated, dateRead
-    } = body;
+  if (
+    body != null &&
+    typeof body === 'object' &&
+    body.author != null &&
+    typeof body.author === 'string' &&
+    body.couple != null &&
+    typeof body.couple === 'string' &&
+    isSimpleDate(body.date) &&
+    body.text != null &&
+    typeof body.text === 'string' &&
+    body.dateCreated != null &&
+    body.dateCreated instanceof Date &&
+    body.dateRead != null &&
+    body.dateRead instanceof Date
+  ) {
+    const { author, couple, date, text, dateCreated, dateRead } = body;
 
     return {
       author,
@@ -52,7 +64,7 @@ function parse(body) {
       date,
       text,
       dateCreated,
-      dateRead
+      dateRead,
     };
   }
 
@@ -60,5 +72,14 @@ function parse(body) {
 }
 
 function isSimpleDate(date) {
-  return date != null && typeof date === 'object' && date.year != null && typeof date.year === 'number' && date.month != null && typeof date.month === 'number' && date.date != null && typeof date.date === 'number';
+  return (
+    date != null &&
+    typeof date === 'object' &&
+    date.year != null &&
+    typeof date.year === 'number' &&
+    date.month != null &&
+    typeof date.month === 'number' &&
+    date.date != null &&
+    typeof date.date === 'number'
+  );
 }

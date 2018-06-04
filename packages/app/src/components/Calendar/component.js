@@ -24,9 +24,7 @@ export default class Calendar extends PureComponent<Props, State> {
   getDates() {
     const { entries, today } = this.props;
 
-    return entries.map(({
-      year, month, date, entryHim, entryHer, inMonth,
-    }) => (
+    return entries.map(({ year, month, date, entryHim, entryHer, inMonth }) => (
       <CalendarDate
         key={`${year}:${month}:${date}`}
         year={year}

@@ -19,9 +19,7 @@ type State = {};
 
 export default class CalendarDate extends PureComponent<Props, State> {
   render() {
-    const {
-      year, month, date, currentMonth, currentDate,
-    } = this.props;
+    const { year, month, date, currentMonth, currentDate } = this.props;
     return (
       <Link
         className={getClassNamesEntry(currentMonth)}

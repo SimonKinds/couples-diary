@@ -8,7 +8,7 @@ describe('login user route', () => {
     const users = [userWithPassword()];
 
     return expect(
-      loginUser(credentials(), users, nullFunc, comparePasswordToHash),
+      loginUser(credentials(), users, nullFunc, comparePasswordToHash)
     ).resolves.toEqual({
       status: 200,
       body: user(),
@@ -24,7 +24,7 @@ describe('login user route', () => {
       credentials(),
       users,
       saveUserInSession,
-      comparePasswordToHash,
+      comparePasswordToHash
     ).then(() => {
       expect(saveUserInSession.mock.calls).toHaveLength(1);
       expect(saveUserInSession.mock.calls[0]).toEqual([user()]);
@@ -36,7 +36,7 @@ describe('login user route', () => {
     const saveUserInSession = jest.fn();
 
     expect(
-      loginUser(credentials(), users, saveUserInSession, comparePasswordToHash),
+      loginUser(credentials(), users, saveUserInSession, comparePasswordToHash)
     ).resolves.toEqual({
       status: 404,
       body: { reason: 'username/password combination not found' },
@@ -48,7 +48,7 @@ describe('login user route', () => {
     const saveUserInSession = jest.fn();
 
     expect(
-      loginUser(credentials(), users, saveUserInSession, comparePasswordToHash),
+      loginUser(credentials(), users, saveUserInSession, comparePasswordToHash)
     ).resolves.toEqual({
       status: 404,
       body: { reason: 'username/password combination not found' },
@@ -62,7 +62,7 @@ describe('login user route', () => {
     const saveUserInSession = jest.fn();
 
     expect(
-      loginUser(credentials(), users, saveUserInSession, comparePasswordToHash),
+      loginUser(credentials(), users, saveUserInSession, comparePasswordToHash)
     ).resolves.toEqual({
       status: 404,
       body: { reason: 'username/password combination not found' },

@@ -14,7 +14,7 @@ app.use(
     secret: 'keyboard cat',
     resave: false,
     saveUninitialized: false,
-  }),
+  })
 );
 
 app.use('/api', api);
@@ -25,7 +25,7 @@ app.get('/api/calendar/:year/:month', (req: Request, res) => {
   const dates = calendarMonth(year, month);
 
   res.send(
-    dates.map((date) => {
+    dates.map(date => {
       switch (date.date % 4) {
         case 0:
           return Object.assign({}, date, { entryHim: true, entryHer: false });
@@ -36,7 +36,7 @@ app.get('/api/calendar/:year/:month', (req: Request, res) => {
         default:
           return date;
       }
-    }),
+    })
   );
 });
 

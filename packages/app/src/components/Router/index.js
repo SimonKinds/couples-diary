@@ -25,7 +25,7 @@ export default class Router extends PureComponent<Props, State> {
 
     (this: any).renderLoginComponent = this.renderLoginComponent.bind(this);
     (this: any).renderCalendarComponent = this.renderCalendarComponent.bind(
-      this,
+      this
     );
     (this: any).renderEntryComponent = this.renderEntryComponent.bind(this);
     (this: any).renderDefault = this.renderDefault.bind(this);

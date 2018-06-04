@@ -4,7 +4,7 @@ export default function createUser(
   requestBody: mixed,
   users: Array<UserWithPassword>,
   generateId: () => string,
-  hash: (password: string) => Promise<string>,
+  hash: (password: string) => Promise<string>
 ): ApiResponse | Promise<ApiResponse> {
   const user = parse(requestBody);
 
@@ -16,7 +16,7 @@ export default function createUser(
     return { status: 409, body: { reason: 'Username is taken' } };
   }
 
-  return hash(user.password).then((hashedPassword) => {
+  return hash(user.password).then(hashedPassword => {
     const hydratedUser = {
       ...user,
       id: generateId(),
@@ -46,9 +46,7 @@ function parse(body: mixed) {
     body.password != null &&
     typeof body.password === 'string'
   ) {
-    const {
-      username, name, color, password,
-    } = body;
+    const { username, name, color, password } = body;
 
     return {
       username,

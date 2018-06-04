@@ -20,7 +20,7 @@ router.post('/create', (req: $Request, res) => {
 router.post('/login', (req: $Request, res) => {
   send(
     loginUser(req.body, users, saveUserInSession(req), comparePasswordToHash),
-    res,
+    res
   );
 });
 

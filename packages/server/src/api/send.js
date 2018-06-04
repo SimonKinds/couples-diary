@@ -3,7 +3,7 @@ import type { $Response } from 'express';
 
 export default function send(
   result: ApiResponse | Promise<ApiResponse>,
-  res: $Response,
+  res: $Response
 ) {
   if (result instanceof Promise) {
     result

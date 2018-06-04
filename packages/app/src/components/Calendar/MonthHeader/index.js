@@ -46,7 +46,7 @@ export default class MonthHeader extends PureComponent<Props, State> {
 function link(
   currentYear: number,
   currentMonth: number,
-  calendarFunction: CalendarFunction,
+  calendarFunction: CalendarFunction
 ) {
   const { year, month } = calendarFunction(currentYear, currentMonth);
   return <Link to={getCalendarPath(year, month)}>{monthName(month)}</Link>;

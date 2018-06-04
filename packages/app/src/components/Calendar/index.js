@@ -1,16 +1,16 @@
 // @flow
 
-import React, { PureComponent } from "react";
-import type { Match, RouterHistory } from "react-router-dom";
+import React, { PureComponent } from 'react';
+import type { Match, RouterHistory } from 'react-router-dom';
 
-import { previousMonth, nextMonth, today } from "couples-diary-core";
+import { previousMonth, nextMonth, today } from 'couples-diary-core';
 
-import Calendar from "./component";
-import makeCancelable from "../../make-cancelable";
+import Calendar from './component';
+import makeCancelable from '../../make-cancelable';
 
 type Props = {
   match: Match,
-  history: RouterHistory
+  history: RouterHistory,
 };
 type State = {
   selectedMonth: number,
@@ -18,7 +18,7 @@ type State = {
   today: SimpleDate,
   entries: Array<SummarizedEntry>,
   shouldLoad: boolean,
-  loading: boolean
+  loading: boolean,
 };
 
 export default class CalendarContainer extends PureComponent<Props, State> {
@@ -31,7 +31,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
       selectedYear: year,
       shouldLoad:
         year !== prevState.selectedYear || month !== prevState.selectedMonth,
-      loading: prevState.loading
+      loading: prevState.loading,
     };
   }
 
@@ -48,7 +48,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
       today: todayDate,
       entries: [],
       shouldLoad: true,
-      loading: true
+      loading: true,
     };
 
     this.loadingTimer = null;
@@ -59,7 +59,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
 
   componentDidMount() {
     this.loadCalendar();
-    window.addEventListener("keydown", this.onKeyDown);
+    window.addEventListener('keydown', this.onKeyDown);
   }
 
   componentDidUpdate() {
@@ -69,7 +69,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    window.removeEventListener("keydown", this.onKeyDown);
+    window.removeEventListener('keydown', this.onKeyDown);
     this.cancelFetch();
   }
 
@@ -81,10 +81,10 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     const { history } = this.props;
     const { selectedYear, selectedMonth } = this.state;
     switch (event.key) {
-      case "ArrowLeft":
+      case 'ArrowLeft':
         routeToPreviousMonth(history, selectedYear, selectedMonth);
         break;
-      case "ArrowRight":
+      case 'ArrowRight':
         routeToNextMonth(history, selectedYear, selectedMonth);
         break;
       default:
@@ -130,7 +130,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
 function getDateFromPath(match: Match): { year: number, month: number } {
   return {
     year: parseFloat(match.params.year),
-    month: parseFloat(match.params.month)
+    month: parseFloat(match.params.month),
   };
 }
 

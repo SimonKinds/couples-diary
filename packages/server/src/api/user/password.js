@@ -10,7 +10,7 @@ export function hash(password: string) {
 
 export function comparePasswordToHash(
   password: string,
-  hashedPassword: string,
+  hashedPassword: string
 ) {
   return bcryptCompare(password, hashedPassword);
 }

@@ -12,7 +12,7 @@ export default function makeCancelable(promise: Promise<*>) {
     promise.then(
       /* eslint-disable prefer-promise-reject-errors */
       val => (hasCanceled ? reject({ isCanceled: true }) : resolve(val)),
-      error => (hasCanceled ? reject({ isCanceled: true }) : reject(error)),
+      error => (hasCanceled ? reject({ isCanceled: true }) : reject(error))
     );
   });
 

@@ -2,7 +2,6 @@
 
 import { datesOfMonth, calendarMonth } from './calendar';
 
-
 describe('calendar', () => {
   describe('datesOfMonth', () => {
     test('months are 1-indexed', () => {
@@ -39,7 +38,7 @@ describe('calendar', () => {
         'starting on monday and ending on sunday',
       () => {
         expect(calendarMonth(2010, 2)).toHaveLength(28);
-      },
+      }
     );
 
     test('fills values from previous month if necessary', () => {

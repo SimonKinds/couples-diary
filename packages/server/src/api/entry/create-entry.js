@@ -3,7 +3,7 @@
 export default function createEntry(
   user: ?User,
   body: mixed,
-  entries: Array<Entry>,
+  entries: Array<Entry>
 ): ApiResponse {
   const entry = parse(body);
 
@@ -55,9 +55,7 @@ function parse(body: mixed): ?Entry {
     body.dateRead != null &&
     body.dateRead instanceof Date
   ) {
-    const {
-      author, couple, date, text, dateCreated, dateRead,
-    } = body;
+    const { author, couple, date, text, dateCreated, dateRead } = body;
 
     return {
       author,

@@ -15,7 +15,8 @@ function datesOfMonth(year: number, month: number): Array<SimpleDate> {
 
 function calendarMonth(year: number, month: number): Array<CalendarDate> {
   const currentMonth = datesOfMonth(year, month).map(d =>
-    Object.assign({}, d, { inMonth: true }));
+    Object.assign({}, d, { inMonth: true })
+  );
 
   const prevMonth = previousMonth(year, month);
   const daysSinceMonday = getDaysSinceMonday(toDate(currentMonth[0]));
@@ -25,7 +26,7 @@ function calendarMonth(year: number, month: number): Array<CalendarDate> {
 
   const nextMonthDate = nextMonth(year, month);
   const daysToSunday = getDaysToSunday(
-    toDate(currentMonth[currentMonth.length - 1]),
+    toDate(currentMonth[currentMonth.length - 1])
   );
   const datesOfNextMonth = datesOfMonth(nextMonthDate.year, nextMonthDate.month)
     .map(d => Object.assign({}, d, { inMonth: false }))
@@ -61,7 +62,7 @@ function toDateStartingMonday(day: number) {
 
 function previousMonth(
   year: number,
-  month: number,
+  month: number
 ): { year: number, month: number } {
   if (month === 1) {
     return { year: year - 1, month: 12 };
@@ -71,7 +72,7 @@ function previousMonth(
 
 function nextMonth(
   year: number,
-  month: number,
+  month: number
 ): { year: number, month: number } {
   if (month === 12) {
     return { year: year + 1, month: 1 };

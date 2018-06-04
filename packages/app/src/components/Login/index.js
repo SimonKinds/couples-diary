@@ -48,7 +48,7 @@ export default class LoginContainer extends PureComponent<Props, State> {
         },
         method: 'POST',
         body: JSON.stringify({ username, password }),
-      }),
+      })
     );
 
     this.loginFetch.promise

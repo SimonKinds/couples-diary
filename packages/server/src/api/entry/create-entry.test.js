@@ -21,7 +21,7 @@ describe('create entry route', () => {
 
   test('user id does not match author', () => {
     expect(
-      createEntry(user(), { ...entry(), author: 'another-user-id' }, []),
+      createEntry(user(), { ...entry(), author: 'another-user-id' }, [])
     ).toEqual({
       status: 403,
       body: { reason: 'You may not create entries for others' },
@@ -30,7 +30,7 @@ describe('create entry route', () => {
 
   test('user is not part of couple', () => {
     expect(
-      createEntry(user(), { ...entry(), couple: 'another-couple-id' }, []),
+      createEntry(user(), { ...entry(), couple: 'another-couple-id' }, [])
     ).toEqual({
       status: 403,
       body: { reason: 'You may not create entries for other couples' },
