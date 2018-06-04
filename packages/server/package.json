@@ -1,0 +1,28 @@
+{
+  "name": "couples-diary-server",
+  "version": "0.1.0",
+  "author": "Simon Kindström",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "nodemon --exec babel-node --watch src src/index.js",
+    "build": "babel src/** --out-dir dist",
+    "test": "jest"
+  },
+  "dependencies": {
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "bcrypt": "^2.0.1",
+    "body-parser": "^1.18.3",
+    "couples-diary-core": "^0.1.0",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.73.0",
+    "jest": "^23.1.0",
+    "nodemon": "^1.17.5"
+  }
+}
