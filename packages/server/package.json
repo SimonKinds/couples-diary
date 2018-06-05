@@ -6,11 +6,10 @@
   "private": true,
   "scripts": {
     "start": "nodemon --exec babel-node --watch src src/index.js",
-    "build": "babel src/** --out-dir dist",
+    "build": "babel src/** --out-dir build",
     "test": "jest"
   },
   "dependencies": {
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "bcrypt": "^2.0.1",
     "body-parser": "^1.18.3",
     "couples-diary-core": "^0.1.0",
@@ -19,6 +18,7 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.73.0",
