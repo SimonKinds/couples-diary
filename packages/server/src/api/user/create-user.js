@@ -24,8 +24,8 @@ export default function createUser(
     };
     users.push(hydratedUser);
 
-    const { password, ...rest } = hydratedUser;
-    return { status: 200, body: rest };
+    const { id, username, name, color, couple } = hydratedUser;
+    return { status: 200, body: { id, username, name, color, couple } };
   });
 }
 

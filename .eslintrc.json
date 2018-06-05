@@ -1,0 +1,24 @@
+{
+  "parser": "babel-eslint",
+  "plugins": [
+    "flowtype",
+    "jest"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:flowtype/recommended",
+    "plugin:jest/recommended",
+    "prettier",
+    "prettier/flowtype",
+    "prettier/react"
+  ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jest/globals": true
+  },
+ "rules": {
+   "no-unsafe-finally": 0
+ }
+}
