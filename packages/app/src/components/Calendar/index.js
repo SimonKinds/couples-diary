@@ -20,22 +20,9 @@ export default class CalendarContainer extends PureComponent {
     };
   }
 
-  constructor(props) {
-    super(props);
-
-    const todayDate = today();
-    this.state = {
-      selectedMonth: todayDate.month,
-      selectedYear: todayDate.year,
-      today: todayDate,
-      entries: [],
-      shouldLoad: true,
-      loading: true,
-    };
-
-    this.loadingTimer = null;
-    this.calendarFetch = null;
-  }
+  loadingTimer = null;
+  cancelableCalendarFetch = null;
+  state = initialState();
 
   componentDidMount() {
     this.loadCalendar();
@@ -80,11 +67,11 @@ export default class CalendarContainer extends PureComponent {
   fetchCalendar = (year, month) => {
     this.loadingTimer = setTimeout(() => this.setState({ loading: true }), 50);
 
-    this.calendarFetch = makeCancelable(
+    this.cancelableCalendarFetch = makeCancelable(
       fetch(`/api/calendar/${year}/${month}`)
     );
 
-    this.calendarFetch.promise
+    this.cancelableCalendarFetch.promise
       .then(res => res.json())
       .then(entries => {
         this.cancelFetch();
@@ -97,8 +84,8 @@ export default class CalendarContainer extends PureComponent {
     if (this.loadingTimer != null) {
       clearTimeout(this.loadingTimer);
     }
-    if (this.calendarFetch != null) {
-      this.calendarFetch.cancel();
+    if (this.cancelableCalendarFetch != null) {
+      this.cancelableCalendarFetch.cancel();
     }
   };
 
@@ -111,6 +98,18 @@ CalendarContainer.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 };
+
+function initialState() {
+  const todayDate = today();
+  return {
+    selectedMonth: todayDate.month,
+    selectedYear: todayDate.year,
+    today: todayDate,
+    entries: [],
+    shouldLoad: true,
+    loading: true,
+  };
+}
 
 function getDateFromPath(match) {
   return {

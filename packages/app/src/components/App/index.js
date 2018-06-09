@@ -4,13 +4,9 @@ import Router from '../Router';
 import './styles.css';
 
 class App extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      user: null,
-    };
-  }
+  state = {
+    user: null,
+  };
 
   setUser = user => {
     this.setState({ user });

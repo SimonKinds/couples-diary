@@ -8,14 +8,10 @@ import Loader from '../Loader';
 import './styles.css';
 
 export default class Login extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      username: '',
-      password: '',
-    };
-  }
+  state = {
+    username: '',
+    password: '',
+  };
 
   onUsernameChange = username => {
     this.setState({ username });

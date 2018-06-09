@@ -6,19 +6,14 @@ import makeCancelable from '../../make-cancelable';
 import Login from './component';
 
 export default class LoginContainer extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isLoggingIn: false,
-    };
-
-    this.loginFetch = null;
-  }
+  state = {
+    isLoggingIn: false,
+  };
+  cancelableLoginFetch = null;
 
   componentWillUnmount() {
-    if (this.loginFetch) {
-      this.loginFetch.cancel();
+    if (this.cancelableLoginFetch) {
+      this.cancelableLoginFetch.cancel();
     }
   }
 
@@ -28,7 +23,7 @@ export default class LoginContainer extends PureComponent {
   };
 
   login = (username, password) => {
-    this.loginFetch = makeCancelable(
+    this.cancelableLoginFetch = makeCancelable(
       fetch('/api/user/login', {
         headers: {
           'content-type': 'application/json',
@@ -38,7 +33,7 @@ export default class LoginContainer extends PureComponent {
       })
     );
 
-    this.loginFetch.promise
+    this.cancelableLoginFetch.promise
       .then(response => Promise.all([response.status, response.json()]))
       .then(([status, user]) => {
         this.finishApiCall();
