@@ -14,7 +14,6 @@ export default class LoginContainer extends PureComponent {
     };
 
     this.loginFetch = null;
-    this.onLoginSubmit = this.onLoginSubmit.bind(this);
   }
 
   componentWillUnmount() {
@@ -23,12 +22,12 @@ export default class LoginContainer extends PureComponent {
     }
   }
 
-  onLoginSubmit(username, password) {
+  onLoginSubmit = (username, password) => {
     this.setState({ isLoggingIn: true });
     this.login(username, password);
-  }
+  };
 
-  login(username, password) {
+  login = (username, password) => {
     this.loginFetch = makeCancelable(
       fetch('/api/user/login', {
         headers: {
@@ -51,11 +50,11 @@ export default class LoginContainer extends PureComponent {
         }
       })
       .catch(() => this.finishApiCall());
-  }
+  };
 
-  finishApiCall() {
+  finishApiCall = () => {
     this.setState({ isLoggingIn: false });
-  }
+  };
 
   render() {
     return (

@@ -4,15 +4,9 @@ import PropTypes from 'prop-types';
 import './styles.css';
 
 export default class LoginInput extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.onChange = this.onChange.bind(this);
-  }
-
-  onChange(event) {
+  onChange = event => {
     this.props.onChange(event.currentTarget.value);
-  }
+  };
 
   render() {
     return (

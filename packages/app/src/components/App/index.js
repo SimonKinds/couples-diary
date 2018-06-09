@@ -10,13 +10,11 @@ class App extends PureComponent {
     this.state = {
       user: null,
     };
-
-    this.setUser = this.setUser.bind(this);
   }
 
-  setUser(user) {
+  setUser = user => {
     this.setState({ user });
-  }
+  };
 
   render() {
     return (

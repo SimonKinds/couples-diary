@@ -9,24 +9,15 @@ import Login from '../Login';
 import FourOhFour from '../FourOhFour';
 
 export default class Router extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.renderLoginComponent = this.renderLoginComponent.bind(this);
-    this.renderCalendarComponent = this.renderCalendarComponent.bind(this);
-    this.renderEntryComponent = this.renderEntryComponent.bind(this);
-    this.renderDefault = this.renderDefault.bind(this);
-  }
-
-  renderLoginComponent(props) {
+  renderLoginComponent = props => {
     return (
       <StrictMode>
         <Login key="login" setUser={this.props.setUser} {...props} />
       </StrictMode>
     );
-  }
+  };
 
-  renderCalendarComponent(props) {
+  renderCalendarComponent = props => {
     if (this.props.user) {
       return (
         <StrictMode>
@@ -35,9 +26,9 @@ export default class Router extends PureComponent {
       );
     }
     return <Redirect to="/login" />;
-  }
+  };
 
-  renderEntryComponent(props) {
+  renderEntryComponent = props => {
     if (this.props.user) {
       return (
         <StrictMode>
@@ -46,11 +37,11 @@ export default class Router extends PureComponent {
       );
     }
     return <Redirect to="/login" />;
-  }
+  };
 
-  renderDefault() {
+  renderDefault = () => {
     return redirectToFitting(this.props.user);
-  }
+  };
 
   render() {
     return (

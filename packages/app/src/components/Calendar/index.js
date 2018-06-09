@@ -35,8 +35,6 @@ export default class CalendarContainer extends PureComponent {
 
     this.loadingTimer = null;
     this.calendarFetch = null;
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.loadCalendar = this.loadCalendar.bind(this);
   }
 
   componentDidMount() {
@@ -55,7 +53,7 @@ export default class CalendarContainer extends PureComponent {
     this.cancelFetch();
   }
 
-  onKeyDown(event) {
+  onKeyDown = event => {
     if (hadModifierKey(event)) {
       return;
     }
@@ -72,14 +70,14 @@ export default class CalendarContainer extends PureComponent {
       default:
         break;
     }
-  }
+  };
 
-  loadCalendar() {
+  loadCalendar = () => {
     this.cancelFetch();
     this.fetchCalendar(this.state.selectedYear, this.state.selectedMonth);
-  }
+  };
 
-  fetchCalendar(year, month) {
+  fetchCalendar = (year, month) => {
     this.loadingTimer = setTimeout(() => this.setState({ loading: true }), 50);
 
     this.calendarFetch = makeCancelable(
@@ -93,16 +91,16 @@ export default class CalendarContainer extends PureComponent {
         this.setState({ entries, shouldLoad: false, loading: false });
       })
       .catch(() => {});
-  }
+  };
 
-  cancelFetch() {
+  cancelFetch = () => {
     if (this.loadingTimer != null) {
       clearTimeout(this.loadingTimer);
     }
     if (this.calendarFetch != null) {
       this.calendarFetch.cancel();
     }
-  }
+  };
 
   render() {
     return <Calendar {...this.state} />;

@@ -15,23 +15,19 @@ export default class Login extends PureComponent {
       username: '',
       password: '',
     };
-
-    this.onUsernameChange = this.onUsernameChange.bind(this);
-    this.onPasswordChange = this.onPasswordChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onUsernameChange(username) {
+  onUsernameChange = username => {
     this.setState({ username });
-  }
+  };
 
-  onPasswordChange(password) {
+  onPasswordChange = password => {
     this.setState({ password });
-  }
+  };
 
-  onSubmit() {
+  onSubmit = () => {
     this.props.onSubmit(this.state.username, this.state.password);
-  }
+  };
 
   render() {
     return (
