@@ -1,31 +1,25 @@
-// @flow
-
-type PasswordComparator = (password: string, hash: string) => Promise<boolean>;
-
 export default function loginUser(
-  body: mixed,
-  users: Array<UserWithPassword>,
-  saveUserInSession: (user: User) => void,
-  comparePasswordToHash: PasswordComparator
-): ApiResponse | Promise<ApiResponse> {
+  body,
+  users,
+  saveUserInSession,
+  comparePasswordToHash
+) {
   const credentials = parse(body);
   if (!credentials) {
     return invalidBody();
   }
 
-  return findUser(credentials, users, comparePasswordToHash).then(
-    (user: ?User) => {
-      if (user == null) {
-        return userNotFound();
-      }
-
-      saveUserInSession(user);
-      return { status: 200, body: user };
+  return findUser(credentials, users, comparePasswordToHash).then(user => {
+    if (user == null) {
+      return userNotFound();
     }
-  );
+
+    saveUserInSession(user);
+    return { status: 200, body: user };
+  });
 }
 
-function parse(body: mixed): ?Credentials {
+function parse(body) {
   if (
     body != null &&
     typeof body === 'object' &&
@@ -45,11 +39,7 @@ function parse(body: mixed): ?Credentials {
   return null;
 }
 
-function findUser(
-  credentials: Credentials,
-  users: Array<UserWithPassword>,
-  comparePasswordToHash: PasswordComparator
-): Promise<?User> {
+function findUser(credentials, users, comparePasswordToHash) {
   return new Promise(resolve => {
     const result = users.find(
       ({ username }) => credentials.username === username

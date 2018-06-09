@@ -1,9 +1,6 @@
-// @flow
-
-// $FlowFixMe: StrictMode not yet introduced
 import React, { PureComponent, StrictMode } from 'react';
+import PropTypes from 'prop-types';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import type { ContextRouter } from 'react-router-dom';
 import { today } from 'couples-diary-core';
 
 import Calendar from '../Calendar';
@@ -11,27 +8,17 @@ import Entry from '../Entry';
 import Login from '../Login';
 import FourOhFour from '../FourOhFour';
 
-type Props = {
-  user: ?User,
-  setUser: (user: ?User) => void,
-};
-type State = {
-  path: string,
-};
-
-export default class Router extends PureComponent<Props, State> {
-  constructor(props: Props) {
+export default class Router extends PureComponent {
+  constructor(props) {
     super(props);
 
-    (this: any).renderLoginComponent = this.renderLoginComponent.bind(this);
-    (this: any).renderCalendarComponent = this.renderCalendarComponent.bind(
-      this
-    );
-    (this: any).renderEntryComponent = this.renderEntryComponent.bind(this);
-    (this: any).renderDefault = this.renderDefault.bind(this);
+    this.renderLoginComponent = this.renderLoginComponent.bind(this);
+    this.renderCalendarComponent = this.renderCalendarComponent.bind(this);
+    this.renderEntryComponent = this.renderEntryComponent.bind(this);
+    this.renderDefault = this.renderDefault.bind(this);
   }
 
-  renderLoginComponent(props: ContextRouter) {
+  renderLoginComponent(props) {
     return (
       <StrictMode>
         <Login key="login" setUser={this.props.setUser} {...props} />
@@ -39,7 +26,7 @@ export default class Router extends PureComponent<Props, State> {
     );
   }
 
-  renderCalendarComponent(props: ContextRouter) {
+  renderCalendarComponent(props) {
     if (this.props.user) {
       return (
         <StrictMode>
@@ -50,7 +37,7 @@ export default class Router extends PureComponent<Props, State> {
     return <Redirect to="/login" />;
   }
 
-  renderEntryComponent(props: ContextRouter) {
+  renderEntryComponent(props) {
     if (this.props.user) {
       return (
         <StrictMode>
@@ -88,7 +75,12 @@ export default class Router extends PureComponent<Props, State> {
   }
 }
 
-function redirectToFitting(user: ?User) {
+Router.propTypes = {
+  user: PropTypes.object,
+  setUser: PropTypes.func.isRequired,
+};
+
+function redirectToFitting(user) {
   if (user) {
     const { year, month } = today();
     return <Redirect to={`/calendar/${year}/${month}`} />;

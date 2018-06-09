@@ -1,11 +1,4 @@
-// @flow
-
-export default function createUser(
-  requestBody: mixed,
-  users: Array<UserWithPassword>,
-  generateId: () => string,
-  hash: (password: string) => Promise<string>
-): ApiResponse | Promise<ApiResponse> {
+export default function createUser(requestBody, users, generateId, hash) {
   const user = parse(requestBody);
 
   if (!user) {
@@ -29,11 +22,11 @@ export default function createUser(
   });
 }
 
-function usernameTaken(username: string, users: Array<UserWithPassword>) {
+function usernameTaken(username, users) {
   return users.some(user => username === user.username);
 }
 
-function parse(body: mixed) {
+function parse(body) {
   if (
     body != null &&
     typeof body === 'object' &&

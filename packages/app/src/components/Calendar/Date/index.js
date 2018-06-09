@@ -1,20 +1,10 @@
-// @flow
-
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import EntryMarker from './EntryMarker';
 
 import './styles.css';
 
-type Props = {
-  year: number,
-  month: number,
-  date: number,
-  currentMonth: boolean,
-  currentDate: boolean,
-  entryHim?: boolean,
-  entryHer?: boolean,
-};
 type State = {};
 
 export default class CalendarDate extends PureComponent<Props, State> {
@@ -35,10 +25,20 @@ export default class CalendarDate extends PureComponent<Props, State> {
   }
 }
 
-function getClassNamesEntry(currentMonth: boolean) {
+CalendarDate.propTypes = {
+  year: PropTypes.number.isRequired,
+  month: PropTypes.number.isRequired,
+  date: PropTypes.number.isRequired,
+  currentMonth: PropTypes.bool.isRequired,
+  currentDate: PropTypes.bool.isRequired,
+  entryHim: PropTypes.bool,
+  entryHer: PropTypes.bool,
+};
+
+function getClassNamesEntry(currentMonth) {
   return `date-entry${currentMonth ? '' : ' not-in-month'}`;
 }
 
-function getClassNamesText(currentDate: boolean) {
+function getClassNamesText(currentDate) {
   return `date-text${currentDate ? ' today' : ''}`;
 }

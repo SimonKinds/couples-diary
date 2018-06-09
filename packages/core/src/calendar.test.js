@@ -1,5 +1,3 @@
-// @flow
-
 import { datesOfMonth, calendarMonth } from './calendar';
 
 describe('calendar', () => {

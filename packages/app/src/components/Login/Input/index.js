@@ -1,26 +1,16 @@
-// @flow
-
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import './styles.css';
 
-type Props = {
-  id: string,
-  type: 'text' | 'password',
-  value: string,
-  label: string,
-  onChange: (value: string) => void,
-};
-type State = {};
-
-export default class LoginInput extends PureComponent<Props, State> {
-  constructor(props: Props) {
+export default class LoginInput extends PureComponent {
+  constructor(props) {
     super(props);
 
-    (this: any).onChange = this.onChange.bind(this);
+    this.onChange = this.onChange.bind(this);
   }
 
-  onChange(event: SyntheticEvent<HTMLInputElement>) {
+  onChange(event) {
     this.props.onChange(event.currentTarget.value);
   }
 
@@ -38,3 +28,11 @@ export default class LoginInput extends PureComponent<Props, State> {
     );
   }
 }
+
+LoginInput.propTypes = {
+  id: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(['text', 'password']).isRequired,
+  value: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};

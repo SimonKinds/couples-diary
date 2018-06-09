@@ -1,5 +1,5 @@
-// @flow
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Form from './Form';
 import Input from './Input';
 import SubmitButton from './SubmitButton';
@@ -7,17 +7,8 @@ import Loader from '../Loader';
 
 import './styles.css';
 
-type Props = {
-  onSubmit: (username: string, password: string) => void,
-  isLoggingIn: boolean,
-};
-type State = {
-  username: string,
-  password: string,
-};
-
-export default class Login extends PureComponent<Props, State> {
-  constructor(props: Props) {
+export default class Login extends PureComponent {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -25,16 +16,16 @@ export default class Login extends PureComponent<Props, State> {
       password: '',
     };
 
-    (this: any).onUsernameChange = this.onUsernameChange.bind(this);
-    (this: any).onPasswordChange = this.onPasswordChange.bind(this);
-    (this: any).onSubmit = this.onSubmit.bind(this);
+    this.onUsernameChange = this.onUsernameChange.bind(this);
+    this.onPasswordChange = this.onPasswordChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onUsernameChange(username: string) {
+  onUsernameChange(username) {
     this.setState({ username });
   }
 
-  onPasswordChange(password: string) {
+  onPasswordChange(password) {
     this.setState({ password });
   }
 
@@ -82,3 +73,8 @@ export default class Login extends PureComponent<Props, State> {
     );
   }
 }
+
+Login.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  isLoggingIn: PropTypes.bool.isRequired,
+};

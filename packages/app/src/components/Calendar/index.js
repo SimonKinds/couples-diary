@@ -1,28 +1,13 @@
-// @flow
-
 import React, { PureComponent } from 'react';
-import type { Match, RouterHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { previousMonth, nextMonth, today } from 'couples-diary-core';
 
 import Calendar from './component';
 import makeCancelable from '../../make-cancelable';
 
-type Props = {
-  match: Match,
-  history: RouterHistory,
-};
-type State = {
-  selectedMonth: number,
-  selectedYear: number,
-  today: SimpleDate,
-  entries: Array<SummarizedEntry>,
-  shouldLoad: boolean,
-  loading: boolean,
-};
-
-export default class CalendarContainer extends PureComponent<Props, State> {
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+export default class CalendarContainer extends PureComponent {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const fromPath = getDateFromPath(nextProps.match);
 
     const { year, month } = fromPath;
@@ -35,10 +20,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     };
   }
 
-  loadingTimer: ?TimeoutID;
-  calendarFetch: ?CancelablePromise<Response>;
-
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
 
     const todayDate = today();
@@ -53,8 +35,8 @@ export default class CalendarContainer extends PureComponent<Props, State> {
 
     this.loadingTimer = null;
     this.calendarFetch = null;
-    (this: any).onKeyDown = this.onKeyDown.bind(this);
-    (this: any).loadCalendar = this.loadCalendar.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+    this.loadCalendar = this.loadCalendar.bind(this);
   }
 
   componentDidMount() {
@@ -73,7 +55,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     this.cancelFetch();
   }
 
-  onKeyDown(event: SyntheticKeyboardEvent<Document>) {
+  onKeyDown(event) {
     if (hadModifierKey(event)) {
       return;
     }
@@ -97,7 +79,7 @@ export default class CalendarContainer extends PureComponent<Props, State> {
     this.fetchCalendar(this.state.selectedYear, this.state.selectedMonth);
   }
 
-  fetchCalendar(year: number, month: number) {
+  fetchCalendar(year, month) {
     this.loadingTimer = setTimeout(() => this.setState({ loading: true }), 50);
 
     this.calendarFetch = makeCancelable(
@@ -127,35 +109,32 @@ export default class CalendarContainer extends PureComponent<Props, State> {
   }
 }
 
-function getDateFromPath(match: Match): { year: number, month: number } {
+CalendarContainer.propTypes = {
+  match: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+};
+
+function getDateFromPath(match) {
   return {
     year: parseFloat(match.params.year),
     month: parseFloat(match.params.month),
   };
 }
 
-function routeToPreviousMonth(
-  history: RouterHistory,
-  currentYear: number,
-  currentMonth: number
-) {
+function routeToPreviousMonth(history, currentYear, currentMonth) {
   const { year, month } = previousMonth(currentYear, currentMonth);
   history.push(getCalendarPath(year, month));
 }
 
-function routeToNextMonth(
-  history: RouterHistory,
-  currentYear: number,
-  currentMonth: number
-) {
+function routeToNextMonth(history, currentYear, currentMonth) {
   const { year, month } = nextMonth(currentYear, currentMonth);
   history.push(getCalendarPath(year, month));
 }
 
-function getCalendarPath(year: number, month: number): string {
+function getCalendarPath(year, month): string {
   return `/calendar/${year}/${month}`;
 }
 
-function hadModifierKey(event: SyntheticKeyboardEvent<*>) {
+function hadModifierKey(event) {
   return event.ctrlKey || event.shiftKey || event.altKey || event.metaKey;
 }

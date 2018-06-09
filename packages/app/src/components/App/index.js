@@ -1,26 +1,20 @@
-// @flow
 import React, { PureComponent } from 'react';
 import Router from '../Router';
 
 import './styles.css';
 
-type Props = {};
-type State = {
-  user: ?User,
-};
-
-class App extends PureComponent<Props, State> {
-  constructor(props: Props) {
+class App extends PureComponent {
+  constructor(props) {
     super(props);
 
     this.state = {
       user: null,
     };
 
-    (this: any).setUser = this.setUser.bind(this);
+    this.setUser = this.setUser.bind(this);
   }
 
-  setUser(user: ?User) {
+  setUser(user) {
     this.setState({ user });
   }
 

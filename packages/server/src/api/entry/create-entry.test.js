@@ -1,5 +1,3 @@
-// @flow
-
 import createEntry from './create-entry';
 
 import { user } from '../../../test/utils';
@@ -97,7 +95,7 @@ describe('create entry route', () => {
   });
 });
 
-function entry(): Entry {
+function entry() {
   return {
     author: user().id,
     couple: user().couple,

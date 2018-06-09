@@ -1,5 +1,3 @@
-// @flow
-
 export function user() {
   return {
     id: 'test-user-id',
@@ -14,6 +12,6 @@ export function userWithoutCouple() {
   return { ...user(), couple: null };
 }
 
-export function userWithPassword(): UserWithPassword {
+export function userWithPassword() {
   return Object.assign({}, user(), { password: 'password' });
 }

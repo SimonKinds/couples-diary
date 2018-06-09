@@ -1,24 +1,12 @@
-// @flow
-
 import React, { PureComponent } from 'react';
-import type { RouterHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import makeCancelable from '../../make-cancelable';
 
 import Login from './component';
 
-type Props = {
-  setUser: (user: ?User) => void,
-  history: RouterHistory,
-};
-type State = {
-  isLoggingIn: boolean,
-};
-
-export default class LoginContainer extends PureComponent<Props, State> {
-  loginFetch: ?CancelablePromise<Response>;
-
-  constructor(props: Props) {
+export default class LoginContainer extends PureComponent {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -26,7 +14,7 @@ export default class LoginContainer extends PureComponent<Props, State> {
     };
 
     this.loginFetch = null;
-    (this: any).onLoginSubmit = this.onLoginSubmit.bind(this);
+    this.onLoginSubmit = this.onLoginSubmit.bind(this);
   }
 
   componentWillUnmount() {
@@ -35,12 +23,12 @@ export default class LoginContainer extends PureComponent<Props, State> {
     }
   }
 
-  onLoginSubmit(username: string, password: string) {
+  onLoginSubmit(username, password) {
     this.setState({ isLoggingIn: true });
     this.login(username, password);
   }
 
-  login(username: string, password: string) {
+  login(username, password) {
     this.loginFetch = makeCancelable(
       fetch('/api/user/login', {
         headers: {
@@ -78,3 +66,8 @@ export default class LoginContainer extends PureComponent<Props, State> {
     );
   }
 }
+
+LoginContainer.propTypes = {
+  setUser: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
+};

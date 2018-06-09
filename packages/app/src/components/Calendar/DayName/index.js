@@ -1,16 +1,14 @@
-// @flow
-
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import './styles.css';
 
-type Props = {
-  name: string,
-};
-type State = {};
-
-export default class CalendarDayName extends PureComponent<Props, State> {
+export default class CalendarDayName extends PureComponent {
   render() {
     return <div className="day-name">{this.props.name}</div>;
   }
 }
+
+CalendarDayName.propTypes = {
+  name: PropTypes.string.isRequired,
+};

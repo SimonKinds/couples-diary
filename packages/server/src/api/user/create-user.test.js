@@ -1,4 +1,3 @@
-// @flow
 import { userWithPassword, userWithoutCouple, user } from '../../../test/utils';
 import createUser from './create-user';
 
@@ -51,11 +50,11 @@ describe('create user route', () => {
   });
 });
 
-function createUserTest(body: mixed, users: Array<UserWithPassword>) {
+function createUserTest(body, users) {
   return createUser(body, users, generateId, hash);
 }
 
-function hash(password: string) {
+function hash(password) {
   return Promise.resolve(password);
 }
 

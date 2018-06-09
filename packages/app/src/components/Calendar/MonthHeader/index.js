@@ -1,13 +1,10 @@
-// @flow
-
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { previousMonth, nextMonth } from 'couples-diary-core';
 
 import './styles.css';
-
-type CalendarFunction = typeof previousMonth;
 
 const NAME_OF_MONTHS = [
   'January',
@@ -24,13 +21,7 @@ const NAME_OF_MONTHS = [
   'December',
 ];
 
-type Props = {
-  year: number,
-  month: number,
-};
-type State = {};
-
-export default class MonthHeader extends PureComponent<Props, State> {
+export default class MonthHeader extends PureComponent {
   render() {
     const { year, month } = this.props;
     return (
@@ -43,19 +34,20 @@ export default class MonthHeader extends PureComponent<Props, State> {
   }
 }
 
-function link(
-  currentYear: number,
-  currentMonth: number,
-  calendarFunction: CalendarFunction
-) {
+MonthHeader.propTypes = {
+  year: PropTypes.number.isRequired,
+  month: PropTypes.number.isRequired,
+};
+
+function link(currentYear, currentMonth, calendarFunction) {
   const { year, month } = calendarFunction(currentYear, currentMonth);
   return <Link to={getCalendarPath(year, month)}>{monthName(month)}</Link>;
 }
 
-function monthName(month: number) {
+function monthName(month) {
   return NAME_OF_MONTHS[month - 1];
 }
 
-function getCalendarPath(year: number, month: number): string {
+function getCalendarPath(year, month) {
   return `/calendar/${year}/${month}`;
 }

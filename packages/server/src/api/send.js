@@ -1,10 +1,4 @@
-// @flow
-import type { $Response } from 'express';
-
-export default function send(
-  result: ApiResponse | Promise<ApiResponse>,
-  res: $Response
-) {
+export default function send(result, res) {
   if (result instanceof Promise) {
     result
       .then(plain => sendPlain(plain, res))
@@ -14,7 +8,7 @@ export default function send(
   }
 }
 
-function sendPlain(result: ApiResponse, res: $Response) {
+function sendPlain(result, res) {
   res.status(result.status);
   if (result.body) {
     res.send(result.body);

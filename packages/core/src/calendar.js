@@ -1,9 +1,4 @@
-// @flow
-
-export type SimpleDate = { year: number, month: number, date: number };
-export type CalendarDate = SimpleDate & { inMonth: boolean };
-
-function datesOfMonth(year: number, month: number): Array<SimpleDate> {
+function datesOfMonth(year, month) {
   const dates = [];
 
   const dateCount = numberOfDatesInMonth(year, month);
@@ -13,7 +8,7 @@ function datesOfMonth(year: number, month: number): Array<SimpleDate> {
   return dates;
 }
 
-function calendarMonth(year: number, month: number): Array<CalendarDate> {
+function calendarMonth(year, month) {
   const currentMonth = datesOfMonth(year, month).map(d =>
     Object.assign({}, d, { inMonth: true })
   );
@@ -35,23 +30,23 @@ function calendarMonth(year: number, month: number): Array<CalendarDate> {
   return datesOfPrevMonth.concat(currentMonth).concat(datesOfNextMonth);
 }
 
-function toDate(date: SimpleDate): Date {
+function toDate(date) {
   return new Date(date.year, date.month - 1, date.date);
 }
 
-function getDaysSinceMonday(date: Date): number {
+function getDaysSinceMonday(date) {
   return toDateStartingMonday(date.getDay());
 }
 
-function getDaysToSunday(date: Date): number {
+function getDaysToSunday(date) {
   return 6 - toDateStartingMonday(date.getDay());
 }
 
-function numberOfDatesInMonth(year: number, month: number) {
+function numberOfDatesInMonth(year, month) {
   return new Date(year, month, 0).getDate();
 }
 
-function toDateStartingMonday(day: number) {
+function toDateStartingMonday(day) {
   const startingMonday = day - 1;
   if (startingMonday === -1) {
     return 6;
@@ -60,27 +55,21 @@ function toDateStartingMonday(day: number) {
   return startingMonday;
 }
 
-function previousMonth(
-  year: number,
-  month: number
-): { year: number, month: number } {
+function previousMonth(year, month) {
   if (month === 1) {
     return { year: year - 1, month: 12 };
   }
   return { year, month: month - 1 };
 }
 
-function nextMonth(
-  year: number,
-  month: number
-): { year: number, month: number } {
+function nextMonth(year, month) {
   if (month === 12) {
     return { year: year + 1, month: 1 };
   }
   return { year, month: month + 1 };
 }
 
-function today(): SimpleDate {
+function today() {
   const now = new Date();
   return {
     year: now.getFullYear(),

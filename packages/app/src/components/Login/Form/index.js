@@ -1,21 +1,14 @@
-// @flow
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
-import * as React from 'react';
-
-type Props = {
-  onSubmit: () => void,
-  children?: React.Node,
-};
-type State = {};
-
-export default class LoginForm extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+export default class LoginForm extends PureComponent {
+  constructor(props) {
     super(props);
 
-    (this: any).onSubmit = this.onSubmit.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onSubmit(event: SyntheticEvent<HTMLButtonElement>) {
+  onSubmit(event) {
     event.preventDefault();
     this.props.onSubmit();
   }
@@ -24,3 +17,8 @@ export default class LoginForm extends React.PureComponent<Props, State> {
     return <form onSubmit={this.onSubmit}>{this.props.children}</form>;
   }
 }
+
+LoginForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  children: PropTypes.array,
+};

@@ -1,5 +1,3 @@
-// @flow
-
 import { Router } from 'express';
 import userRoute from './user';
 import entryRoute from './entry';

@@ -1,11 +1,6 @@
-// @flow
-
 import { PureComponent } from 'react';
 
-type Props = {};
-type State = {};
-
-export default class Entry extends PureComponent<Props, State> {
+export default class Entry extends PureComponent {
   render() {
     return 'Entry!';
   }

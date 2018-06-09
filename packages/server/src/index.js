@@ -1,5 +1,3 @@
-// @flow
-
 import express from 'express';
 import bodyParser from 'body-parser';
 import expressSession from 'express-session';
@@ -19,7 +17,7 @@ app.use(
 
 app.use('/api', api);
 
-app.get('/api/calendar/:year/:month', (req: Request, res) => {
+app.get('/api/calendar/:year/:month', (req, res) => {
   // $FlowFixMe
   const { year, month } = req.params;
   const dates = calendarMonth(year, month);

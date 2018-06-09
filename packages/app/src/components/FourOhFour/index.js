@@ -1,13 +1,8 @@
-// @flow
-
 import React, { PureComponent } from 'react';
 
 import './styles.css';
 
-type Props = {};
-type State = {};
-
-export default class FourOhFour extends PureComponent<Props, State> {
+export default class FourOhFour extends PureComponent {
   render() {
     return <div className="fourohfour">404: No love found</div>;
   }

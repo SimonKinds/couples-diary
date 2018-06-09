@@ -1,6 +1,5 @@
-// @flow
-
 import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
 
 import Loader from '../Loader';
 import DayName from './DayName';
@@ -65,6 +64,14 @@ export default class Calendar extends PureComponent<Props, State> {
     );
   }
 }
+
+Calendar.propTypes = {
+  today: PropTypes.object,
+  selectedYear: PropTypes.number,
+  selectedMonth: PropTypes.number,
+  entries: PropTypes.array,
+  loading: PropTypes.bool,
+};
 
 function getDayNames() {
   return NAMES_OF_DAYS.map(name => <DayName key={name} name={name} />);

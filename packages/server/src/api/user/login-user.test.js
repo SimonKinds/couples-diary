@@ -1,5 +1,3 @@
-// @flow
-
 import { user, userWithPassword } from '../../../test/utils';
 import loginUser from './login-user';
 
@@ -83,7 +81,7 @@ describe('login user route', () => {
   });
 });
 
-function credentials(): Credentials {
+function credentials() {
   const { username, password } = userWithPassword();
   return {
     username,
@@ -93,6 +91,6 @@ function credentials(): Credentials {
 
 function nullFunc() {}
 
-function comparePasswordToHash(password: string, hash: string) {
+function comparePasswordToHash(password, hash) {
   return Promise.resolve(password === hash);
 }

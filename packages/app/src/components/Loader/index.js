@@ -1,19 +1,17 @@
-// @flow
-
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import './styles.css';
 
-type Props = {
-  active: boolean,
-  className?: string,
-};
-type State = {};
-
-export default class Loader extends PureComponent<Props, State> {
+export default class Loader extends PureComponent {
   render() {
     return this.props.active ? (
       <div className={`loader ${this.props.className || ''}`} />
     ) : null;
   }
 }
+
+Loader.propTypes = {
+  active: PropTypes.bool.isRequired,
+  className: PropTypes.string,
+};

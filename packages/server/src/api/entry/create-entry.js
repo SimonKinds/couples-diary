@@ -1,10 +1,4 @@
-// @flow
-
-export default function createEntry(
-  user: ?User,
-  body: mixed,
-  entries: Array<Entry>
-): ApiResponse {
+export default function createEntry(user, body, entries) {
   const entry = parse(body);
 
   if (entry == null) {
@@ -39,7 +33,7 @@ export default function createEntry(
   return { status: 200, body: entry };
 }
 
-function parse(body: mixed): ?Entry {
+function parse(body) {
   if (
     body != null &&
     typeof body === 'object' &&
@@ -71,7 +65,7 @@ function parse(body: mixed): ?Entry {
   return null;
 }
 
-function isSimpleDate(date: mixed) {
+function isSimpleDate(date) {
   return (
     date != null &&
     typeof date === 'object' &&

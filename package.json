@@ -2,8 +2,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "lint": "eslint 'packages/*/*.js' 'packages/*/!(node_modules|flow-typed|build)/**/*.js'",
-    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules|flow-typed|build)/**/*.js'",
+    "lint": "eslint 'packages/*/*.js' 'packages/*/!(node_modules|build)/**/*.js'",
+    "format": "prettier --trailing-comma es5 --single-quote --write 'packages/*/*.js' 'packages/*/!(node_modules|build)/**/*.js'",
     "precommit": "lint-staged"
   },
   "lint-staged": {
@@ -17,7 +17,7 @@
     "eslint": "^4.1.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-flowtype": "^2.34.1",
+    "eslint-plugin-flowtype": "^2.49.3",
     "eslint-plugin-import": "^2.6.0",
     "eslint-plugin-jest": "^21.17.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
