@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -25,11 +25,14 @@ export default class MonthHeader extends PureComponent {
   render() {
     const { year, month } = this.props;
     return (
-      <div className="month-header">
-        <div className="secondary">{link(year, month, previousMonth)}</div>
-        <div className="main">{monthName(month)}</div>
-        <div className="secondary">{link(year, month, nextMonth)}</div>
-      </div>
+      <Fragment>
+        <h3 className="year-header">{year}</h3>
+        <div className="month-header">
+          {link(year, month, previousMonth)}
+          <h2 className="main">{monthName(month)}</h2>
+          {link(year, month, nextMonth)}
+        </div>
+      </Fragment>
     );
   }
 }
@@ -41,7 +44,11 @@ MonthHeader.propTypes = {
 
 function link(currentYear, currentMonth, calendarFunction) {
   const { year, month } = calendarFunction(currentYear, currentMonth);
-  return <Link to={getCalendarPath(year, month)}>{monthName(month)}</Link>;
+  return (
+    <Link className="secondary" to={getCalendarPath(year, month)}>
+      {monthName(month)}
+    </Link>
+  );
 }
 
 function monthName(month) {

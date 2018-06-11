@@ -7,17 +7,33 @@
   text-align: center;
 }
 
+.calendar .year-header {
+  margin: 0 auto;
+  font-size: 1em;
+}
+
 .month-header .main {
   flex: 1;
-  font-size: 1.3em;
+  display: inline-block;
+  font-size: 1.6em;
+  margin: 0;
 }
 
 .month-header .secondary {
   flex: 1;
-  font-size: 0.9em;
-}
-
-.month-header .secondary a {
+  font-size: 0.8em;
   text-decoration: inherit;
   color: #a9a9a9;
+}
+
+@media(min-width: 568px) {
+.calendar .year-header {
+  font-size: 1.2em;
+}
+.month-header .main {
+  font-size: 1.9em;
+}
+.month-header .secondary {
+  font-size: 1em;
+}
 }
