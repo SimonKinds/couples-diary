@@ -1,14 +1,14 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import './styles.css';
 
-export default class EntryMarker extends PureComponent {
-  render() {
-    return <div className={`entry-marker ${this.props.by}`} />;
-  }
-}
+export const EntryMarker = ({ color }) => (
+  <div style={{ backgroundColor: color }} className={`entry-marker`} />
+);
 
 EntryMarker.propTypes = {
-  by: PropTypes.oneOf(['him', 'her']),
+  color: PropTypes.string.isRequired,
 };
+
+export default EntryMarker;

@@ -10,8 +10,12 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "apollo-boost": "^0.1.7",
     "couples-diary-core": "^0.1.0",
+    "graphql": "^0.13.2",
+    "graphql-tag": "^2.9.2",
     "react": "^16.4.0",
+    "react-apollo": "^2.1.4",
     "react-dom": "^16.4.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",

@@ -1,137 +1,69 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-import { previousMonth, nextMonth, today } from 'couples-diary-core';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+
+import { calendarMonth, today } from 'couples-diary-core';
 
 import Calendar from './component';
-import makeCancelable from '../../make-cancelable';
 
-export default class CalendarContainer extends PureComponent {
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const fromPath = getDateFromPath(nextProps.match);
+const getDateFromPath = match => ({
+  year: parseFloat(match.params.year),
+  month: parseFloat(match.params.month),
+});
 
-    const { year, month } = fromPath;
-    return {
-      selectedMonth: month,
-      selectedYear: year,
-      shouldLoad:
-        year !== prevState.selectedYear || month !== prevState.selectedMonth,
-      loading: prevState.loading,
-    };
-  }
+const hydrate = (year, month, entries) => {
+  const dates = calendarMonth(year, month);
 
-  loadingTimer = null;
-  cancelableCalendarFetch = null;
-  state = initialState();
+  return dates.map(date => {
+    const authors = entries
+      .filter(
+        ({ year, month, date: entryDate }) =>
+          year === date.year && month === date.month && entryDate === date.date
+      )
+      .map(({ author }) => author);
 
-  componentDidMount() {
-    this.loadCalendar();
-    window.addEventListener('keydown', this.onKeyDown);
-  }
+    return { ...date, authors };
+  });
+};
 
-  componentDidUpdate() {
-    if (this.state.shouldLoad) {
-      this.loadCalendar();
-    }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onKeyDown);
-    this.cancelFetch();
-  }
-
-  onKeyDown = event => {
-    if (hadModifierKey(event)) {
-      return;
-    }
-
-    const { history } = this.props;
-    const { selectedYear, selectedMonth } = this.state;
-    switch (event.key) {
-      case 'ArrowLeft':
-        routeToPreviousMonth(history, selectedYear, selectedMonth);
-        break;
-      case 'ArrowRight':
-        routeToNextMonth(history, selectedYear, selectedMonth);
-        break;
-      default:
-        break;
-    }
-  };
-
-  loadCalendar = () => {
-    this.cancelFetch();
-    this.fetchCalendar(this.state.selectedYear, this.state.selectedMonth);
-  };
-
-  fetchCalendar = (year, month) => {
-    this.loadingTimer = setTimeout(() => this.setState({ loading: true }), 50);
-
-    this.cancelableCalendarFetch = makeCancelable(
-      fetch(`/api/calendar/${year}/${month}`)
-    );
-
-    this.cancelableCalendarFetch.promise
-      .then(res => res.json())
-      .then(entries => {
-        this.cancelFetch();
-        this.setState({ entries, shouldLoad: false, loading: false });
-      })
-      .catch(() => {});
-  };
-
-  cancelFetch = () => {
-    if (this.loadingTimer != null) {
-      clearTimeout(this.loadingTimer);
-    }
-    if (this.cancelableCalendarFetch != null) {
-      this.cancelableCalendarFetch.cancel();
-    }
-  };
-
-  render() {
-    return <Calendar {...this.state} />;
-  }
-}
+export const CalendarContainer = ({ match }) => {
+  const { year, month } = getDateFromPath(match);
+  return (
+    <Query
+      asyncMode
+      query={gql`
+        query entries($year: Int!, $month: Int!) {
+          entries(year: $year, month: $month) {
+            year
+            month
+            date
+            author {
+              color
+            }
+          }
+        }
+      `}
+      variables={{ year, month }}
+    >
+      {({ loading, error, data }) => {
+        return (
+          <Calendar
+            today={today()}
+            selectedYear={year}
+            selectedMonth={month}
+            entries={hydrate(year, month, data.entries || [])}
+            loading={loading}
+          />
+        );
+      }}
+    </Query>
+  );
+};
 
 CalendarContainer.propTypes = {
   match: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
 };
 
-function initialState() {
-  const todayDate = today();
-  return {
-    selectedMonth: todayDate.month,
-    selectedYear: todayDate.year,
-    today: todayDate,
-    entries: [],
-    shouldLoad: true,
-    loading: true,
-  };
-}
-
-function getDateFromPath(match) {
-  return {
-    year: parseFloat(match.params.year),
-    month: parseFloat(match.params.month),
-  };
-}
-
-function routeToPreviousMonth(history, currentYear, currentMonth) {
-  const { year, month } = previousMonth(currentYear, currentMonth);
-  history.push(getCalendarPath(year, month));
-}
-
-function routeToNextMonth(history, currentYear, currentMonth) {
-  const { year, month } = nextMonth(currentYear, currentMonth);
-  history.push(getCalendarPath(year, month));
-}
-
-function getCalendarPath(year, month): string {
-  return `/calendar/${year}/${month}`;
-}
-
-function hadModifierKey(event) {
-  return event.ctrlKey || event.shiftKey || event.altKey || event.metaKey;
-}
+export default CalendarContainer;

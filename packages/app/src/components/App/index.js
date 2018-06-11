@@ -8,9 +8,7 @@ class App extends PureComponent {
     user: null,
   };
 
-  setUser = user => {
-    this.setState({ user });
-  };
+  setUser = user => this.setState({ user });
 
   render() {
     return (

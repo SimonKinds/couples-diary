@@ -5,11 +5,16 @@ import EntryMarker from './EntryMarker';
 
 import './styles.css';
 
-type State = {};
-
-export default class CalendarDate extends PureComponent<Props, State> {
+export default class CalendarDate extends PureComponent {
   render() {
-    const { year, month, date, currentMonth, currentDate } = this.props;
+    const {
+      year,
+      month,
+      date,
+      authors,
+      currentMonth,
+      currentDate,
+    } = this.props;
     return (
       <Link
         className={getClassNamesEntry(currentMonth)}
@@ -17,8 +22,9 @@ export default class CalendarDate extends PureComponent<Props, State> {
       >
         <div className={getClassNamesText(currentDate)}>{date}</div>
         <div className="entry-markers">
-          {this.props.entryHer && <EntryMarker by="her" />}
-          {this.props.entryHim && <EntryMarker by="him" />}
+          {authors.map(({ color }) => (
+            <EntryMarker key={color} color={color} />
+          ))}
         </div>
       </Link>
     );
@@ -31,8 +37,7 @@ CalendarDate.propTypes = {
   date: PropTypes.number.isRequired,
   currentMonth: PropTypes.bool.isRequired,
   currentDate: PropTypes.bool.isRequired,
-  entryHim: PropTypes.bool,
-  entryHer: PropTypes.bool,
+  authors: PropTypes.array.isRequired,
 };
 
 function getClassNamesEntry(currentMonth) {

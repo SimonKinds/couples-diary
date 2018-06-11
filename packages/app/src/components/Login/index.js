@@ -1,67 +1,43 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-
-import makeCancelable from '../../make-cancelable';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import Login from './component';
 
-export default class LoginContainer extends PureComponent {
-  state = {
-    isLoggingIn: false,
-  };
-  cancelableLoginFetch = null;
-
-  componentWillUnmount() {
-    if (this.cancelableLoginFetch) {
-      this.cancelableLoginFetch.cancel();
-    }
-  }
-
-  onLoginSubmit = (username, password) => {
-    this.setState({ isLoggingIn: true });
-    this.login(username, password);
-  };
-
-  login = (username, password) => {
-    this.cancelableLoginFetch = makeCancelable(
-      fetch('/api/user/login', {
-        headers: {
-          'content-type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify({ username, password }),
-      })
-    );
-
-    this.cancelableLoginFetch.promise
-      .then(response => Promise.all([response.status, response.json()]))
-      .then(([status, user]) => {
-        this.finishApiCall();
-        if (status === 200) {
-          const { history, setUser } = this.props;
-          // TODO: parse User
-          setUser(user);
-          history.push('/');
+export const LoginContainer = ({ setUser, history }) => (
+  <Mutation
+    mutation={gql`
+      mutation login($username: String!, $password: String!) {
+        login(username: $username, password: $password) {
+          id
+          username
+          name
         }
-      })
-      .catch(() => this.finishApiCall());
-  };
-
-  finishApiCall = () => {
-    this.setState({ isLoggingIn: false });
-  };
-
-  render() {
-    return (
+      }
+    `}
+    onCompleted={({ login: user }) => {
+      if (user != null) {
+        const { id, username, name } = user;
+        setUser({ id, username, name });
+        history.push('/');
+      }
+    }}
+  >
+    {(login, { loading }) => (
       <Login
-        onSubmit={this.onLoginSubmit}
-        isLoggingIn={this.state.isLoggingIn}
+        onSubmit={(username, password) =>
+          login({ variables: { username, password } })
+        }
+        isLoggingIn={loading}
       />
-    );
-  }
-}
+    )}
+  </Mutation>
+);
 
 LoginContainer.propTypes = {
   setUser: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };
+
+export default LoginContainer;

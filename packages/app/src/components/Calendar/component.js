@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import Loader from '../Loader';
@@ -8,22 +8,13 @@ import MonthHeader from './MonthHeader';
 
 import './styles.css';
 
-type Props = {
-  today: SimpleDate,
-  selectedYear: number,
-  selectedMonth: number,
-  entries: Array<SummarizedEntry>,
-  loading: boolean,
-};
-type State = {};
-
 const NAMES_OF_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-export default class Calendar extends PureComponent<Props, State> {
+export default class Calendar extends Component {
   getDates() {
     const { entries, today } = this.props;
 
-    return entries.map(({ year, month, date, entryHim, entryHer, inMonth }) => (
+    return entries.map(({ year, month, date, authors, inMonth }) => (
       <CalendarDate
         key={`${year}:${month}:${date}`}
         year={year}
@@ -33,8 +24,7 @@ export default class Calendar extends PureComponent<Props, State> {
         currentDate={
           year === today.year && month === today.month && date === today.date
         }
-        entryHim={entryHim}
-        entryHer={entryHer}
+        authors={authors}
       />
     ));
   }
