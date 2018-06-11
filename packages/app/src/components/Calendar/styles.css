@@ -22,10 +22,14 @@
 
 .calendar .grid {
   flex: 1;
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  box-shadow: 0px 0px 2px #a9a9a9;
+  width: 100%;
+  display: flex;
+  flex-flow: row wrap;
   border-radius: var(--calendar-border-radius);
+}
+
+.calendar .grid > a {
+  flex-basis: calc(100%/7 - 1px);
 }
 
 .calendar .centered-loader {
