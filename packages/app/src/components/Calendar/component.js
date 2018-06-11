@@ -1,7 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Loader from '../Loader';
 import DayName from './DayName';
 import CalendarDate from './Date';
 import MonthHeader from './MonthHeader';
@@ -29,26 +28,18 @@ export default class Calendar extends Component {
     ));
   }
 
-  renderCalendar() {
-    return (
-      <Fragment>
-        <div className="day-names">{getDayNames()}</div>
-        <div className="grid">{this.getDates()}</div>
-      </Fragment>
-    );
-  }
-
   render() {
     const { selectedYear, selectedMonth, loading } = this.props;
     return (
       <section>
         <div className="calendar">
-          <MonthHeader year={selectedYear} month={selectedMonth} />
-          {loading ? (
-            <Loader active className="centered-loader" />
-          ) : (
-            this.renderCalendar()
-          )}
+          <MonthHeader
+            loading={loading}
+            year={selectedYear}
+            month={selectedMonth}
+          />
+          <div className="day-names">{getDayNames()}</div>
+          <div className="grid">{this.getDates()}</div>
         </div>
       </section>
     );

@@ -22,7 +22,6 @@
 
 .calendar .grid {
   flex: 1;
-  width: 100%;
   display: flex;
   flex-flow: row wrap;
   border-radius: var(--calendar-border-radius);

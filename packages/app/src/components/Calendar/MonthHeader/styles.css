@@ -8,8 +8,17 @@
 }
 
 .calendar .year-header {
-  margin: 0 auto;
+  margin: auto;
+}
+
+.calendar .year-header h3 {
+  margin: 0;
   font-size: 1em;
+}
+
+.calendar .absolute {
+  position: absolute;
+  margin-top: -15px;
 }
 
 .month-header .main {
