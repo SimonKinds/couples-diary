@@ -56,7 +56,7 @@ export default class Login extends PureComponent {
                   justifyContent: 'center',
                 }}
               >
-                <Loader active={this.props.isLoggingIn} />
+                {this.props.isLoggingIn && <Loader />}
               </div>
             </div>
           </Form>
