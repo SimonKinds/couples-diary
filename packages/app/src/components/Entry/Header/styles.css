@@ -1,0 +1,27 @@
+.entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.entry-header .calendar-navigation {
+  margin-right: 20px;
+}
+
+.entry-header .date {
+  flex: 1;
+  margin: 0;
+}
+
+.entry-header .circle {
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  background-color: purple;
+  margin-left: 15px;
+}
+
+.entry-divider {
+  border-bottom: 1px solid #333;
+  margin: 10px 0 20px;
+}

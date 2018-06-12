@@ -5,22 +5,9 @@ import { Link } from 'react-router-dom';
 import { previousMonth, nextMonth } from 'couples-diary-core';
 import Loader from '../../Loader';
 
-import './styles.css';
+import monthName from '../../../get-month-name';
 
-const NAME_OF_MONTHS = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+import './styles.css';
 
 export const MonthHeader = ({ year, month, loading }) => (
   <Fragment>
@@ -48,10 +35,6 @@ function link(currentYear, currentMonth, calendarFunction) {
       {monthName(month)}
     </Link>
   );
-}
-
-function monthName(month) {
-  return NAME_OF_MONTHS[month - 1];
 }
 
 function getCalendarPath(year, month) {

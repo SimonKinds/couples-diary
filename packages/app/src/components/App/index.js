@@ -5,12 +5,12 @@ import './styles.css';
 
 class App extends PureComponent {
   state = {
-    user: window.localStorage.getItem('user'),
+    user: JSON.parse(window.localStorage.getItem('user')),
   };
 
   setUser = user => {
     this.setState({ user });
-    window.localStorage.setItem('user', user);
+    window.localStorage.setItem('user', JSON.stringify(user));
   };
 
   render() {

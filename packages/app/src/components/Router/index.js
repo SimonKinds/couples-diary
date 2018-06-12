@@ -33,9 +33,9 @@ export default class Router extends PureComponent {
       return (
         <StrictMode>
           <Entry
-            year={props.match.params.year}
-            month={props.match.params.month}
-            date={props.match.params.date}
+            year={parseInt(props.match.params.year, 10)}
+            month={parseInt(props.match.params.month, 10)}
+            date={parseInt(props.match.params.date, 10)}
           />
         </StrictMode>
       );
