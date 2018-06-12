@@ -5,10 +5,13 @@ import './styles.css';
 
 class App extends PureComponent {
   state = {
-    user: null,
+    user: window.localStorage.getItem('user'),
   };
 
-  setUser = user => this.setState({ user });
+  setUser = user => {
+    this.setState({ user });
+    window.localStorage.setItem('user', user);
+  };
 
   render() {
     return (

@@ -32,7 +32,11 @@ export default class Router extends PureComponent {
     if (this.props.user) {
       return (
         <StrictMode>
-          <Entry {...props} />
+          <Entry
+            year={props.match.params.year}
+            month={props.match.params.month}
+            date={props.match.params.date}
+          />
         </StrictMode>
       );
     }
@@ -55,7 +59,7 @@ export default class Router extends PureComponent {
           />
           <Route
             exact
-            path="/entry/:year/:month/:day"
+            path="/entry/:year/:month/:date"
             render={this.renderEntryComponent}
           />
           <Route exact path="/login" render={this.renderLoginComponent} />

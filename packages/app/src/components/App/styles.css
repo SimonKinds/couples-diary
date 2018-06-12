@@ -2,9 +2,16 @@ body {
   font-family: Arial, Verdana, Helvetica, sans-serif;
   --background-color: #fef;
   background-color: var(--background-color);
+  color: #222;
 }
 
 .container {
   margin: auto;
-  margin-top: 50px;
+  padding: 25px 10px;
+}
+
+@media(min-width: 568px) {
+  .container {
+    padding: 50px 10%;
+  }
 }
