@@ -1,40 +1,37 @@
 const { ApolloServer, gql } = require('apollo-server');
+import { schema as userSchema } from './graphql/user';
+import UserRepository from './repository/user';
+import { login } from './auth';
 
-const users = [];
 const entries = [];
 
-const typeDefs = gql`
-  type User {
-    id: ID!
-    username: String!
-    name: String!
-    password: String!
-    color: String!
-  }
+const typeDefs = [
+  ...userSchema,
+  gql`
+    type Entry {
+      author: User!
+      year: Int!
+      month: Int!
+      date: Int!
+      content: String!
+    }
 
-  type Entry {
-    author: User!
-    year: Int!
-    month: Int!
-    date: Int!
-    content: String!
-  }
+    type Query {
+      entries(year: Int!, month: Int!, date: Int): [Entry]!
+    }
 
-  type Query {
-    entries(year: Int!, month: Int!, date: Int): [Entry]!
-  }
-
-  type Mutation {
-    createUser(
-      username: String!
-      name: String!
-      password: String!
-      color: String!
-    ): User
-    login(username: String!, password: String!): User
-    setEntry(year: Int!, month: Int!, date: Int!, content: String!): Entry
-  }
-`;
+    type Mutation {
+      createUser(
+        username: String!
+        name: String!
+        password: String!
+        color: String!
+      ): User
+      login(username: String!, password: String!): User
+      setEntry(year: Int!, month: Int!, date: Int!, content: String!): Entry
+    }
+  `,
+];
 
 let loggedInUser = null;
 const resolvers = {
@@ -48,16 +45,9 @@ const resolvers = {
       ),
   },
   Mutation: {
-    createUser: (_, user) => {
-      user.id = Math.max(-1, ...users.map(({ id }) => id)) + 1;
-      users.push(user);
-      return user;
-    },
-    login: (_, args) => {
-      loggedInUser = users.find(
-        ({ username, password }) =>
-          username === args.username && password === args.password
-      );
+    createUser: (_, user, { userRepo }) => userRepo.createUser(user),
+    login: (_, { username, password }, { userRepo }) => {
+      loggedInUser = login(username, password, userRepo);
       return loggedInUser;
     },
     setEntry: (_, entry) => {
@@ -81,11 +71,15 @@ const resolvers = {
     },
   },
   Entry: {
-    author: entry => users.find(({ id }) => entry.authorId === id),
+    author: (entry, _, { userRepo }) => userRepo.getById(entry.authorId),
   },
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: () => ({ userRepo: new UserRepository() }),
+});
 
 server.listen({ http: { port: 3333 } }).then(({ url }) => {
   // eslint-disable-next-line

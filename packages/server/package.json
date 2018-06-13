@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "apollo-server": "beta",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2"
   },
