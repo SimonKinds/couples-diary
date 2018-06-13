@@ -1,21 +1,17 @@
 const { ApolloServer, gql } = require('apollo-server');
 import { schema as userSchema } from './graphql/user';
+import {
+  schema as entrySchema,
+  resolver as entryResolver,
+} from './graphql/entry';
 import UserRepository from './repository/user';
+import EntryRepository from './repository/entry';
 import { login } from './auth';
-
-const entries = [];
 
 const typeDefs = [
   ...userSchema,
+  ...entrySchema,
   gql`
-    type Entry {
-      author: User!
-      year: Int!
-      month: Int!
-      date: Int!
-      content: String!
-    }
-
     type Query {
       entries(year: Int!, month: Int!, date: Int): [Entry]!
     }
@@ -27,6 +23,7 @@ const typeDefs = [
         password: String!
         color: String!
       ): User
+
       login(username: String!, password: String!): User
       setEntry(year: Int!, month: Int!, date: Int!, content: String!): Entry
     }
@@ -35,14 +32,17 @@ const typeDefs = [
 
 let loggedInUser = null;
 const resolvers = {
+  ...entryResolver,
   Query: {
-    entries: (_, args) =>
-      entries.filter(
-        ({ year, month, date }) =>
-          year === args.year &&
-          month === args.month &&
-          (args.date == null || date === args.date)
-      ),
+    entries: (_, args, { entryRepo }) =>
+      entryRepo
+        .getEntries()
+        .filter(
+          ({ year, month, date }) =>
+            year === args.year &&
+            month === args.month &&
+            (args.date == null || date === args.date)
+        ),
   },
   Mutation: {
     createUser: (_, user, { userRepo }) => userRepo.createUser(user),
@@ -50,35 +50,17 @@ const resolvers = {
       loggedInUser = login(username, password, userRepo);
       return loggedInUser;
     },
-    setEntry: (_, entry) => {
-      if (loggedInUser == null) {
-        return null;
-      }
-      entry.authorId = loggedInUser.id;
-
-      const index = entries.findIndex(
-        ({ year, month, date }) =>
-          year === entry.year && month === entry.month && date === entry.date
-      );
-
-      if (index !== -1) {
-        entries[index] = entry;
-      } else {
-        entries.push(entry);
-      }
-
-      return entry;
-    },
-  },
-  Entry: {
-    author: (entry, _, { userRepo }) => userRepo.getById(entry.authorId),
+    setEntry: (_, entry, { entryRepo }) => entryRepo.setEntry(entry),
   },
 };
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: () => ({ userRepo: new UserRepository() }),
+  context: () => ({
+    userRepo: new UserRepository(),
+    entryRepo: new EntryRepository(loggedInUser),
+  }),
 });
 
 server.listen({ http: { port: 3333 } }).then(({ url }) => {
