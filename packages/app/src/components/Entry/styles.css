@@ -1,24 +1,13 @@
 .entry {
+  display: flex;
+  flex-direction: column;
   margin: auto;
   background-color: #fff;
   padding: 20px;
-  min-width: 250px;
+  min-width: 200px;
   min-height: 500px;
   height: 80%;
   max-width: 1000px;
   box-shadow: 0px 0px 20px #a9a9a9;
   border-radius: 10px;
-}
-
-.entry p {
-  font-size: 1.4em;
-  line-height: 1.3em;
-  max-width: 850px;
-  margin: auto;
-}
-
-@media(min-width: 850px) {
-  .entry p {
-    font-size: 1.8em;
-  }
 }

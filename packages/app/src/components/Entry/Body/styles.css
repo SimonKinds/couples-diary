@@ -1,0 +1,15 @@
+.entry-body {
+  font-size: 1.2em;
+  line-height: 1.5rem;
+  max-width: 850px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1px;
+}
+
+@media(min-width: 850px) {
+  .entry-body {
+    line-height: 1.8rem;
+    font-size: 1.5em;
+  }
+}
