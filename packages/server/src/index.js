@@ -5,15 +5,23 @@ import {
   resolver as entryResolver,
   model as entryModel,
 } from './graphql/entry';
+import {
+  schema as coupleSchema,
+  resolver as coupleResolver,
+  model as coupleModel,
+} from './graphql/couple';
 import { createUserRepository } from './repository/user';
 import { createEntryRepository } from './repository/entry';
+import { createCoupleRepository } from './repository/couple';
 
 const typeDefs = [
   ...userSchema,
   ...entrySchema,
+  ...coupleSchema,
   gql`
     type Query {
       entries(year: Int!, month: Int!, date: Int): [Entry]!
+      myCouple: Couple
     }
 
     type Mutation {
@@ -26,6 +34,9 @@ const typeDefs = [
 
       login(username: String!, password: String!): User
       setEntry(year: Int!, month: Int!, date: Int!, content: String!): Entry
+
+      createCouple: Couple
+      joinCoupleOfUser(userId: ID!): Couple
     }
   `,
 ];
@@ -33,6 +44,7 @@ const typeDefs = [
 let loggedInUser = null;
 const resolvers = {
   ...entryResolver,
+  ...coupleResolver,
   Query: {
     entries: (_, args, { entryModel }) =>
       entryModel
@@ -43,6 +55,7 @@ const resolvers = {
             month === args.month &&
             (args.date == null || date === args.date)
         ),
+    myCouple: (parent, args, { coupleModel }) => coupleModel.myCouple(),
   },
   Mutation: {
     createUser: (_, user, { userModel }) => userModel.createUser(user),
@@ -51,17 +64,22 @@ const resolvers = {
       return loggedInUser;
     },
     setEntry: (_, entry, { entryModel }) => entryModel.setEntry(entry),
+    createCouple: (parent, args, { coupleModel }) => coupleModel.createCouple(),
+    joinCoupleOfUser: (parent, { userId }, { userModel, coupleModel }) =>
+      coupleModel.joinCoupleOfUser(userModel.getById(userId)),
   },
 };
 
 const userRepository = createUserRepository();
 const entryRepository = createEntryRepository();
+const coupleRepository = createCoupleRepository();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: () => ({
     userModel: userModel(userRepository),
     entryModel: entryModel(entryRepository, loggedInUser),
+    coupleModel: coupleModel(coupleRepository, loggedInUser),
   }),
 });
 

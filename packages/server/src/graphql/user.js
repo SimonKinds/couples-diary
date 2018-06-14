@@ -27,5 +27,5 @@ export const model = userRepository => ({
     userRepository
       .getUsers()
       .find(user => username === user.username && password === user.password),
-  getById: userRepository.getById,
+  getById: id => userRepository.getById(parseInt(id, 10)),
 });
