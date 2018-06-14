@@ -1,12 +1,12 @@
 const { ApolloServer, gql } = require('apollo-server');
-import { schema as userSchema } from './graphql/user';
+import { schema as userSchema, model as userModel } from './graphql/user';
 import {
   schema as entrySchema,
   resolver as entryResolver,
+  model as entryModel,
 } from './graphql/entry';
-import UserRepository from './repository/user';
-import EntryRepository from './repository/entry';
-import { login } from './auth';
+import { createUserRepository } from './repository/user';
+import { createEntryRepository } from './repository/entry';
 
 const typeDefs = [
   ...userSchema,
@@ -34,8 +34,8 @@ let loggedInUser = null;
 const resolvers = {
   ...entryResolver,
   Query: {
-    entries: (_, args, { entryRepo }) =>
-      entryRepo
+    entries: (_, args, { entryModel }) =>
+      entryModel
         .getEntries()
         .filter(
           ({ year, month, date }) =>
@@ -45,21 +45,23 @@ const resolvers = {
         ),
   },
   Mutation: {
-    createUser: (_, user, { userRepo }) => userRepo.createUser(user),
-    login: (_, { username, password }, { userRepo }) => {
-      loggedInUser = login(username, password, userRepo);
+    createUser: (_, user, { userModel }) => userModel.createUser(user),
+    login: (_, { username, password }, { userModel }) => {
+      loggedInUser = userModel.login(username, password);
       return loggedInUser;
     },
-    setEntry: (_, entry, { entryRepo }) => entryRepo.setEntry(entry),
+    setEntry: (_, entry, { entryModel }) => entryModel.setEntry(entry),
   },
 };
 
+const userRepository = createUserRepository();
+const entryRepository = createEntryRepository();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: () => ({
-    userRepo: new UserRepository(),
-    entryRepo: new EntryRepository(loggedInUser),
+    userModel: userModel(userRepository),
+    entryModel: entryModel(entryRepository, loggedInUser),
   }),
 });
 

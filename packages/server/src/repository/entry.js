@@ -1,16 +1,8 @@
-const entries = [];
-
-export default class EntryRepository {
-  constructor(user) {
-    this.user = user;
-  }
+class EntryRepository {
+  entries = [];
 
   setEntry = entry => {
-    if (this.user == null) return null;
-
-    entry.authorId = this.user.id;
-
-    const index = entries.findIndex(
+    const index = this.entries.findIndex(
       ({ year, month, date, authorId }) =>
         year === entry.year &&
         month === entry.month &&
@@ -19,13 +11,15 @@ export default class EntryRepository {
     );
 
     if (index !== -1) {
-      entries[index] = entry;
+      this.entries[index] = entry;
     } else {
-      entries.push(entry);
+      this.entries.push(entry);
     }
 
     return entry;
   };
 
-  getEntries = () => entries;
+  getEntries = () => this.entries;
 }
+
+export const createEntryRepository = () => new EntryRepository();

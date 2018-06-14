@@ -14,6 +14,18 @@ export const schema = [
 
 export const resolver = {
   Entry: {
-    author: (entry, _, { userRepo }) => userRepo.getById(entry.authorId),
+    author: (entry, _, { userModel }) => userModel.getById(entry.authorId),
   },
 };
+
+export const model = (entryRepository, user) => ({
+  setEntry: entry => {
+    if (user == null) return null;
+
+    entry.authorId = user.id;
+
+    return entryRepository.setEntry(entry);
+  },
+
+  getEntries: entryRepository.getEntries,
+});
