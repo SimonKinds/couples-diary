@@ -84,6 +84,6 @@ const server = new ApolloServer({
 });
 
 server.listen({ http: { port: 3333 } }).then(({ url }) => {
-  // eslint-disable-next-line
+  // eslint-disable-next-line no-console
   console.log(` Server ready at ${url}`);
 });
