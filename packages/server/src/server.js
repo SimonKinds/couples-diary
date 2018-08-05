@@ -84,5 +84,11 @@ export const createServer = ({
 };
 
 export const startServer = (server, port, onStart) => {
-  return server.listen({ http: { port } }).then(({ url }) => onStart(url));
+  return server.listen({ port }).then(({ url, server }) => {
+    if (onStart != null) {
+      onStart(url);
+    }
+
+    return server;
+  });
 };
