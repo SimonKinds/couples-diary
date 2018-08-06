@@ -9,7 +9,7 @@ const server = createServer({
   coupleRepository: createCoupleRepository(),
 });
 
-startServer(server, 3333, url =>
+startServer(server, 3333).then(({ url }) =>
   // eslint-disable-next-line no-console
   console.log(`Server ready at ${url}`)
 );
