@@ -348,7 +348,7 @@ describe('GraphQL server', () => {
     );
   });
 
-  it('returns null and does not create a couple', () => {
+  it('returns null and does not create a couple if the user is not logged in', () => {
     userRepository.createUser({ id: 'userId' });
 
     return startServer(server).then(({ httpServer }) =>
@@ -378,6 +378,7 @@ describe('GraphQL server', () => {
 
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
+        .set('Authorization', `Bearer ${temporaryToken('userId')}`)
         .send({
           query: `
             mutation {
@@ -394,6 +395,113 @@ describe('GraphQL server', () => {
         .then(({ createCouple: couple }) => {
           expect(couple).toBeNull();
           expect(coupleRepository.getCouples()).toHaveLength(1);
+        })
+    );
+  });
+
+  it('returns the couple after joining it successfully', () => {
+    userRepository.createUser({ id: 'creatorId' });
+    userRepository.createUser({ id: 'userId' });
+    coupleRepository.createCouple({ id: 'coupleId', creatorId: 'creatorId' });
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .set('Authorization', `Bearer ${temporaryToken('userId')}`)
+        .send({
+          query: `
+            mutation {
+              joinCoupleOfUser(userId: "creatorId") {
+                id
+                creator {
+                  id
+                }
+                other {
+                  id
+                }
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ joinCoupleOfUser: couple }) => {
+          expect(couple).toEqual({
+            id: 'coupleId',
+            creator: { id: 'creatorId' },
+            other: { id: 'userId' },
+          });
+          expect(coupleRepository.getCouples()).toHaveLength(1);
+          expect(coupleRepository.getCouples()[0].otherId).toEqual('userId');
+        })
+    );
+  });
+
+  it('returns null and does not update the database if a couple is full', () => {
+    coupleRepository.createCouple({
+      id: 'coupleId',
+      creatorId: 'creatorId',
+      otherId: 'anotherUserId',
+    });
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .set('Authorization', `Bearer ${temporaryToken('userId')}`)
+        .send({
+          query: `
+            mutation {
+              joinCoupleOfUser(userId: "creatorId") {
+                id
+                creator {
+                  id
+                }
+                other {
+                  id
+                }
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ joinCoupleOfUser: couple }) => {
+          expect(couple).toBeNull();
+          expect(coupleRepository.getCouples()).toHaveLength(1);
+          expect(coupleRepository.getCouples()[0].otherId).toEqual(
+            'anotherUserId'
+          );
+        })
+    );
+  });
+
+  it('returns null and does not update the couple if user is not logged in', () => {
+    coupleRepository.createCouple({
+      id: 'coupleId',
+      creatorId: 'creatorId',
+    });
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({
+          query: `
+            mutation {
+              joinCoupleOfUser(userId: "creatorId") {
+                id
+                creator {
+                  id
+                }
+                other {
+                  id
+                }
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ joinCoupleOfUser: couple }) => {
+          expect(couple).toBeNull();
+          expect(coupleRepository.getCouples()).toHaveLength(1);
+          expect(coupleRepository.getCouples()[0].otherId).toBeNull();
         })
     );
   });

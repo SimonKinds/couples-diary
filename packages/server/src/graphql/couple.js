@@ -44,13 +44,13 @@ export const model = (coupleRepository, userId) => ({
 
     return coupleRepository.createCouple(couple);
   },
-  joinCoupleOfUser: creator => {
+  joinCoupleOfUser: creatorId => {
     const couples = coupleRepository.getCouples();
     if (isInCouple(userId, couples)) {
       throw new Error('May only be part of a single couple');
     }
 
-    const couple = coupleOfUser(creator, couples);
+    const couple = coupleOfUser(creatorId, couples);
     if (couple == null) {
       throw new Error('No such couple');
     }

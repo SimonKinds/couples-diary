@@ -62,8 +62,8 @@ const resolvers = {
     },
     setEntry: (_, entry, { entryModel }) => entryModel.setEntry(entry),
     createCouple: (parent, args, { coupleModel }) => coupleModel.createCouple(),
-    joinCoupleOfUser: (parent, { userId }, { userModel, coupleModel }) =>
-      coupleModel.joinCoupleOfUser(userModel.getById(userId)),
+    joinCoupleOfUser: (parent, { userId }, { coupleModel }) =>
+      coupleModel.joinCoupleOfUser(userId),
   },
 };
 
