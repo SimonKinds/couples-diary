@@ -116,4 +116,55 @@ describe('GraphQL server', () => {
         .then(({ myCouple }) => expect(myCouple).toEqual({ id: coupleId }))
     );
   });
+
+  it('returns a successfully created user', () => {
+    const user = {
+      username: 'username',
+      name: 'name',
+      password: 'password',
+      color: 'color',
+    };
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({
+          query: `mutation {
+      createUser(username: "username",
+                  name: "name",
+                  password: "password",
+                  color: "color") {
+      username name password color
+    }}`,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ createUser }) => expect(createUser).toEqual(user))
+    );
+  });
+
+  it('returns null if a username is taken when trying to create user', () => {
+    const user = {
+      username: 'username',
+      name: 'name',
+      password: 'password',
+      color: 'color',
+    };
+    userRepository.createUser(user);
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({
+          query: `mutation {
+      createUser(username: "username",
+                  name: "name",
+                  password: "password",
+                  color: "color") {
+      username name password color
+    }}`,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ createUser }) => expect(createUser).toBeNull())
+    );
+  });
 });
