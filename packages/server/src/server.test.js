@@ -4,7 +4,7 @@ import { createUserRepository } from './repository/user';
 import { createEntryRepository } from './repository/entry';
 import { createCoupleRepository } from './repository/couple';
 import { createServer, startServer } from './server';
-import { temporaryToken } from './authentication';
+import { temporaryToken, verifyToken } from './authentication';
 
 const graphqlRequest = httpServer =>
   request(httpServer)
@@ -54,9 +54,17 @@ describe('GraphQL server', () => {
 
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
-        .send({ query: `{entries(year: 2018, month: 1) { content }}` })
+        .send({
+          query: `
+            {
+              entries(year: 2018, month: 1) {
+                content
+              }
+            }
+          `,
+        })
         .expect(200)
-        .then(res => parseGraphqlResponse(res))
+        .then(parseGraphqlResponse)
         .then(({ entries }) =>
           expect(entries).toEqual([{ content: 'Entry 1' }])
         )
@@ -81,9 +89,17 @@ describe('GraphQL server', () => {
 
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
-        .send({ query: `{entry(year: 2018, month: 1, date: 1) { content }}` })
+        .send({
+          query: `
+            {
+              entry(year: 2018, month: 1, date: 1) {
+                content
+              }
+            }
+          `,
+        })
         .expect(200)
-        .then(res => parseGraphqlResponse(res))
+        .then(parseGraphqlResponse)
         .then(({ entry }) => expect(entry).toEqual({ content: 'Entry 1' }))
     );
   });
@@ -91,9 +107,17 @@ describe('GraphQL server', () => {
   it('myCouple returns null if user is not logged in', () => {
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
-        .send({ query: `{myCouple { id }}` })
+        .send({
+          query: `
+            {
+              myCouple {
+                id
+              }
+            }
+          `,
+        })
         .expect(200)
-        .then(res => parseGraphqlResponse(res))
+        .then(parseGraphqlResponse)
         .then(({ myCouple }) => expect(myCouple).toBeNull())
     );
   });
@@ -110,9 +134,17 @@ describe('GraphQL server', () => {
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
         .set('Authorization', `Bearer ${temporaryToken(userId)}`)
-        .send({ query: `{myCouple { id }}` })
+        .send({
+          query: `
+            {
+              myCouple {
+                id
+              }
+            }
+          `,
+        })
         .expect(200)
-        .then(res => parseGraphqlResponse(res))
+        .then(parseGraphqlResponse)
         .then(({ myCouple }) => expect(myCouple).toEqual({ id: coupleId }))
     );
   });
@@ -128,13 +160,21 @@ describe('GraphQL server', () => {
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
         .send({
-          query: `mutation {
-      createUser(username: "username",
-                  name: "name",
-                  password: "password",
-                  color: "color") {
-      username name password color
-    }}`,
+          query: `
+            mutation {
+              createUser(
+                username: "username"
+                name: "name"
+                password: "password"
+                color: "color"
+              ) {
+                username
+                name
+                password
+                color
+              }
+            }
+          `,
         })
         .expect(200)
         .then(parseGraphqlResponse)
@@ -154,17 +194,70 @@ describe('GraphQL server', () => {
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
         .send({
-          query: `mutation {
-      createUser(username: "username",
-                  name: "name",
-                  password: "password",
-                  color: "color") {
-      username name password color
-    }}`,
+          query: `
+            mutation {
+              createUser(
+                username: "username"
+                name: "anotherName"
+                password: "anotherPassword"
+                color: "anotherColor"
+              ) {
+                username
+                name
+                password
+                color
+              }
+            }
+          `,
         })
         .expect(200)
         .then(parseGraphqlResponse)
         .then(({ createUser }) => expect(createUser).toBeNull())
+    );
+  });
+
+  it('returns a jwt token containing user id on successfull login', () => {
+    const user = {
+      id: 'userId',
+      username: 'username',
+      name: 'name',
+      password: 'password',
+      color: 'color',
+    };
+    userRepository.createUser(user);
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({
+          query: `
+            mutation {
+              login(username: "username", password: "password")
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ login: token }) =>
+          verifyToken(token, userId => {
+            return expect(userId).toEqual('userId');
+          })
+        )
+    );
+  });
+
+  it('returns null on failed login', () => {
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({
+          query: `
+            mutation {
+              login(username: "username", password: "password")
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ login: token }) => expect(token).toBeNull())
     );
   });
 });

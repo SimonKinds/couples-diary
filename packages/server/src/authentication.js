@@ -16,6 +16,6 @@ export const verifyToken = (token, callback) => {
       console.error(err);
     }
 
-    return callback(userId || null);
+    return callback(userId);
   });
 };

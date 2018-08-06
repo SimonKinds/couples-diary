@@ -10,7 +10,7 @@ import {
   resolver as coupleResolver,
   model as coupleModel,
 } from './graphql/couple';
-import { verifyToken } from './authentication';
+import { temporaryToken, verifyToken } from './authentication';
 
 const typeDefs = [
   ...userSchema,
@@ -31,7 +31,7 @@ const typeDefs = [
         color: String!
       ): User
 
-      login(username: String!, password: String!): User
+      login(username: String!, password: String!): String
       setEntry(year: Int!, month: Int!, date: Int!, content: String!): Entry
 
       createCouple: Couple
@@ -40,7 +40,6 @@ const typeDefs = [
   `,
 ];
 
-let loggedInUser = null;
 const resolvers = {
   ...entryResolver,
   ...coupleResolver,
@@ -54,8 +53,12 @@ const resolvers = {
   Mutation: {
     createUser: (_, user, { userModel }) => userModel.createUser(user),
     login: (_, { username, password }, { userModel }) => {
-      loggedInUser = userModel.login(username, password);
-      return loggedInUser;
+      const user = userModel.findWithCredentials(username, password);
+      if (user) {
+        return temporaryToken(user.id);
+      }
+
+      return null;
     },
     setEntry: (_, entry, { entryModel }) => entryModel.setEntry(entry),
     createCouple: (parent, args, { coupleModel }) => coupleModel.createCouple(),

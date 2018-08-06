@@ -5,18 +5,21 @@ import './styles.css';
 
 class App extends PureComponent {
   state = {
-    user: JSON.parse(window.localStorage.getItem('user')),
+    token: window.localStorage.getItem('token'),
   };
 
-  setUser = user => {
-    this.setState({ user });
-    window.localStorage.setItem('user', JSON.stringify(user));
+  setToken = token => {
+    this.setState({ token });
+    window.localStorage.setItem('token', token);
   };
 
   render() {
     return (
       <div className="container">
-        <Router user={this.state.user} setUser={this.setUser} />
+        <Router
+          isLoggedIn={this.state.token != null}
+          setToken={this.setToken}
+        />
       </div>
     );
   }

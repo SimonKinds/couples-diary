@@ -5,21 +5,16 @@ import gql from 'graphql-tag';
 
 import Login from './component';
 
-export const LoginContainer = ({ setUser, history }) => (
+export const LoginContainer = ({ setToken, history }) => (
   <Mutation
     mutation={gql`
       mutation login($username: String!, $password: String!) {
-        login(username: $username, password: $password) {
-          id
-          username
-          name
-        }
+        login(username: $username, password: $password)
       }
     `}
-    onCompleted={({ login: user }) => {
-      if (user != null) {
-        const { id, username, name } = user;
-        setUser({ id, username, name });
+    onCompleted={({ login: token }) => {
+      if (token != null) {
+        setToken(token);
         history.push('/');
       }
     }}
@@ -36,7 +31,7 @@ export const LoginContainer = ({ setUser, history }) => (
 );
 
 LoginContainer.propTypes = {
-  setUser: PropTypes.func.isRequired,
+  setToken: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };
 

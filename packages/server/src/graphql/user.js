@@ -23,7 +23,7 @@ export const model = userRepository => ({
     const id = Math.max(-1, ...users.map(({ id }) => id)) + 1;
     return userRepository.createUser({ ...user, id });
   },
-  login: (username, password) =>
+  findWithCredentials: (username, password) =>
     userRepository
       .getUsers()
       .find(user => username === user.username && password === user.password),

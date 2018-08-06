@@ -12,13 +12,13 @@ export default class Router extends PureComponent {
   renderLoginComponent = props => {
     return (
       <StrictMode>
-        <Login key="login" setUser={this.props.setUser} {...props} />
+        <Login key="login" setToken={this.props.setToken} {...props} />
       </StrictMode>
     );
   };
 
   renderCalendarComponent = props => {
-    if (this.props.user) {
+    if (this.props.isLoggedIn) {
       return (
         <StrictMode>
           <Calendar {...props} />
@@ -29,7 +29,7 @@ export default class Router extends PureComponent {
   };
 
   renderEntryComponent = props => {
-    if (this.props.user) {
+    if (this.props.isLoggedIn) {
       return (
         <StrictMode>
           <Entry
@@ -44,7 +44,7 @@ export default class Router extends PureComponent {
   };
 
   renderDefault = () => {
-    return redirectToFitting(this.props.user);
+    return redirectToFitting(this.props.isLoggedIn);
   };
 
   render() {
@@ -71,12 +71,12 @@ export default class Router extends PureComponent {
 }
 
 Router.propTypes = {
-  user: PropTypes.object,
+  isLoggedIn: PropTypes.bool.isRequired,
   setUser: PropTypes.func.isRequired,
 };
 
-function redirectToFitting(user) {
-  if (user) {
+function redirectToFitting(isLoggedIn) {
+  if (isLoggedIn) {
     const { year, month } = today();
     return <Redirect to={`/calendar/${year}/${month}`} />;
   }
