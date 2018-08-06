@@ -10,6 +10,7 @@ import {
   resolver as coupleResolver,
   model as coupleModel,
 } from './graphql/couple';
+import { verifyToken } from './authentication';
 
 const typeDefs = [
   ...userSchema,
@@ -63,6 +64,17 @@ const resolvers = {
   },
 };
 
+const getToken = authHeader => {
+  if (authHeader) {
+    const splits = authHeader.split(' ');
+    if (splits.length == 2 && splits[0] == 'Bearer') {
+      return splits[1];
+    }
+  }
+
+  return '';
+};
+
 export const createServer = ({
   userRepository,
   coupleRepository,
@@ -71,11 +83,12 @@ export const createServer = ({
   return new ApolloServer({
     typeDefs,
     resolvers,
-    context: () => ({
-      userModel: userModel(userRepository),
-      entryModel: entryModel(entryRepository, loggedInUser),
-      coupleModel: coupleModel(coupleRepository, loggedInUser),
-    }),
+    context: ({ req }) =>
+      verifyToken(getToken(req.headers.authorization), userId => ({
+        userModel: userModel(userRepository),
+        entryModel: entryModel(entryRepository, userId),
+        coupleModel: coupleModel(coupleRepository, userId),
+      })),
   });
 };
 

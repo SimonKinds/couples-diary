@@ -4,6 +4,7 @@ import { createUserRepository } from './repository/user';
 import { createEntryRepository } from './repository/entry';
 import { createCoupleRepository } from './repository/couple';
 import { createServer, startServer } from './server';
+import { temporaryToken } from './authentication';
 
 const graphqlRequest = httpServer =>
   request(httpServer)
@@ -55,10 +56,9 @@ describe('GraphQL server', () => {
       graphqlRequest(httpServer)
         .send({ query: `{entries(year: 2018, month: 1) { content }}` })
         .expect(200)
-        .then(res =>
-          expect(parseGraphqlResponse(res)).toEqual({
-            entries: [{ content: 'Entry 1' }],
-          })
+        .then(res => parseGraphqlResponse(res))
+        .then(({ entries }) =>
+          expect(entries).toEqual([{ content: 'Entry 1' }])
         )
     );
   });
@@ -84,11 +84,36 @@ describe('GraphQL server', () => {
         .send({ query: `{entry(year: 2018, month: 1, date: 1) { content }}` })
         .expect(200)
         .then(res => parseGraphqlResponse(res))
-        .then(data =>
-          expect(data).toEqual({
-            entry: { content: 'Entry 1' },
-          })
-        )
+        .then(({ entry }) => expect(entry).toEqual({ content: 'Entry 1' }))
+    );
+  });
+
+  it('myCouple returns null if user is not logged in', () => {
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({ query: `{myCouple { id }}` })
+        .expect(200)
+        .then(res => parseGraphqlResponse(res))
+        .then(({ myCouple }) => expect(myCouple).toBeNull())
+    );
+  });
+
+  it('myCouple returns the couple of the logged in user', () => {
+    const coupleId = 'coupleId';
+    const userId = 'creatorId';
+    coupleRepository.createCouple({
+      id: coupleId,
+      creatorId: userId,
+      otherId: 'otherId',
+    });
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .set('Authorization', `Bearer ${temporaryToken(userId)}`)
+        .send({ query: `{myCouple { id }}` })
+        .expect(200)
+        .then(res => parseGraphqlResponse(res))
+        .then(({ myCouple }) => expect(myCouple).toEqual({ id: coupleId }))
     );
   });
 });

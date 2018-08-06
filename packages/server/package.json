@@ -12,12 +12,13 @@
   "dependencies": {
     "apollo-server": "^2.0.0",
     "graphql": "^0.13.2",
-    "graphql-tag": "^2.9.2"
+    "graphql-tag": "^2.9.2",
+    "jsonwebtoken": "^8.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "jest": "^23.1.0",
     "nodemon": "^1.17.5",

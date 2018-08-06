@@ -18,11 +18,11 @@ export const resolver = {
   },
 };
 
-export const model = (entryRepository, user) => ({
+export const model = (entryRepository, userId) => ({
   setEntry: entry => {
-    if (user == null) return null;
+    if (userId == null) return null;
 
-    entry.authorId = user.id;
+    entry.authorId = userId;
 
     return entryRepository.setEntry(entry);
   },
