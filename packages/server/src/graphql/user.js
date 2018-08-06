@@ -20,12 +20,12 @@ export const model = userRepository => ({
       return null;
     }
 
-    const id = Math.max(-1, ...users.map(({ id }) => id)) + 1;
-    return userRepository.createUser({ ...user, id });
+    const id = Math.max(-1, ...users.map(({ id }) => parseInt(id, 10))) + 1;
+    return userRepository.createUser({ ...user, id: id.toString() });
   },
   findWithCredentials: (username, password) =>
     userRepository
       .getUsers()
       .find(user => username === user.username && password === user.password),
-  getById: id => userRepository.getById(parseInt(id, 10)),
+  getById: id => userRepository.getById(id),
 });

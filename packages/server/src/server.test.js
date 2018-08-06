@@ -315,4 +315,80 @@ describe('GraphQL server', () => {
         })
     );
   });
+
+  it('returns a hydrated couple after creating it', () => {
+    userRepository.createUser({ id: 'userId' });
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .set('Authorization', `Bearer ${temporaryToken('userId')}`)
+        .send({
+          query: `
+            mutation {
+              createCouple {
+                creator {
+                  id
+                }
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ createCouple: couple }) => {
+          expect(couple).toEqual({ creator: { id: 'userId' } });
+          expect(coupleRepository.getCouples()).toHaveLength(1);
+        })
+    );
+  });
+
+  it('returns null and does not create a couple', () => {
+    userRepository.createUser({ id: 'userId' });
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({
+          query: `
+            mutation {
+              createCouple {
+                creator {
+                  id
+                }
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ createCouple: couple }) => {
+          expect(couple).toBeNull();
+          expect(coupleRepository.getCouples()).toHaveLength(0);
+        })
+    );
+  });
+
+  it('returns null and does not create a couple if the user is already in a couple', () => {
+    coupleRepository.createCouple({ id: 'coupleId', creatorId: 'userId' });
+
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({
+          query: `
+            mutation {
+              createCouple {
+                creator {
+                  id
+                }
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ createCouple: couple }) => {
+          expect(couple).toBeNull();
+          expect(coupleRepository.getCouples()).toHaveLength(1);
+        })
+    );
+  });
 });
