@@ -7,7 +7,8 @@
   "scripts": {
     "start": "nodemon --exec babel-node --watch src src/index.js",
     "build": "babel src/** --out-dir build",
-    "test": "jest --watch"
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "dependencies": {
     "apollo-server": "^2.0.0",

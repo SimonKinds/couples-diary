@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 10
+
+os: linux
+
+cache:
+  directories:
+    - node_modules
+
+before_script:
+  npx lerna bootstrap
+
+script:
+  ./scripts/test.sh
