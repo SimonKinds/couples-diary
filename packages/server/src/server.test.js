@@ -260,4 +260,59 @@ describe('GraphQL server', () => {
         .then(({ login: token }) => expect(token).toBeNull())
     );
   });
+
+  it('returns the new entry and updates the database', () => {
+    const entry = {
+      year: 2018,
+      month: 1,
+      date: 1,
+      content: 'text',
+    };
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .set('Authorization', `Bearer ${temporaryToken('userId')}`)
+        .send({
+          query: `
+            mutation {
+              setEntry(year: 2018, month: 1, date: 1, content: "text") {
+                year
+                month
+                date
+                content
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ setEntry: insertedEntry }) => {
+          expect(insertedEntry).toEqual(entry);
+          expect(entryRepository.getEntries()[0]).toMatchObject(entry);
+        })
+    );
+  });
+
+  it('returns null and does not update the database if not logged in', () => {
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({
+          query: `
+            mutation {
+              setEntry(year: 2018, month: 1, date: 1, content: "text") {
+                year
+                month
+                date
+                content
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ setEntry: insertedEntry }) => {
+          expect(insertedEntry).toBeNull();
+          expect(entryRepository.getEntries()).toHaveLength(0);
+        })
+    );
+  });
 });
