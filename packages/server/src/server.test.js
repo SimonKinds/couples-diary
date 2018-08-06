@@ -149,7 +149,7 @@ describe('GraphQL server', () => {
     );
   });
 
-  it('returns a successfully created user', () => {
+  it('returns a successfully created user and updates the database', () => {
     const user = {
       username: 'username',
       name: 'name',
@@ -178,7 +178,10 @@ describe('GraphQL server', () => {
         })
         .expect(200)
         .then(parseGraphqlResponse)
-        .then(({ createUser }) => expect(createUser).toEqual(user))
+        .then(({ createUser: newUser }) => {
+          expect(newUser).toEqual(user);
+          expect(userRepository.getUsers()).toHaveLength(1);
+        })
     );
   });
 
@@ -212,7 +215,10 @@ describe('GraphQL server', () => {
         })
         .expect(200)
         .then(parseGraphqlResponse)
-        .then(({ createUser }) => expect(createUser).toBeNull())
+        .then(({ createUser: newUser }) => {
+          expect(newUser).toBeNull();
+          expect(userRepository.getUsers()).toHaveLength(1);
+        })
     );
   });
 
@@ -287,7 +293,7 @@ describe('GraphQL server', () => {
         .then(parseGraphqlResponse)
         .then(({ setEntry: insertedEntry }) => {
           expect(insertedEntry).toEqual(entry);
-          expect(entryRepository.getEntries()[0]).toMatchObject(entry);
+          expect(entryRepository.getEntries()).toHaveLength(1);
         })
     );
   });
