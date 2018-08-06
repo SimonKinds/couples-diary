@@ -17,7 +17,8 @@ const typeDefs = [
   ...coupleSchema,
   gql`
     type Query {
-      entries(year: Int!, month: Int!, date: Int): [Entry]!
+      entry(year: Int!, month: Int!, date: Int!): Entry
+      entries(year: Int!, month: Int!): [Entry]!
       myCouple: Couple
     }
 
@@ -43,15 +44,10 @@ const resolvers = {
   ...entryResolver,
   ...coupleResolver,
   Query: {
-    entries: (_, args, { entryModel }) =>
-      entryModel
-        .getEntries()
-        .filter(
-          ({ year, month, date }) =>
-            year === args.year &&
-            month === args.month &&
-            (args.date == null || date === args.date)
-        ),
+    entry: (_, { year, month, date }, { entryModel }) =>
+      entryModel.getEntriesByDate(year, month, date).pop() || null,
+    entries: (_, { year, month }, { entryModel }) =>
+      entryModel.getEntriesByDate(year, month),
     myCouple: (parent, args, { coupleModel }) => coupleModel.myCouple(),
   },
   Mutation: {

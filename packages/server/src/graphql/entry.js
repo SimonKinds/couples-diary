@@ -28,4 +28,5 @@ export const model = (entryRepository, user) => ({
   },
 
   getEntries: entryRepository.getEntries,
+  getEntriesByDate: entryRepository.getEntriesByDate,
 });

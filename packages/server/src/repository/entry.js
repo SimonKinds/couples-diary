@@ -20,6 +20,14 @@ class EntryRepository {
   };
 
   getEntries = () => this.entries;
+
+  getEntriesByDate = (year, month, date) =>
+    this.entries.filter(
+      entry =>
+        entry.year === year &&
+        entry.month === month &&
+        (date == null || date === entry.date)
+    );
 }
 
 export const createEntryRepository = () => new EntryRepository();
