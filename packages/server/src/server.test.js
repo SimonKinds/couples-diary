@@ -37,11 +37,14 @@ describe('GraphQL server', () => {
   });
 
   it('returns the entries of the requested year and month', () => {
+    coupleRepository.createCouple({ id: 'couple', creatorId: 'author' });
+
     entryRepository.setEntry({
       year: 2018,
       month: 1,
       date: 1,
       authorId: 'author',
+      coupleId: 'couple',
       content: 'Entry 1',
     });
     entryRepository.setEntry({
@@ -49,11 +52,13 @@ describe('GraphQL server', () => {
       month: 2,
       date: 1,
       authorId: 'author',
+      coupleId: 'couple',
       content: 'Entry 2',
     });
 
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
+        .set('Authorization', `Bearer ${temporaryToken('author')}`)
         .send({
           query: `
             {
@@ -71,28 +76,44 @@ describe('GraphQL server', () => {
     );
   });
 
-  it('returns the entry of the requested year and month and date', () => {
+  it('returns only the entries of the people in the couple', () => {
+    coupleRepository.createCouple({
+      id: 'couple',
+      creatorId: 'firstUser',
+      otherId: 'secondUser',
+    });
+
     entryRepository.setEntry({
       year: 2018,
       month: 1,
       date: 1,
-      authorId: 'author',
+      authorId: 'firstUser',
+      coupleId: 'couple',
       content: 'Entry 1',
     });
     entryRepository.setEntry({
       year: 2018,
       month: 1,
-      date: 2,
-      authorId: 'author',
+      date: 1,
+      authorId: 'secondUser',
+      coupleId: 'couple',
       content: 'Entry 2',
+    });
+    entryRepository.setEntry({
+      year: 2018,
+      month: 1,
+      date: 1,
+      authorId: 'thirdUser',
+      content: 'Entry 3',
     });
 
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
+        .set('Authorization', `Bearer ${temporaryToken('firstUser')}`)
         .send({
           query: `
             {
-              entry(year: 2018, month: 1, date: 1) {
+              entries(year: 2018, month: 1) {
                 content
               }
             }
@@ -100,7 +121,12 @@ describe('GraphQL server', () => {
         })
         .expect(200)
         .then(parseGraphqlResponse)
-        .then(({ entry }) => expect(entry).toEqual({ content: 'Entry 1' }))
+        .then(({ entries }) =>
+          expect(entries).toEqual([
+            { content: 'Entry 1' },
+            { content: 'Entry 2' },
+          ])
+        )
     );
   });
 

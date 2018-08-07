@@ -26,7 +26,11 @@ export const model = (entryRepository, userId) => ({
 
     return entryRepository.setEntry(entry);
   },
+  getEntriesForCoupleByDate: (couple, year, month, date) => {
+    if (couple == null) {
+      return [];
+    }
 
-  getEntries: entryRepository.getEntries,
-  getEntriesByDate: entryRepository.getEntriesByDate,
+    return entryRepository.getEntriesForCoupleByDate(couple, year, month, date);
+  },
 });
