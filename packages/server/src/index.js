@@ -1,3 +1,6 @@
+import { config } from 'dotenv';
+config();
+
 import { createUserRepository } from './repository/user';
 import { createEntryRepository } from './repository/entry';
 import { createCoupleRepository } from './repository/couple';
