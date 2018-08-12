@@ -53,7 +53,7 @@ export const CalendarContainer = ({ match }) => {
             today={today()}
             selectedYear={year}
             selectedMonth={month}
-            entries={hydrate(year, month, data.entries || [])}
+            entries={hydrate(year, month, (data && data.entries) || [])}
             loading={loading}
           />
         );
