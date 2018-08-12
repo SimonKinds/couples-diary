@@ -1,25 +1,34 @@
 import React, { PureComponent } from 'react';
 import Router from '../Router';
+import {
+  isAuthenticated,
+  subscribeToAuthenticationUpdates,
+  unsubscribeFromAuthenticationUpdates,
+} from '../../authentication';
 
 import './styles.css';
 
 class App extends PureComponent {
   state = {
-    token: window.localStorage.getItem('token'),
+    isAuthenticated: isAuthenticated(),
   };
 
-  setToken = token => {
-    this.setState({ token });
-    window.localStorage.setItem('token', token);
+  onAuthenticationStatusUpdate = isAuthenticated => {
+    this.setState({ isAuthenticated });
   };
+
+  componentDidMount() {
+    subscribeToAuthenticationUpdates(this.onAuthenticationStatusUpdate);
+  }
+
+  componentWillUnmount() {
+    unsubscribeFromAuthenticationUpdates(this.onAuthenticationStatusUpdate);
+  }
 
   render() {
     return (
       <div className="container">
-        <Router
-          isLoggedIn={this.state.token != null}
-          setToken={this.setToken}
-        />
+        <Router isAuthenticated={this.state.isAuthenticated} />
       </div>
     );
   }

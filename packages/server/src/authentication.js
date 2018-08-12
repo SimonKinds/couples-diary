@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { AuthenticationError } from 'apollo-server';
 
 let cachedSecret;
 
@@ -30,12 +31,14 @@ export const verifyToken = (token, callback) => {
     return callback(null);
   }
 
-  return jwt.verify(token, getSecret(), (err, { userId }) => {
-    if (err) {
+  return jwt.verify(token, getSecret(), (err, decoded) => {
+    if (err || decoded === undefined) {
       // eslint-disable-next-line no-console
       console.error(err);
+      throw new AuthenticationError('JWT decode error');
     }
 
+    const { userId } = decoded;
     return callback(userId);
   });
 };

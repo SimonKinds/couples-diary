@@ -4,8 +4,9 @@ import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Login from './component';
+import { login } from '../../authentication';
 
-export const LoginContainer = ({ setToken, history }) => (
+export const LoginContainer = ({ history }) => (
   <Mutation
     mutation={gql`
       mutation login($username: String!, $password: String!) {
@@ -14,15 +15,15 @@ export const LoginContainer = ({ setToken, history }) => (
     `}
     onCompleted={({ login: token }) => {
       if (token != null) {
-        setToken(token);
+        login(token);
         history.push('/');
       }
     }}
   >
-    {(login, { loading }) => (
+    {(loginMutation, { loading }) => (
       <Login
         onSubmit={(username, password) =>
-          login({ variables: { username, password } })
+          loginMutation({ variables: { username, password } })
         }
         isLoggingIn={loading}
       />
@@ -31,7 +32,6 @@ export const LoginContainer = ({ setToken, history }) => (
 );
 
 LoginContainer.propTypes = {
-  setToken: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
 };
 
