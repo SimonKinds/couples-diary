@@ -84,8 +84,9 @@ export const createServer = ({
   userRepository,
   coupleRepository,
   entryRepository,
-}) => {
-  return new ApolloServer({
+}) =>
+  new ApolloServer({
+    cors: false,
     typeDefs,
     resolvers,
     context: ({ req }) =>
@@ -95,7 +96,6 @@ export const createServer = ({
         coupleModel: coupleModel(coupleRepository, userId),
       })),
   });
-};
 
 export const startServer = (server, port = 0) => {
   return server

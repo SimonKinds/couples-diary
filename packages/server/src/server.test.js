@@ -37,6 +37,16 @@ describe('GraphQL server', () => {
     server.stop();
   });
 
+  it('Does not have a CORS header', () => {
+    return startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({ query: `{}` })
+        .then(({ headers }) =>
+          expect(headers['access-control-allow-origin']).toBeUndefined()
+        )
+    );
+  });
+
   it('returns the entries of the requested year and month', () => {
     coupleRepository.createCouple({ id: 'couple', creatorId: 'author' });
 
