@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql, AuthenticationError } from 'apollo-server';
 
 export const schema = [
   gql`
@@ -20,7 +20,9 @@ export const resolver = {
 
 export const model = (entryRepository, userId) => ({
   setEntry: entry => {
-    if (userId == null) return null;
+    if (userId == null) {
+      throw new AuthenticationError();
+    }
 
     entry.authorId = userId;
 

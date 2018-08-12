@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql, AuthenticationError } from 'apollo-server';
 
 export const schema = [
   gql`
@@ -25,10 +25,15 @@ const coupleOfUser = (userId, couples) =>
 const isInCouple = (userId, couples) => coupleOfUser(userId, couples) != null;
 
 export const model = (coupleRepository, userId) => ({
-  myCouple: () => coupleOfUser(userId, coupleRepository.getCouples()),
+  myCouple: () => {
+    if (userId == null) {
+      throw new AuthenticationError();
+    }
+    return coupleOfUser(userId, coupleRepository.getCouples());
+  },
   createCouple: () => {
     if (userId == null) {
-      throw new Error('Has to be logged in');
+      throw new AuthenticationError();
     }
 
     const couples = coupleRepository.getCouples();
@@ -45,6 +50,10 @@ export const model = (coupleRepository, userId) => ({
     return coupleRepository.createCouple(couple);
   },
   joinCoupleOfUser: creatorId => {
+    if (userId == null) {
+      throw new AuthenticationError();
+    }
+
     const couples = coupleRepository.getCouples();
     if (isInCouple(userId, couples)) {
       throw new Error('May only be part of a single couple');

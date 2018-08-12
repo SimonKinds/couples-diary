@@ -12,6 +12,7 @@ const graphqlRequest = httpServer =>
     .set('Accept', 'application/json');
 
 const parseGraphqlResponse = res => JSON.parse(res.text).data;
+const parseGraphqlError = res => JSON.parse(res.text).errors;
 
 describe('GraphQL server', () => {
   let userRepository;
@@ -130,7 +131,7 @@ describe('GraphQL server', () => {
     );
   });
 
-  it('myCouple returns null if user is not logged in', () => {
+  it('myCouple returns UNAUTHENTICATED error if user is not logged in', () => {
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
         .send({
@@ -143,8 +144,10 @@ describe('GraphQL server', () => {
           `,
         })
         .expect(200)
-        .then(parseGraphqlResponse)
-        .then(({ myCouple }) => expect(myCouple).toBeNull())
+        .then(parseGraphqlError)
+        .then(errors =>
+          expect(errors[0].extensions.code).toBe('UNAUTHENTICATED')
+        )
     );
   });
 
@@ -324,7 +327,7 @@ describe('GraphQL server', () => {
     );
   });
 
-  it('returns null and does not update the database if not logged in', () => {
+  it('returns UNAUTHENTICATED error and does not update the database if not logged in', () => {
     return startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
         .send({
@@ -340,9 +343,9 @@ describe('GraphQL server', () => {
           `,
         })
         .expect(200)
-        .then(parseGraphqlResponse)
-        .then(({ setEntry: insertedEntry }) => {
-          expect(insertedEntry).toBeNull();
+        .then(parseGraphqlError)
+        .then(errors => {
+          expect(errors[0].extensions.code).toBe('UNAUTHENTICATED');
           expect(entryRepository.getEntries()).toHaveLength(0);
         })
     );
@@ -374,7 +377,7 @@ describe('GraphQL server', () => {
     );
   });
 
-  it('returns null and does not create a couple if the user is not logged in', () => {
+  it('returns UNAUTHENTICATED error and does not create a couple if the user is not logged in', () => {
     userRepository.createUser({ id: 'userId' });
 
     return startServer(server).then(({ httpServer }) =>
@@ -391,9 +394,9 @@ describe('GraphQL server', () => {
           `,
         })
         .expect(200)
-        .then(parseGraphqlResponse)
-        .then(({ createCouple: couple }) => {
-          expect(couple).toBeNull();
+        .then(parseGraphqlError)
+        .then(errors => {
+          expect(errors[0].extensions.code).toBe('UNAUTHENTICATED');
           expect(coupleRepository.getCouples()).toHaveLength(0);
         })
     );
@@ -499,7 +502,7 @@ describe('GraphQL server', () => {
     );
   });
 
-  it('returns null and does not update the couple if user is not logged in', () => {
+  it('returns UNAUTHENTICATED error and does not update the couple if user is not logged in', () => {
     coupleRepository.createCouple({
       id: 'coupleId',
       creatorId: 'creatorId',
@@ -523,11 +526,11 @@ describe('GraphQL server', () => {
           `,
         })
         .expect(200)
-        .then(parseGraphqlResponse)
-        .then(({ joinCoupleOfUser: couple }) => {
-          expect(couple).toBeNull();
+        .then(parseGraphqlError)
+        .then(errors => {
+          expect(errors[0].extensions.code).toBe('UNAUTHENTICATED');
           expect(coupleRepository.getCouples()).toHaveLength(1);
-          expect(coupleRepository.getCouples()[0].otherId).toBeNull();
+          expect(coupleRepository.getCouples()[0].otherId).toBeUndefined();
         })
     );
   });
