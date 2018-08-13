@@ -2,15 +2,14 @@
   display: block;
   width: 100%;
   margin: auto;
+  box-sizing: border-box;
   padding: 10px;
   font-size: 0.9em;
   border: 1px solid #a9a9a9;
   border-radius: 5px;
-  outline: none;
 }
 
 .login label {
   display: block;
   margin-bottom: 20px;
-  font-size: 1.1em;
 }

@@ -45,10 +45,7 @@ export default class Login extends PureComponent {
               value={this.state.password}
               onChange={this.onPasswordChange}
             />
-            <div style={{ display: 'flex' }}>
-              <div>
-                <SubmitButton id="login-button" value="Login" />
-              </div>
+            <div style={{ display: 'flex', width: '100%' }}>
               <div
                 style={{
                   display: 'flex',
@@ -58,6 +55,7 @@ export default class Login extends PureComponent {
               >
                 {this.props.isLoggingIn && <Loader />}
               </div>
+              <SubmitButton id="login-button" value="Login" />
             </div>
           </Form>
         </div>
