@@ -1,4 +1,7 @@
-import { ApolloServer, gql } from 'apollo-server';
+import express from 'express';
+import { ApolloServer, gql } from 'apollo-server-express';
+import { format as formatUrl } from 'url';
+
 import { schema as userSchema, model as userModel } from './graphql/user';
 import {
   schema as entrySchema,
@@ -80,13 +83,57 @@ const getToken = authHeader => {
   return '';
 };
 
+class Server {
+  constructor(app) {
+    this.app = app;
+    this.httpServer = null;
+  }
+
+  listen(port) {
+    const httpServer = this.app.listen(port);
+    this.httpServer = httpServer;
+
+    return Promise.resolve({
+      httpServer,
+      url: this.getUrl(httpServer.address()),
+    });
+  }
+
+  getUrl(serverInfo) {
+    return formatUrl({
+      protocol: 'http',
+      hostname: this.getHostname(serverInfo.address),
+      port: serverInfo.port,
+      pathname: '/',
+    });
+  }
+
+  getHostname(address) {
+    if (address === '' || address === '::') {
+      return 'localhost';
+    }
+
+    return address;
+  }
+
+  stop() {
+    if (this.httpServer !== null) {
+      return new Promise(resolve => this.httpServer.close(resolve));
+    }
+
+    return Promise.resolve();
+  }
+}
+
 export const createServer = ({
   userRepository,
   coupleRepository,
   entryRepository,
-}) =>
-  new ApolloServer({
-    cors: false,
+}) => {
+  const app = express();
+  app.disable('x-powered-by');
+
+  const graphqlServer = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({ req }) =>
@@ -97,8 +144,11 @@ export const createServer = ({
       })),
   });
 
+  graphqlServer.applyMiddleware({ app, cors: false, path: '/' });
+
+  return new Server(app);
+};
+
 export const startServer = (server, port = 0) => {
-  return server
-    .listen({ port })
-    .then(({ server: httpServer, ...rest }) => ({ httpServer, ...rest }));
+  return server.listen(port);
 };

@@ -1,4 +1,4 @@
-import { gql, AuthenticationError } from 'apollo-server';
+import { gql, AuthenticationError } from 'apollo-server-express';
 
 export const schema = [
   gql`

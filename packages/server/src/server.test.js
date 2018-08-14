@@ -47,6 +47,13 @@ describe('GraphQL server', () => {
     );
   });
 
+  it('Does not have a X-POWERED-BY header', () =>
+    startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .send({ query: `{}` })
+        .then(({ headers }) => expect(headers['x-powered-by']).toBeUndefined())
+    ));
+
   describe('entries query', () => {
     it('returns the entries of the requested year and month with the entries query', () => {
       coupleRepository.createCouple({ id: 'couple', creatorId: 'author' });
