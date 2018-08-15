@@ -20,13 +20,13 @@ export const resolver = {
 const coupleOfUser = (userId, couples) =>
   couples.find(
     ({ creatorId, otherId }) => userId === creatorId || userId === otherId
-  );
+  ) || null;
 
 const isInCouple = (userId, couples) => coupleOfUser(userId, couples) != null;
 
 export const model = (coupleRepository, userId) => ({
   myCouple: () => {
-    if (userId == null) {
+    if (userId === null) {
       throw new AuthenticationError();
     }
     return coupleOfUser(userId, coupleRepository.getCouples());

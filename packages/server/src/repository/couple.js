@@ -7,7 +7,7 @@ class CoupleRepository {
   };
   getCouples = () => this.couples;
   updateCouple = couple => {
-    const index = this.couples.find(({ id }) => couple.id === id);
+    const index = this.couples.findIndex(({ id }) => couple.id === id);
 
     if (index === -1) {
       return null;

@@ -19,14 +19,20 @@ export const resolver = {
 };
 
 export const model = (entryRepository, userId) => ({
-  setEntry: entry => {
-    if (userId == null) {
+  setEntryForCouple: (entry, couple) => {
+    if (userId === null) {
       throw new AuthenticationError();
     }
 
-    entry.authorId = userId;
+    if (couple === null) {
+      throw new Error('Has to be in a couple');
+    }
 
-    return entryRepository.setEntry(entry);
+    return entryRepository.setEntry({
+      ...entry,
+      authorId: userId,
+      coupleId: couple.id,
+    });
   },
   getEntriesForCoupleByDate: (couple, year, month, date) => {
     if (couple == null) {

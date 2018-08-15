@@ -319,14 +319,19 @@ describe('GraphQL server', () => {
 
   describe('setEntry mutation', () => {
     it('returns the new entry and updates the database', () => {
+      const userId = 'author';
+      userRepository.createUser({ id: userId });
+      coupleRepository.createCouple({ id: 'couple', creatorId: userId });
+
       const entry = {
         year: 2018,
         month: 1,
         date: 1,
         content: 'text',
       };
+
       return graphqlRequest()
-        .set('Authorization', `Bearer ${temporaryToken('userId')}`)
+        .set('Authorization', `Bearer ${temporaryToken(userId)}`)
         .send({
           query: `
             mutation {
@@ -367,6 +372,31 @@ describe('GraphQL server', () => {
           expect(errors[0].extensions.code).toBe('UNAUTHENTICATED');
           expect(entryRepository.getEntries()).toHaveLength(0);
         }));
+
+    it('throws an error if not in a couple', () => {
+      userRepository.createUser({ id: 'userId' });
+
+      return graphqlRequest()
+        .set('Authorization', `Bearer ${temporaryToken('userId')}`)
+        .send({
+          query: `
+            mutation {
+              setEntry(year: 2018, month: 1, date: 1, content: "text") {
+                year
+                month
+                date
+                content
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlError)
+        .then(errors => {
+          expect(errors).toHaveLength(1);
+          expect(entryRepository.getEntries()).toHaveLength(0);
+        });
+    });
   });
 
   describe('createCouple mutation', () => {

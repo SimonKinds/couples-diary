@@ -66,7 +66,8 @@ const resolvers = {
 
       return null;
     },
-    setEntry: (_, entry, { entryModel }) => entryModel.setEntry(entry),
+    setEntry: (_, entry, { entryModel, coupleModel }) =>
+      entryModel.setEntryForCouple(entry, coupleModel.myCouple()),
     createCouple: (parent, args, { coupleModel }) => coupleModel.createCouple(),
     joinCoupleOfUser: (parent, { userId }, { coupleModel }) =>
       coupleModel.joinCoupleOfUser(userId),
