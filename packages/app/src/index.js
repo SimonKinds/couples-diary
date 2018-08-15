@@ -6,7 +6,7 @@ import { ApolloProvider } from 'react-apollo';
 
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
-import { getToken } from './authentication';
+import { getToken, logout } from './authentication';
 
 const shouldIncludeAuthorizationHeader = token => token !== null;
 const getAuthorizationHeader = token =>
@@ -20,6 +20,15 @@ const client = new ApolloClient({
         ? { headers: { Authorization: getAuthorizationHeader(getToken()) } }
         : null
     ),
+  onError: ({ graphQLErrors }) => {
+    if (
+      graphQLErrors.find(
+        ({ extensions: { code } }) => code === 'UNAUTHENTICATED'
+      ) !== undefined
+    ) {
+      logout();
+    }
+  },
 });
 
 const root = document.getElementById('root');

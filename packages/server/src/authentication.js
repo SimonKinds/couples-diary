@@ -33,9 +33,7 @@ export const verifyToken = (token, callback) => {
 
   return jwt.verify(token, getSecret(), (err, decoded) => {
     if (err || decoded === undefined) {
-      // eslint-disable-next-line no-console
-      console.error(err);
-      throw new AuthenticationError('JWT decode error');
+      throw new AuthenticationError(`JWT decode error: ${err.message}`);
     }
 
     const { userId } = decoded;
