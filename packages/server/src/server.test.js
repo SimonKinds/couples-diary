@@ -47,11 +47,29 @@ describe('GraphQL server', () => {
     );
   });
 
-  it('Does not have a X-POWERED-BY header', () =>
+  it('Does not have a x-powered-by header', () =>
     startServer(server).then(({ httpServer }) =>
       graphqlRequest(httpServer)
         .send({ query: `{}` })
         .then(({ headers }) => expect(headers['x-powered-by']).toBeUndefined())
+    ));
+
+  it('Uses gzip compression if accepted', () =>
+    startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .set('accept-encoding', 'gzip')
+        .send({ query: `{}` })
+        .then(({ headers }) => expect(headers['content-encoding']).toBe('gzip'))
+    ));
+
+  it('Does not use gzip compression if not accepted', () =>
+    startServer(server).then(({ httpServer }) =>
+      graphqlRequest(httpServer)
+        .set('accept-encoding', null)
+        .send({ query: `{}` })
+        .then(({ headers }) =>
+          expect(headers['content-encoding']).toBeUndefined()
+        )
     ));
 
   describe('entries query', () => {

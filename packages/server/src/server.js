@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression';
 import { ApolloServer, gql } from 'apollo-server-express';
 import { format as formatUrl } from 'url';
 
@@ -132,6 +133,7 @@ export const createServer = ({
 }) => {
   const app = express();
   app.disable('x-powered-by');
+  app.use(compression());
 
   const graphqlServer = new ApolloServer({
     typeDefs,
