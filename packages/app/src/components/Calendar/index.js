@@ -40,6 +40,7 @@ export const CalendarContainer = ({ match }) => {
             month
             date
             author {
+              name
               color
             }
           }

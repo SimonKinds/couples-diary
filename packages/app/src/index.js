@@ -22,6 +22,7 @@ const client = new ApolloClient({
     ),
   onError: ({ graphQLErrors }) => {
     if (
+      graphQLErrors !== undefined &&
       graphQLErrors.find(
         ({ extensions: { code } }) => code === 'UNAUTHENTICATED'
       ) !== undefined

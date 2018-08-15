@@ -26,11 +26,7 @@ class App extends PureComponent {
   }
 
   render() {
-    return (
-      <div className="container">
-        <Router isAuthenticated={this.state.isAuthenticated} />
-      </div>
-    );
+    return <Router isAuthenticated={this.state.isAuthenticated} />;
   }
 }
 
