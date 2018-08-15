@@ -7,6 +7,12 @@ import Loader from '../Loader';
 
 import './styles.css';
 
+const ErrorNotifier = ({ didFail }) => (
+  <div style={{ marginTop: '20px', height: '1em', color: 'red' }}>
+    {didFail && 'Error logging in'}
+  </div>
+);
+
 export default class Login extends PureComponent {
   state = {
     username: '',
@@ -58,6 +64,7 @@ export default class Login extends PureComponent {
               <SubmitButton id="login-button" value="Login" />
             </div>
           </Form>
+          <ErrorNotifier didFail={this.props.didFail} />
         </div>
       </section>
     );
@@ -67,4 +74,5 @@ export default class Login extends PureComponent {
 Login.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isLoggingIn: PropTypes.bool.isRequired,
+  didFail: PropTypes.bool.isRequired,
 };

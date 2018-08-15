@@ -14,18 +14,22 @@ export const LoginContainer = ({ history }) => (
       }
     `}
     onCompleted={({ login: token }) => {
-      if (token != null) {
+      if (token !== null) {
         login(token);
         history.push('/');
       }
     }}
   >
-    {(loginMutation, { loading }) => (
+    {(loginMutation, { loading, data, error }) => (
       <Login
         onSubmit={(username, password) =>
           loginMutation({ variables: { username, password } })
         }
         isLoggingIn={loading}
+        didFail={
+          error !== undefined ||
+          (loading === false && (data && data.login) === null)
+        }
       />
     )}
   </Mutation>
