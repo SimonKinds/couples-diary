@@ -21,3 +21,5 @@ export const logout = () => {
   window.localStorage.removeItem('token');
   subscribers.forEach(callback => callback(false));
 };
+
+export const getToken = () => token;
