@@ -4,6 +4,9 @@ node_js:
 
 os: linux
 
+env:
+  - JWT_SECRET=notVerySecret
+
 cache:
   directories:
     - node_modules
