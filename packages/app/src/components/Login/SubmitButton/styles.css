@@ -1,6 +1,7 @@
 .login input[type='submit']{
   padding: 15px 30px;
-  background-color: #ece;
+  color: #fefefe;
+  background-color: var(--main-dark-color);
   border: none;
   font-weight: bold;
   font-size: 0.9em;
@@ -10,5 +11,5 @@
 }
 
 .login input[type='submit']:hover, input[type='submit']:active {
-  background-color: #eecceea0;
+  background-color: #DD9FA7d0;
 }

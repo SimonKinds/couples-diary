@@ -1,5 +1,6 @@
 body {
   margin: 0;
   --main-bg-color: #FEF0F3;
+  --main-dark-color: #DD9FA7;
   background-color: var(--main-bg-color);
 }

@@ -8,7 +8,7 @@ import Loader from '../Loader';
 import './styles.css';
 
 const ErrorNotifier = ({ didFail }) => (
-  <div style={{ marginTop: '20px', height: '1em', color: 'red' }}>
+  <div style={{ marginTop: '20px', height: '1em', color: '#f4427a' }}>
     {didFail && 'Error logging in'}
   </div>
 );
@@ -33,40 +33,38 @@ export default class Login extends PureComponent {
 
   render() {
     return (
-      <section>
-        <div className="login">
-          <h1>Login</h1>
-          <Form onSubmit={this.onSubmit}>
-            <Input
-              id="username"
-              type="text"
-              label="Username"
-              value={this.state.username}
-              onChange={this.onUsernameChange}
-            />
-            <Input
-              id="password"
-              type="password"
-              label="Password"
-              value={this.state.password}
-              onChange={this.onPasswordChange}
-            />
-            <div style={{ display: 'flex', width: '100%' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                }}
-              >
-                {this.props.isLoggingIn && <Loader />}
-              </div>
-              <SubmitButton id="login-button" value="Login" />
+      <main className="login">
+        <h1>Login</h1>
+        <Form onSubmit={this.onSubmit}>
+          <Input
+            id="username"
+            type="text"
+            label="Username"
+            value={this.state.username}
+            onChange={this.onUsernameChange}
+          />
+          <Input
+            id="password"
+            type="password"
+            label="Password"
+            value={this.state.password}
+            onChange={this.onPasswordChange}
+          />
+          <div style={{ display: 'flex', width: '100%' }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}
+            >
+              {this.props.isLoggingIn && <Loader />}
             </div>
-          </Form>
-          <ErrorNotifier didFail={this.props.didFail} />
-        </div>
-      </section>
+            <SubmitButton id="login-button" value="Login" />
+          </div>
+        </Form>
+        <ErrorNotifier didFail={this.props.didFail} />
+      </main>
     );
   }
 }

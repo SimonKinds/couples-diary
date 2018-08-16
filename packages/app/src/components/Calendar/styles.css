@@ -1,18 +1,4 @@
-header {
-  background-color: #DD9FA7;
-  color: #fefefe;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid #D2D2D2;
-}
-
-header p {
-  margin: 0 20px;
-  font-size: 28px;
-}
-
-main {
+.calendar-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,26 +6,26 @@ main {
   padding: 0 10px;
 }
 
-main > h2 {
+.calendar-container > h2 {
   margin: 10px 0 0 0;
   font-size: 18px;
   font-weight: lighter;
 }
 
-main > nav {
+.calendar-container > nav {
   display: flex;
   align-items: baseline;
   justify-content: center;
 }
 
-main > nav h1 {
+.calendar-container > nav h1 {
   margin: 0 20px;
   font-size: 28px;
   font-weight: normal;
   text-transform: capitalize;
 }
 
-main > nav a {
+.calendar-container > nav a {
   color: inherit;
   text-decoration: none;
   font-weight: bolder;
@@ -47,28 +33,28 @@ main > nav a {
   font-size: 20px;
 }
 
-main > nav a:first-child {
+.calendar-container > nav a:first-child {
   padding-left: 15px;
 }
 
-main > nav a:last-child {
+.calendar-container > nav a:last-child {
   padding-right: 15px;
 }
 
-main > .days {
+.calendar-container > .days {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   width: 100%;
 }
 
-main > .days p {
+.calendar-container > .days p {
   text-align: center;
   text-transform: uppercase;
   font-size: 14px;
   margin: 10px 0 5px 0;
 }
 
-main > .calendar {
+.calendar-container > .calendar {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -77,7 +63,7 @@ main > .calendar {
   background-color: #d2d2d2;
 }
 
-main > .calendar .date {
+.calendar-container > .calendar .date {
   height: 75px;
   display: flex;
   flex-direction: column;
@@ -86,28 +72,28 @@ main > .calendar .date {
   background-color: var(--main-bg-color);
 }
 
-main > .calendar a {
+.calendar-container > .calendar a {
   color: inherit;
   text-decoration: none;
 }
 
-main > .calendar .date p {
+.calendar-container > .calendar .date p {
   font-size: 24px;
   margin: 0;
 }
 
-main > .calendar .date > .entries {
+.calendar-container > .calendar .date > .entries {
   display: flex;
   width: 100%;
   height: 13px;
   justify-content: space-evenly;
 }
 
-main > .calendar .today {
+.calendar-container > .calendar .today {
   background-color: #CEEBCC;
 }
 
-main > .calendar .not-in-month p,
-main > .calendar .not-in-month svg {
+.calendar-container > .calendar .not-in-month p,
+.calendar-container > .calendar .not-in-month svg {
   opacity: 0.5;
 }
