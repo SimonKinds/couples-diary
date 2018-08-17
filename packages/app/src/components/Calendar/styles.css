@@ -4,6 +4,8 @@
   align-items: center;
   color: #222;
   padding: 0 10px;
+  margin: auto;
+  max-width: 700px;
 }
 
 .calendar-container > h2 {
