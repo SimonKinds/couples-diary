@@ -10,6 +10,7 @@
   font-variant: small-caps;
 }
 
-.login input[type='submit']:hover, input[type='submit']:active {
+.login input[type='submit']:hover, 
+.login input[type='submit']:active {
   background-color: #DD9FA7d0;
 }

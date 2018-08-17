@@ -1,4 +1,4 @@
-header {
+.main-header {
   background-color: var(--main-dark-color);
   color: #fefefe;
   height: 55px;
@@ -7,7 +7,7 @@ header {
   border-bottom: 1px solid #D2D2D2;
 }
 
-header p {
+.main-header p {
   margin: 0 20px;
   font-size: 28px;
 }
