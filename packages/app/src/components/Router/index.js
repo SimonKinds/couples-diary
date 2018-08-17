@@ -38,13 +38,7 @@ export default class Router extends PureComponent {
 
       return (
         <StrictMode>
-          <Entry
-            nameOfUser="Margot"
-            nameOfPartner="Simon"
-            year={year}
-            month={month}
-            date={date}
-          />
+          <Entry year={year} month={month} date={date} />
         </StrictMode>
       );
     }
