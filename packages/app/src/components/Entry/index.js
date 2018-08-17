@@ -1,13 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import { months } from '../../constants';
 
 import './styles.css';
 
-const Entry = () => (
+const Entry = ({ year, month, date, nameOfUser, nameOfPartner }) => (
   <section className="entry">
     <nav>
-      <a href="/calendar/2018/08" title="Back to calendar">
+      <a href={`/calendar/${year}/${month}`} title="Back to calendar">
         <svg
-          aria-hidden="true"
+          aria-hidden
           role="img"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"
@@ -21,27 +24,37 @@ const Entry = () => (
         </svg>
       </a>
       <header>
-        <h2>2018</h2>
-        <h1>August 17</h1>
+        <h2>{year}</h2>
+        <h1>{`${months[month - 1]} ${date}`}</h1>
       </header>
-      <a href="/entry/2018/08/17/simon" title="Read partner's entry">
+      <a
+        href={`/entry/${year}/${month}/${date}/OTHER`}
+        title="Read partner's entry"
+      >
         Read other
       </a>
     </nav>
     <form>
       <div className="entry-top-row">
-        <h3>Margot</h3>
+        <h3>{nameOfUser}</h3>
         <div className="buttons">
           <input type="reset" value="Discard changes" />
           <input type="submit" value="Save" />
         </div>
       </div>
       <div className="notebook">
-        <div className="back" />
+        <div aria-hidden className="back" />
         <textarea title="Diary entry" />
       </div>
     </form>
   </section>
 );
+
+Entry.propTypes = {
+  year: PropTypes.number.isRequired,
+  month: PropTypes.number.isRequired,
+  date: PropTypes.number.isRequired,
+  nameOfUser: PropTypes.string.isRequired,
+};
 
 export default Entry;

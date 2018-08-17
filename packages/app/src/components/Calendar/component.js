@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { previousMonth, nextMonth } from 'couples-diary-core';
+import { months } from '../../constants';
 
 import './styles.css';
 
@@ -55,21 +56,6 @@ CalendarDate.defaultProps = {
   isToday: false,
   isCurrentMonth: true,
 };
-
-const months = [
-  'january',
-  'february',
-  'march',
-  'april',
-  'may',
-  'june',
-  'july',
-  'august',
-  'september',
-  'october',
-  'november',
-  'december',
-];
 
 const calendarLink = ({ year, month }) => `/calendar/${year}/${month}`;
 

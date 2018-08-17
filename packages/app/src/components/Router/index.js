@@ -30,12 +30,20 @@ export default class Router extends PureComponent {
 
   renderEntryComponent = props => {
     if (this.props.isAuthenticated) {
+      const params = props.match.params;
+
+      const year = parseInt(params.year, 10);
+      const month = parseInt(params.month, 10);
+      const date = parseInt(params.date, 10);
+
       return (
         <StrictMode>
           <Entry
-            year={parseInt(props.match.params.year, 10)}
-            month={parseInt(props.match.params.month, 10)}
-            date={parseInt(props.match.params.date, 10)}
+            nameOfUser="Margot"
+            nameOfPartner="Simon"
+            year={year}
+            month={month}
+            date={date}
           />
         </StrictMode>
       );
