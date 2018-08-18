@@ -366,6 +366,73 @@ describe('GraphQL server', () => {
         });
     });
 
+    it('sets the date of when it was created', () => {
+      const userId = 'author';
+      userRepository.createUser({ id: userId });
+      coupleRepository.createCouple({ id: 'couple', creatorId: userId });
+
+      return graphqlRequest()
+        .set('Authorization', `Bearer ${temporaryToken(userId)}`)
+        .send({
+          query: `
+            mutation {
+              setEntry(year: 2018, month: 1, date: 1, content: "text") {
+                createdAt
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ setEntry: { createdAt } }) => {
+          const now = new Date().getTime();
+          const oneSecond = 1000;
+          /**
+           * give a 2s range of valid values,
+           * as we can't be sure how long the test takes.
+           * And if it's slightly incorrect it doesn't really matter
+           */
+          expect(createdAt).toBeGreaterThanOrEqual(now - oneSecond);
+          expect(createdAt).toBeLessThanOrEqual(now + oneSecond);
+        });
+    });
+
+    it('does not update the createdAt field when setting new value', () => {
+      const userId = 'author';
+      userRepository.createUser({ id: userId });
+      coupleRepository.createCouple({ id: 'couple', creatorId: userId });
+
+      const originalCreatedAt = new Date();
+      entryRepository.setEntry({
+        year: 2018,
+        month: 1,
+        date: 1,
+        content: 'text',
+        coupleId: 'couple',
+        authorId: userId,
+        createdAt: originalCreatedAt,
+      });
+
+      return graphqlRequest()
+        .set('Authorization', `Bearer ${temporaryToken(userId)}`)
+        .send({
+          query: `
+            mutation {
+              setEntry(year: 2018, month: 1, date: 1, content: "new text") {
+                content
+                createdAt
+              }
+            }
+          `,
+        })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ setEntry: { createdAt, content } }) => {
+          expect(content).toBe('new text');
+          expect(createdAt).toBe(originalCreatedAt.getTime());
+        });
+    });
+
     it('returns UNAUTHENTICATED error and does not update the database if not logged in', () =>
       graphqlRequest()
         .send({

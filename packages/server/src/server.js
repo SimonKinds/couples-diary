@@ -1,5 +1,7 @@
 import express from 'express';
 import compression from 'compression';
+import { GraphQLScalarType } from 'graphql';
+import { Kind } from 'graphql/language';
 import { ApolloServer, gql } from 'apollo-server-express';
 import { format as formatUrl } from 'url';
 
@@ -25,6 +27,8 @@ const typeDefs = [
   ...entrySchema,
   ...coupleSchema,
   gql`
+    scalar Date
+
     type Query {
       entries(year: Int!, month: Int!, date: Int): [Entry]!
       myCouple: Couple
@@ -52,6 +56,22 @@ const resolvers = {
   ...userResolver,
   ...entryResolver,
   ...coupleResolver,
+  Date: new GraphQLScalarType({
+    name: 'Date',
+    parseValue(num) {
+      return new Date(num);
+    },
+    serialize(date) {
+      return date.getTime();
+    },
+    parseLiteral(ast) {
+      if (ast.kind !== Kind.INT) {
+        return null;
+      }
+
+      return new Date(ast.value);
+    },
+  }),
   Query: {
     entries: (_, { year, month, date }, { coupleModel, entryModel }) =>
       entryModel.getEntriesForCoupleByDate(
