@@ -3,7 +3,11 @@ import compression from 'compression';
 import { ApolloServer, gql } from 'apollo-server-express';
 import { format as formatUrl } from 'url';
 
-import { schema as userSchema, model as userModel } from './graphql/user';
+import {
+  schema as userSchema,
+  resolver as userResolver,
+  model as userModel,
+} from './graphql/user';
 import {
   schema as entrySchema,
   resolver as entryResolver,
@@ -24,6 +28,7 @@ const typeDefs = [
     type Query {
       entries(year: Int!, month: Int!, date: Int): [Entry]!
       myCouple: Couple
+      me: User
     }
 
     type Mutation {
@@ -44,6 +49,7 @@ const typeDefs = [
 ];
 
 const resolvers = {
+  ...userResolver,
   ...entryResolver,
   ...coupleResolver,
   Query: {
@@ -55,6 +61,7 @@ const resolvers = {
         date
       ),
     myCouple: (parent, args, { coupleModel }) => coupleModel.myCouple(),
+    me: (parent, args, { userModel }) => userModel.me(),
   },
   Mutation: {
     createUser: (_, user, { userModel }) => userModel.createUser(user),
@@ -141,7 +148,7 @@ export const createServer = ({
     resolvers,
     context: ({ req }) =>
       verifyToken(getToken(req.headers.authorization), userId => ({
-        userModel: userModel(userRepository),
+        userModel: userModel(userRepository, userId),
         entryModel: entryModel(entryRepository, userId),
         coupleModel: coupleModel(coupleRepository, userId),
       })),

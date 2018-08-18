@@ -12,7 +12,7 @@ export const schema = [
   `,
 ];
 
-export const model = userRepository => ({
+export const model = (userRepository, userId) => ({
   createUser: user => {
     const users = userRepository.getUsers();
 
@@ -28,4 +28,5 @@ export const model = userRepository => ({
       .getUsers()
       .find(user => username === user.username && password === user.password),
   getById: id => userRepository.getById(id),
+  me: () => userRepository.getById(userId),
 });

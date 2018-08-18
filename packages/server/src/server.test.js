@@ -204,6 +204,20 @@ describe('GraphQL server', () => {
     });
   });
 
+  describe('me query', () => {
+    it('returns the currently logged in user', () => {
+      const userId = 'userId';
+      userRepository.createUser({ id: userId });
+
+      return graphqlRequest()
+        .set('Authorization', `Bearer ${temporaryToken(userId)}`)
+        .send({ query: `{ me { id } }` })
+        .expect(200)
+        .then(parseGraphqlResponse)
+        .then(({ me }) => expect(me).toEqual({ id: userId }));
+    });
+  });
+
   describe('createUser mutation', () => {
     it('returns a successfully created user and updates the database', () => {
       const user = {
