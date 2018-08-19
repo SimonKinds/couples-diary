@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { months } from '../../constants';
 
 import './styles.css';
 
-class EntryForm extends Component {
+export class EntryForm extends Component {
   state = {
     text: this.props.entry,
   };
@@ -54,15 +54,24 @@ EntryForm.propTypes = {
   entry: PropTypes.string.isRequired,
 };
 
-const Entry = ({
-  year,
-  month,
-  date,
-  nameOfUser,
-  nameOfPartner,
-  saveEntry,
-  entry,
-}) => (
+export const EntryBody = ({ nameOfUser, entry }) => (
+  <Fragment>
+    <div className="entry-top-row">
+      <h3>{nameOfUser}</h3>
+    </div>
+    <div className="notebook">
+      <div aria-hidden className="back" />
+      <p>{entry}</p>
+    </div>
+  </Fragment>
+);
+
+EntryBody.propTypes = {
+  nameOfUser: PropTypes.string.isRequired,
+  entry: PropTypes.string.isRequired,
+};
+
+const Entry = ({ year, month, date, body }) => (
   <section className="entry">
     <nav>
       <a href={`/calendar/${year}/${month}`} title="Back to calendar">
@@ -91,7 +100,7 @@ const Entry = ({
         Read other
       </a>
     </nav>
-    <EntryForm entry={entry} saveEntry={saveEntry} nameOfUser={nameOfUser} />
+    <main>{body}</main>
   </section>
 );
 
@@ -99,9 +108,7 @@ Entry.propTypes = {
   year: PropTypes.number.isRequired,
   month: PropTypes.number.isRequired,
   date: PropTypes.number.isRequired,
-  nameOfUser: PropTypes.string.isRequired,
-  saveEntry: PropTypes.func.isRequired,
-  entry: PropTypes.string.isRequired,
+  body: PropTypes.node.isRequired,
 };
 
 export default Entry;
