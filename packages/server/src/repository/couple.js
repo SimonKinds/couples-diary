@@ -3,18 +3,18 @@ class CoupleRepository {
 
   createCouple = couple => {
     this.couples.push(couple);
-    return couple;
+    return Promise.resolve(couple);
   };
-  getCouples = () => this.couples;
+  getCouples = () => Promise.resolve(this.couples);
   updateCouple = couple => {
     const index = this.couples.findIndex(({ id }) => couple.id === id);
 
     if (index === -1) {
-      return null;
+      return Promise.resolve(null);
     }
 
     this.couples[index] = couple;
-    return couple;
+    return Promise.resolve(couple);
   };
 }
 

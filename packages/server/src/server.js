@@ -75,12 +75,11 @@ const resolvers = {
   }),
   Query: {
     entries: (_, { year, month, date }, { coupleModel, entryModel }) =>
-      entryModel.getEntriesForCoupleByDate(
-        coupleModel.myCouple(),
-        year,
-        month,
-        date
-      ),
+      coupleModel
+        .myCouple()
+        .then(couple =>
+          entryModel.getEntriesForCoupleByDate(couple, year, month, date)
+        ),
     myCouple: (parent, args, { coupleModel }) => coupleModel.myCouple(),
     me: (parent, args, { userModel }) => userModel.me(),
   },
@@ -91,7 +90,9 @@ const resolvers = {
         .findWithCredentials(username, password)
         .then(user => (user !== null ? temporaryToken(user.id) : null)),
     setEntry: (_, entry, { entryModel, coupleModel }) =>
-      entryModel.setEntryForCouple(entry, coupleModel.myCouple()),
+      coupleModel
+        .myCouple()
+        .then(couple => entryModel.setEntryForCouple(entry, couple)),
     createCouple: (parent, args, { coupleModel }) => coupleModel.createCouple(),
     joinCoupleOfUser: (parent, { userId }, { coupleModel }) =>
       coupleModel.joinCoupleOfUser(userId),

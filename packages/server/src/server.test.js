@@ -521,7 +521,9 @@ describe('GraphQL server', () => {
         .then(parseGraphqlResponse)
         .then(({ createCouple: couple }) => {
           expect(couple).toEqual({ creator: { id: 'userId' } });
-          expect(coupleRepository.getCouples()).toHaveLength(1);
+          return coupleRepository
+            .getCouples()
+            .then(couples => expect(couples).toHaveLength(1));
         });
     });
 
@@ -544,7 +546,9 @@ describe('GraphQL server', () => {
         .then(parseGraphqlError)
         .then(errors => {
           expect(errors[0].extensions.code).toBe('UNAUTHENTICATED');
-          expect(coupleRepository.getCouples()).toHaveLength(0);
+          return coupleRepository
+            .getCouples()
+            .then(couples => expect(couples).toHaveLength(0));
         });
     });
 
@@ -568,7 +572,9 @@ describe('GraphQL server', () => {
         .then(parseGraphqlResponse)
         .then(({ createCouple: couple }) => {
           expect(couple).toBeNull();
-          expect(coupleRepository.getCouples()).toHaveLength(1);
+          return coupleRepository
+            .getCouples()
+            .then(couples => expect(couples).toHaveLength(1));
         });
     });
   });
@@ -604,8 +610,13 @@ describe('GraphQL server', () => {
             creator: { id: 'creatorId' },
             other: { id: 'userId' },
           });
-          expect(coupleRepository.getCouples()).toHaveLength(1);
-          expect(coupleRepository.getCouples()[0].otherId).toEqual('userId');
+          return coupleRepository
+            .getCouples()
+            .then(
+              couples =>
+                expect(couples).toHaveLength(1) &&
+                expect(couples[0].otherId).toEqual('userId')
+            );
         });
     });
 
@@ -637,10 +648,13 @@ describe('GraphQL server', () => {
         .then(parseGraphqlResponse)
         .then(({ joinCoupleOfUser: couple }) => {
           expect(couple).toBeNull();
-          expect(coupleRepository.getCouples()).toHaveLength(1);
-          expect(coupleRepository.getCouples()[0].otherId).toEqual(
-            'anotherUserId'
-          );
+          return coupleRepository
+            .getCouples()
+            .then(
+              couples =>
+                expect(couples).toHaveLength(1) &&
+                expect(couples[0].otherId).toEqual('anotherUserId')
+            );
         });
     });
 
@@ -670,8 +684,13 @@ describe('GraphQL server', () => {
         .then(parseGraphqlError)
         .then(errors => {
           expect(errors[0].extensions.code).toBe('UNAUTHENTICATED');
-          expect(coupleRepository.getCouples()).toHaveLength(1);
-          expect(coupleRepository.getCouples()[0].otherId).toBeUndefined();
+          return coupleRepository
+            .getCouples()
+            .then(
+              couples =>
+                expect(couples).toHaveLength(1) &&
+                expect(couples[0].otherId).toBeUndefined()
+            );
         });
     });
   });

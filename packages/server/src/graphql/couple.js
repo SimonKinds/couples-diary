@@ -29,47 +29,50 @@ export const model = (coupleRepository, userId) => ({
     if (userId === null) {
       throw new AuthenticationError();
     }
-    return coupleOfUser(userId, coupleRepository.getCouples());
+    return coupleRepository
+      .getCouples()
+      .then(couples => coupleOfUser(userId, couples));
   },
   createCouple: () => {
     if (userId == null) {
       throw new AuthenticationError();
     }
 
-    const couples = coupleRepository.getCouples();
+    return coupleRepository.getCouples().then(couples => {
+      if (isInCouple(userId, couples)) {
+        throw new Error('May only be part of a single couple');
+      }
 
-    if (isInCouple(userId, couples)) {
-      throw new Error('May only be part of a single couple');
-    }
+      const couple = {
+        id: Math.max(-1, ...couples.map(({ id }) => id)) + 1,
+        creatorId: userId,
+      };
 
-    const couple = {
-      id: Math.max(-1, ...couples.map(({ id }) => id)) + 1,
-      creatorId: userId,
-    };
-
-    return coupleRepository.createCouple(couple);
+      return coupleRepository.createCouple(couple);
+    });
   },
   joinCoupleOfUser: creatorId => {
     if (userId == null) {
       throw new AuthenticationError();
     }
 
-    const couples = coupleRepository.getCouples();
-    if (isInCouple(userId, couples)) {
-      throw new Error('May only be part of a single couple');
-    }
+    return coupleRepository.getCouples().then(couples => {
+      if (isInCouple(userId, couples)) {
+        throw new Error('May only be part of a single couple');
+      }
 
-    const couple = coupleOfUser(creatorId, couples);
-    if (couple == null) {
-      throw new Error('No such couple');
-    }
+      const couple = coupleOfUser(creatorId, couples);
+      if (couple == null) {
+        throw new Error('No such couple');
+      }
 
-    if (couple.otherId != null) {
-      throw new Error('Couple is full');
-    }
+      if (couple.otherId != null) {
+        throw new Error('Couple is full');
+      }
 
-    couple.otherId = userId;
+      couple.otherId = userId;
 
-    return coupleRepository.updateCouple(couple);
+      return coupleRepository.updateCouple(couple);
+    });
   },
 });
