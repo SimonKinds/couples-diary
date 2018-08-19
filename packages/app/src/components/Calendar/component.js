@@ -59,7 +59,7 @@ CalendarDate.defaultProps = {
 
 const calendarLink = ({ year, month }) => `/calendar/${year}/${month}`;
 
-const Calendar = ({ today, selectedYear, selectedMonth, entries }) => (
+const Calendar = ({ today, selectedYear, selectedMonth, entries, user }) => (
   <main className="calendar-container">
     <h2>{selectedYear}</h2>
     <nav>
@@ -114,7 +114,7 @@ const Calendar = ({ today, selectedYear, selectedMonth, entries }) => (
       {entries.map(entry => (
         <Link
           key={`m${entry.month}-d${entry.date}`}
-          to={`/entry/${entry.year}/${entry.month}/${entry.date}`}
+          to={`/entry/${entry.year}/${entry.month}/${entry.date}/${user}`}
         >
           <CalendarDate
             date={entry.date}
@@ -133,6 +133,7 @@ const Calendar = ({ today, selectedYear, selectedMonth, entries }) => (
 );
 
 Calendar.propTypes = {
+  user: PropTypes.string.isRequired,
   today: PropTypes.shape({
     date: PropTypes.number.isRequired,
     month: PropTypes.number.isRequired,

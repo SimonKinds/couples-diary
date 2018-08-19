@@ -18,6 +18,23 @@ const getEntryForAuthor = (author, entries) => {
 const getNameOfUserFromQueryData = data =>
   (data && data.me && data.me.name) || '';
 
+const getNameOfPartnerFromQueryData = data => {
+  if (!(data && data.myCouple)) {
+    return '';
+  }
+
+  const nameOfCurrentUser = getNameOfUserFromQueryData(data);
+  const {
+    myCouple: { creator, other },
+  } = data;
+
+  if (nameOfCurrentUser.toLowerCase() !== creator.name.toLowerCase()) {
+    return creator.name;
+  }
+
+  return other.name;
+};
+
 const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
   <Mutation
     mutation={gql`
@@ -45,10 +62,18 @@ const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
   </Mutation>
 );
 
-const EntryContainer = ({ year, month, date }) => (
+const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
   <Query
     query={gql`
       query Entries($year: Int!, $month: Int!, $date: Int!) {
+        myCouple {
+          creator {
+            name
+          }
+          other {
+            name
+          }
+        }
         me {
           name
         }
@@ -61,20 +86,30 @@ const EntryContainer = ({ year, month, date }) => (
       }
     `}
     variables={{ year, month, date }}
+    pollInterval={10000}
   >
     {({ data: dataFromQuery, loading: loadingQuery, error: errorInQuery }) => (
       <Entry
         body={
           loadingQuery ? (
             <EntryBody nameOfUser={''} entry={''} />
-          ) : (
+          ) : dataFromQuery.me.name.toLowerCase() ===
+          requestedAuthor.toLowerCase() ? (
             <EditableEntryBody
               year={year}
               month={month}
               date={date}
               nameOfUser={getNameOfUserFromQueryData(dataFromQuery)}
               entry={getEntryForAuthor(
-                getNameOfUserFromQueryData(dataFromQuery),
+                requestedAuthor,
+                (dataFromQuery && dataFromQuery.entries) || []
+              )}
+            />
+          ) : (
+            <EntryBody
+              nameOfUser={getNameOfPartnerFromQueryData(dataFromQuery)}
+              entry={getEntryForAuthor(
+                requestedAuthor,
                 (dataFromQuery && dataFromQuery.entries) || []
               )}
             />
@@ -83,6 +118,14 @@ const EntryContainer = ({ year, month, date }) => (
         year={year}
         month={month}
         date={date}
+        nameOfPartner={
+          ((dataFromQuery &&
+            dataFromQuery.me &&
+            dataFromQuery.me.name.toLowerCase()) ||
+            '') === requestedAuthor.toLowerCase()
+            ? getNameOfPartnerFromQueryData(dataFromQuery)
+            : getNameOfUserFromQueryData(dataFromQuery)
+        }
       />
     )}
   </Query>

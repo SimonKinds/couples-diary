@@ -35,6 +35,9 @@ export const CalendarContainer = ({ match }) => {
       asyncMode
       query={gql`
         query entries($year: Int!, $month: Int!) {
+          me {
+            name
+          }
           entries(year: $year, month: $month) {
             year
             month
@@ -47,10 +50,12 @@ export const CalendarContainer = ({ match }) => {
         }
       `}
       variables={{ year, month }}
+      pollInterval={10000}
     >
       {({ loading, error, data }) => {
         return (
           <Calendar
+            user={data && data.me && data.me.name}
             today={today()}
             selectedYear={year}
             selectedMonth={month}

@@ -36,9 +36,11 @@ export default class Router extends PureComponent {
       const month = parseInt(params.month, 10);
       const date = parseInt(params.date, 10);
 
+      const author = params.author;
+
       return (
         <StrictMode>
-          <Entry year={year} month={month} date={date} />
+          <Entry year={year} month={month} date={date} author={author} />
         </StrictMode>
       );
     }
@@ -61,7 +63,7 @@ export default class Router extends PureComponent {
           />
           <Route
             exact
-            path="/entry/:year/:month/:date"
+            path="/entry/:year/:month/:date/:author"
             render={this.renderEntryComponent}
           />
           <Route exact path="/login" render={this.renderLoginComponent} />
