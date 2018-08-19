@@ -53,6 +53,19 @@
   font-style: italic;
 }
 
+.entry .entry-top-row > .buttons {
+  display: flex;
+  align-items: center;
+}
+
+
+.entry .entry-top-row > .buttons > p {
+  font-size: 16px;
+  font-variant: small-caps;
+  color: hsl(0, 0%, 50%);
+  margin: 0;
+}
+
 .entry .entry-top-row > .buttons > input[type='submit'],
 .entry .entry-top-row > .buttons > input[type='reset']
 {

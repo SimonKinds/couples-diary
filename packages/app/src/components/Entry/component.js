@@ -5,6 +5,16 @@ import { months } from '../../constants';
 
 import './styles.css';
 
+const EntryBodyWrapper = ({ top, body }) => (
+  <Fragment>
+    <div className="entry-top-row">{top}</div>
+    <div className="notebook">
+      <div aria-hidden className="back" />
+      {body}
+    </div>
+  </Fragment>
+);
+
 export class EntryForm extends Component {
   state = {
     text: this.props.entry,
@@ -28,21 +38,30 @@ export class EntryForm extends Component {
 
     return (
       <form onSubmit={this.onSubmit} onReset={this.onReset}>
-        <div className="entry-top-row">
-          <h3>{nameOfUser}</h3>
-          <div className="buttons">
-            <input type="reset" value="Discard changes" />
-            <input type="submit" value="Save" />
-          </div>
-        </div>
-        <div className="notebook">
-          <div aria-hidden className="back" />
-          <textarea
-            title="Diary entry"
-            value={this.state.text}
-            onChange={this.onChangeText}
-          />
-        </div>
+        <EntryBodyWrapper
+          top={
+            <Fragment>
+              <h3>{nameOfUser}</h3>
+              <div className="buttons">
+                {this.props.entry === this.state.text ? (
+                  <p>Saved</p>
+                ) : (
+                  <Fragment>
+                    <input type="reset" value="Discard changes" />
+                    <input type="submit" value="Save" />
+                  </Fragment>
+                )}
+              </div>
+            </Fragment>
+          }
+          body={
+            <textarea
+              title="Diary entry"
+              value={this.state.text}
+              onChange={this.onChangeText}
+            />
+          }
+        />
       </form>
     );
   }
@@ -55,15 +74,7 @@ EntryForm.propTypes = {
 };
 
 export const EntryBody = ({ nameOfUser, entry }) => (
-  <Fragment>
-    <div className="entry-top-row">
-      <h3>{nameOfUser}</h3>
-    </div>
-    <div className="notebook">
-      <div aria-hidden className="back" />
-      <p>{entry}</p>
-    </div>
-  </Fragment>
+  <EntryBodyWrapper top={<h3>{nameOfUser}</h3>} body={<p>{entry}</p>} />
 );
 
 EntryBody.propTypes = {

@@ -18,6 +18,33 @@ const getEntryForAuthor = (author, entries) => {
 const getNameOfUserFromQueryData = data =>
   (data && data.me && data.me.name) || '';
 
+const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
+  <Mutation
+    mutation={gql`
+      mutation SetEntry(
+        $year: Int!
+        $month: Int!
+        $date: Int!
+        $content: String!
+      ) {
+        setEntry(year: $year, month: $month, date: $date, content: $content) {
+          content
+        }
+      }
+    `}
+  >
+    {(setEntry, { data: dataFromMutation }) => (
+      <EntryForm
+        saveEntry={content =>
+          setEntry({ variables: { year, month, date, content } })
+        }
+        nameOfUser={nameOfUser}
+        entry={(dataFromMutation && dataFromMutation.setEntry.content) || entry}
+      />
+    )}
+  </Mutation>
+);
+
 const EntryContainer = ({ year, month, date }) => (
   <Query
     query={gql`
@@ -36,52 +63,27 @@ const EntryContainer = ({ year, month, date }) => (
     variables={{ year, month, date }}
   >
     {({ data: dataFromQuery, loading: loadingQuery, error: errorInQuery }) => (
-      <Mutation
-        mutation={gql`
-          mutation SetEntry(
-            $year: Int!
-            $month: Int!
-            $date: Int!
-            $content: String!
-          ) {
-            setEntry(
-              year: $year
-              month: $month
-              date: $date
-              content: $content
-            ) {
-              content
-            }
-          }
-        `}
-      >
-        {(setEntry, { data: dataFromMutation }) => (
-          <Entry
-            body={
-              loadingQuery ? (
-                <EntryBody nameOfUser={''} entry={''} />
-              ) : (
-                <EntryForm
-                  saveEntry={content =>
-                    setEntry({ variables: { year, month, date, content } })
-                  }
-                  nameOfUser={getNameOfUserFromQueryData(dataFromQuery)}
-                  entry={
-                    (dataFromMutation && dataFromMutation.setEntry.content) ||
-                    getEntryForAuthor(
-                      getNameOfUserFromQueryData(dataFromQuery),
-                      (dataFromQuery && dataFromQuery.entries) || []
-                    )
-                  }
-                />
-              )
-            }
-            year={year}
-            month={month}
-            date={date}
-          />
-        )}
-      </Mutation>
+      <Entry
+        body={
+          loadingQuery ? (
+            <EntryBody nameOfUser={''} entry={''} />
+          ) : (
+            <EditableEntryBody
+              year={year}
+              month={month}
+              date={date}
+              nameOfUser={getNameOfUserFromQueryData(dataFromQuery)}
+              entry={getEntryForAuthor(
+                getNameOfUserFromQueryData(dataFromQuery),
+                (dataFromQuery && dataFromQuery.entries) || []
+              )}
+            />
+          )
+        }
+        year={year}
+        month={month}
+        date={date}
+      />
     )}
   </Query>
 );
