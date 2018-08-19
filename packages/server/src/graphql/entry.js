@@ -29,16 +29,22 @@ export const model = (entryRepository, userId) => ({
       throw new Error('Has to be in a couple');
     }
 
-    const { createdAt } = entryRepository
+    return entryRepository
       .getEntriesForCoupleByDate(couple, entry.year, entry.month, entry.date)
-      .find(({ authorId }) => authorId === userId) || { createdAt: new Date() };
-
-    return entryRepository.setEntry({
-      ...entry,
-      authorId: userId,
-      coupleId: couple.id,
-      createdAt,
-    });
+      .then(
+        entries =>
+          entries.find(({ authorId }) => authorId === userId) || {
+            createdAt: new Date(),
+          }
+      )
+      .then(({ createdAt }) =>
+        entryRepository.setEntry({
+          ...entry,
+          authorId: userId,
+          coupleId: couple.id,
+          createdAt,
+        })
+      );
   },
   getEntriesForCoupleByDate: (couple, year, month, date) => {
     if (couple == null) {

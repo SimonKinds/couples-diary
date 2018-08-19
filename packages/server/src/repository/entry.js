@@ -16,18 +16,20 @@ class EntryRepository {
       this.entries.push(entry);
     }
 
-    return entry;
+    return Promise.resolve(entry);
   };
 
-  getEntries = () => this.entries;
+  getEntries = () => Promise.resolve(this.entries);
 
   getEntriesForCoupleByDate = (couple, year, month, date) =>
-    this.entries.filter(
-      entry =>
-        entry.coupleId === couple.id &&
-        entry.year === year &&
-        entry.month === month &&
-        (date == null || date === entry.date)
+    Promise.resolve(
+      this.entries.filter(
+        entry =>
+          entry.coupleId === couple.id &&
+          entry.year === year &&
+          entry.month === month &&
+          (date == null || date === entry.date)
+      )
     );
 }
 

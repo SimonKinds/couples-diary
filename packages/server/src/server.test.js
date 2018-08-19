@@ -382,7 +382,9 @@ describe('GraphQL server', () => {
         .then(parseGraphqlResponse)
         .then(({ setEntry: insertedEntry }) => {
           expect(insertedEntry).toEqual(entry);
-          expect(entryRepository.getEntries()).toHaveLength(1);
+          return entryRepository
+            .getEntries()
+            .then(entries => expect(entries).toHaveLength(1));
         });
     });
 
@@ -471,7 +473,9 @@ describe('GraphQL server', () => {
         .then(parseGraphqlError)
         .then(errors => {
           expect(errors[0].extensions.code).toBe('UNAUTHENTICATED');
-          expect(entryRepository.getEntries()).toHaveLength(0);
+          return entryRepository
+            .getEntries()
+            .then(entries => expect(entries).toHaveLength(0));
         }));
 
     it('throws an error if not in a couple', () => {
@@ -495,7 +499,9 @@ describe('GraphQL server', () => {
         .then(parseGraphqlError)
         .then(errors => {
           expect(errors).toHaveLength(1);
-          expect(entryRepository.getEntries()).toHaveLength(0);
+          return entryRepository
+            .getEntries()
+            .then(entries => expect(entries).toHaveLength(0));
         });
     });
   });
