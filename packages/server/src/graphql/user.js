@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express';
+import { gql, AuthenticationError } from 'apollo-server-express';
 
 export const schema = [
   gql`
@@ -41,5 +41,11 @@ export const model = (
     );
   },
   getById: id => userRepository.getById(id),
-  me: () => userRepository.getById(userId),
+  me: () => {
+    const user = userRepository.getById(userId);
+    if (user === null) {
+      throw new AuthenticationError('No such user');
+    }
+    return user;
+  },
 });

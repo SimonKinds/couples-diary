@@ -222,6 +222,16 @@ describe('GraphQL server', () => {
         .then(parseGraphqlResponse)
         .then(({ me }) => expect(me).toEqual({ id: userId }));
     });
+
+    it('returns UNAUTHENTICATED error code if the user has token but ID is not found', () =>
+      graphqlRequest()
+        .set('Authorization', `Bearer ${temporaryToken('id')}`)
+        .send({ query: `{ me { id } }` })
+        .expect(200)
+        .then(parseGraphqlError)
+        .then(errors =>
+          expect(errors[0].extensions.code).toBe('UNAUTHENTICATED')
+        ));
   });
 
   describe('createUser mutation', () => {
