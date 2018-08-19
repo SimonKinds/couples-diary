@@ -21,6 +21,7 @@ import {
   model as coupleModel,
 } from './graphql/couple';
 import { temporaryToken, verifyToken } from './authentication';
+import { hashPassword, doesPasswordMatchHash } from './password';
 
 const typeDefs = [
   ...userSchema,
@@ -85,14 +86,10 @@ const resolvers = {
   },
   Mutation: {
     createUser: (_, user, { userModel }) => userModel.createUser(user),
-    login: (_, { username, password }, { userModel }) => {
-      const user = userModel.findWithCredentials(username, password);
-      if (user) {
-        return temporaryToken(user.id);
-      }
-
-      return null;
-    },
+    login: (_, { username, password }, { userModel }) =>
+      userModel
+        .findWithCredentials(username, password)
+        .then(user => (user !== null ? temporaryToken(user.id) : null)),
     setEntry: (_, entry, { entryModel, coupleModel }) =>
       entryModel.setEntryForCouple(entry, coupleModel.myCouple()),
     createCouple: (parent, args, { coupleModel }) => coupleModel.createCouple(),
@@ -158,7 +155,15 @@ export const createServer = ({
   userRepository,
   coupleRepository,
   entryRepository,
+  passwordStrategy,
 }) => {
+  if (passwordStrategy === undefined) {
+    passwordStrategy = {
+      hashPassword,
+      doesPasswordMatchHash,
+    };
+  }
+
   const app = express();
   app.disable('x-powered-by');
   app.use(compression());
@@ -168,7 +173,7 @@ export const createServer = ({
     resolvers,
     context: ({ req }) =>
       verifyToken(getToken(req.headers.authorization), userId => ({
-        userModel: userModel(userRepository, userId),
+        userModel: userModel(passwordStrategy, userRepository, userId),
         entryModel: entryModel(entryRepository, userId),
         coupleModel: coupleModel(coupleRepository, userId),
       })),

@@ -11,6 +11,11 @@ const emptyQuery = { query: '{}' };
 const parseGraphqlResponse = res => JSON.parse(res.text).data;
 const parseGraphqlError = res => JSON.parse(res.text).errors;
 
+const simplePasswordStrategy = {
+  hashPassword: pw => Promise.resolve(pw),
+  doesPasswordMatchHash: (pw, hash) => Promise.resolve(pw === hash),
+};
+
 describe('GraphQL server', () => {
   let userRepository;
   let coupleRepository;
@@ -19,8 +24,8 @@ describe('GraphQL server', () => {
   let server;
   let httpServer;
 
-  const graphqlRequest = () =>
-    request(httpServer)
+  const graphqlRequest = (suppliedHttpServer = null) =>
+    request(suppliedHttpServer === null ? httpServer : suppliedHttpServer)
       .post('/graphql')
       .set('Accept', 'application/json');
 
@@ -33,6 +38,7 @@ describe('GraphQL server', () => {
       userRepository,
       coupleRepository,
       entryRepository,
+      passwordStrategy: simplePasswordStrategy,
     });
 
     return startServer(server).then(vals => (httpServer = vals.httpServer));
