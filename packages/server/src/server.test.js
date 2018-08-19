@@ -265,7 +265,9 @@ describe('GraphQL server', () => {
         .then(parseGraphqlResponse)
         .then(({ createUser: newUser }) => {
           expect(newUser).toEqual(user);
-          expect(userRepository.getUsers()).toHaveLength(1);
+          return userRepository
+            .getUsers()
+            .then(users => expect(users).toHaveLength(1));
         });
     });
 
@@ -300,7 +302,9 @@ describe('GraphQL server', () => {
         .then(parseGraphqlResponse)
         .then(({ createUser: newUser }) => {
           expect(newUser).toBeNull();
-          expect(userRepository.getUsers()).toHaveLength(1);
+          return userRepository
+            .getUsers()
+            .then(users => expect(users).toHaveLength(1));
         });
     });
   });

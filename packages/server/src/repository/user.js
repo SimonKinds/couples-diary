@@ -1,11 +1,12 @@
 class UserRepository {
   users = [];
 
-  getById = idToFind => this.users.find(({ id }) => id === idToFind) || null;
-  getUsers = () => this.users;
+  getById = idToFind =>
+    Promise.resolve(this.users.find(({ id }) => id === idToFind) || null);
+  getUsers = () => Promise.resolve(this.users);
   createUser = user => {
     this.users.push(user);
-    return user;
+    return Promise.resolve(user);
   };
 }
 
