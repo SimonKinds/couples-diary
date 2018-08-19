@@ -1,6 +1,5 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import Router from '../Router';
-import Header from '../Header';
 import {
   isAuthenticated,
   subscribeToAuthenticationUpdates,
@@ -27,12 +26,7 @@ class App extends PureComponent {
   }
 
   render() {
-    return (
-      <Fragment>
-        <Header />
-        <Router isAuthenticated={this.state.isAuthenticated} />
-      </Fragment>
-    );
+    return <Router isAuthenticated={this.state.isAuthenticated} />;
   }
 }
 

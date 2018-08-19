@@ -32,7 +32,7 @@ const getNameOfPartnerFromQueryData = data => {
     return creator.name;
   }
 
-  return other.name;
+  return (other && other.name) || '';
 };
 
 const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (

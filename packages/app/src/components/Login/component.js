@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Form from './Form';
 import Input from './Input';
 import SubmitButton from './SubmitButton';
 import Loader from '../Loader';
+import Header from '../Header';
 
 import './styles.css';
 
@@ -33,38 +34,41 @@ export default class Login extends PureComponent {
 
   render() {
     return (
-      <main className="login">
-        <h1>Login</h1>
-        <Form onSubmit={this.onSubmit}>
-          <Input
-            id="username"
-            type="text"
-            label="Username"
-            value={this.state.username}
-            onChange={this.onUsernameChange}
-          />
-          <Input
-            id="password"
-            type="password"
-            label="Password"
-            value={this.state.password}
-            onChange={this.onPasswordChange}
-          />
-          <div style={{ display: 'flex', width: '100%' }}>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-              }}
-            >
-              {this.props.isLoggingIn && <Loader />}
+      <Fragment>
+        <Header />
+        <main className="login">
+          <h1>Login</h1>
+          <Form onSubmit={this.onSubmit}>
+            <Input
+              id="username"
+              type="text"
+              label="Username"
+              value={this.state.username}
+              onChange={this.onUsernameChange}
+            />
+            <Input
+              id="password"
+              type="password"
+              label="Password"
+              value={this.state.password}
+              onChange={this.onPasswordChange}
+            />
+            <div style={{ display: 'flex', width: '100%' }}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                {this.props.isLoggingIn && <Loader />}
+              </div>
+              <SubmitButton id="login-button" value="Login" />
             </div>
-            <SubmitButton id="login-button" value="Login" />
-          </div>
-        </Form>
-        <ErrorNotifier didFail={this.props.didFail} />
-      </main>
+          </Form>
+          <ErrorNotifier didFail={this.props.didFail} />
+        </main>
+      </Fragment>
     );
   }
 }

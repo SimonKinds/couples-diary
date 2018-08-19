@@ -7,7 +7,9 @@
   border-bottom: 1px solid #D2D2D2;
 }
 
-.main-header p {
+.main-header a {
+  text-decoration: none;
+  color: inherit;
   margin: 0 20px;
   font-size: 28px;
 }

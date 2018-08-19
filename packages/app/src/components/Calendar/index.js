@@ -55,7 +55,7 @@ export const CalendarContainer = ({ match }) => {
       {({ loading, error, data }) => {
         return (
           <Calendar
-            user={data && data.me && data.me.name}
+            user={(data && data.me && data.me.name) || ''}
             today={today()}
             selectedYear={year}
             selectedMonth={month}

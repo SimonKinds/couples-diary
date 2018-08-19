@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
 
+import Header from '../Header';
 import { months } from '../../constants';
 
 import './styles.css';
@@ -85,36 +86,39 @@ EntryBody.propTypes = {
 };
 
 const Entry = ({ year, month, date, body, nameOfPartner }) => (
-  <section className="entry">
-    <nav>
-      <Link to={`/calendar/${year}/${month}`} title="Back to calendar">
-        <svg
-          aria-hidden
-          role="img"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 448 512"
-          width="25"
-          height="25"
+  <Fragment>
+    <Header />
+    <section className="entry">
+      <nav>
+        <Link to={`/calendar/${year}/${month}`} title="Back to calendar">
+          <svg
+            aria-hidden
+            role="img"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+            width="25"
+            height="25"
+          >
+            <path
+              fill="currentColor"
+              d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"
+            />
+          </svg>
+        </Link>
+        <header>
+          <h2>{year}</h2>
+          <h1>{`${months[month - 1]} ${date}`}</h1>
+        </header>
+        <Link
+          to={`/entry/${year}/${month}/${date}/${nameOfPartner}`}
+          title="Read partner's entry"
         >
-          <path
-            fill="currentColor"
-            d="M148 288h-40c-6.6 0-12-5.4-12-12v-40c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12zm108-12v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 96v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm-96 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm192 0v-40c0-6.6-5.4-12-12-12h-40c-6.6 0-12 5.4-12 12v40c0 6.6 5.4 12 12 12h40c6.6 0 12-5.4 12-12zm96-260v352c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48zm-48 346V160H48v298c0 3.3 2.7 6 6 6h340c3.3 0 6-2.7 6-6z"
-          />
-        </svg>
-      </Link>
-      <header>
-        <h2>{year}</h2>
-        <h1>{`${months[month - 1]} ${date}`}</h1>
-      </header>
-      <Link
-        to={`/entry/${year}/${month}/${date}/${nameOfPartner}`}
-        title="Read partner's entry"
-      >
-        Read other
-      </Link>
-    </nav>
-    <main>{body}</main>
-  </section>
+          Read other
+        </Link>
+      </nav>
+      <main>{body}</main>
+    </section>
+  </Fragment>
 );
 
 Entry.propTypes = {
