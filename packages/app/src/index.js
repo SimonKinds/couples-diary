@@ -13,7 +13,7 @@ const getAuthorizationHeader = token =>
   token !== null ? `Bearer ${token}` : null;
 
 const client = new ApolloClient({
-  uri: '/',
+  uri: '/graphql',
   request: operation =>
     operation.setContext(
       shouldIncludeAuthorizationHeader(getToken())

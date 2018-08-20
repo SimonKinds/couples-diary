@@ -116,14 +116,17 @@ class Server {
     this.httpServer = null;
   }
 
-  listen(port) {
-    const httpServer = this.app.listen(port);
-    this.httpServer = httpServer;
+  listen() {
+    const port = process.env.SERVER_PORT || 0;
+    const hostname = process.env.HOSTNAME || 'localhost';
 
-    return Promise.resolve({
-      httpServer,
-      url: this.getUrl(httpServer.address()),
-    });
+    return new Promise(resolve => {
+      const httpServer = this.app.listen(port, hostname, resolve);
+      this.httpServer = httpServer;
+    }).then(() => ({
+      httpServer: this.httpServer,
+      url: this.getUrl(this.httpServer.address()),
+    }));
   }
 
   getUrl(serverInfo) {
@@ -180,11 +183,11 @@ export const createServer = ({
       })),
   });
 
-  graphqlServer.applyMiddleware({ app, cors: false, path: '/' });
+  graphqlServer.applyMiddleware({ app, cors: false, path: '/graphql' });
 
   return new Server(app);
 };
 
-export const startServer = (server, port = 0) => {
-  return server.listen(port);
+export const startServer = server => {
+  return server.listen();
 };
