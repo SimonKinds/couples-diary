@@ -1,12 +1,14 @@
 import { config } from 'dotenv';
 config();
 
+import { createDbInstance } from './database';
+
 import { createUserRepository } from './repository/user';
 import { createEntryRepository } from './repository/entry';
 import { createCoupleRepository } from './repository/couple';
 import { createServer, startServer } from './server';
 
-createUserRepository().then(userRepository => {
+createUserRepository(createDbInstance()).then(userRepository => {
   const server = createServer({
     userRepository,
     entryRepository: createEntryRepository(),

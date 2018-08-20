@@ -6,6 +6,7 @@ os: linux
 
 env:
   - JWT_SECRET=notVerySecret
+  - DB_NAME=cd-test-db
 
 cache:
   directories:

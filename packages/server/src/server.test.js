@@ -1,5 +1,6 @@
 import request from 'supertest';
 
+import { createInMemoryDbInstance } from './database';
 import { createUserRepository } from './repository/user';
 import { createEntryRepository } from './repository/entry';
 import { createCoupleRepository } from './repository/couple';
@@ -29,8 +30,8 @@ describe('GraphQL server', () => {
       .post('/graphql')
       .set('Accept', 'application/json');
 
-  beforeEach(() =>
-    createUserRepository().then(repository => {
+  beforeEach(() => {
+    return createUserRepository(createInMemoryDbInstance()).then(repository => {
       userRepository = repository;
       coupleRepository = createCoupleRepository();
       entryRepository = createEntryRepository();
@@ -43,7 +44,8 @@ describe('GraphQL server', () => {
       });
 
       return startServer(server).then(vals => (httpServer = vals.httpServer));
-    }));
+    });
+  });
 
   afterEach(() => {
     server.stop();

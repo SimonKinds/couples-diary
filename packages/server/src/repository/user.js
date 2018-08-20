@@ -1,11 +1,6 @@
 import Sequelize, { Op } from 'sequelize';
 
-export const createUserRepository = () => {
-  const sequelize = new Sequelize('couplesdiary', 'username', 'password', {
-    dialect: 'sqlite',
-    logging: false,
-  });
-
+export const createUserRepository = sequelize => {
   const User = sequelize.define('user', {
     id: { type: Sequelize.UUID, primaryKey: true },
     username: { type: Sequelize.STRING },
