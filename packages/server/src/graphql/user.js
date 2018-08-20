@@ -1,4 +1,5 @@
 import { gql, AuthenticationError } from 'apollo-server-express';
+import { generateId } from '../database';
 
 export const schema = [
   gql`
@@ -23,11 +24,9 @@ export const model = (
         return null;
       }
 
-      const id = Math.max(-1, ...users.map(({ id }) => parseInt(id, 10))) + 1;
-
       return hashPassword(user.password)
         .then(hash => ({ ...user, password: hash }))
-        .then(user => ({ ...user, id: id.toString() }))
+        .then(user => ({ ...user, id: generateId() }))
         .then(user => userRepository.createUser(user));
     });
   },

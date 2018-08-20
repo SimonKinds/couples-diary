@@ -35,10 +35,11 @@ describe('GraphQL server', () => {
     return Promise.all([
       createUserRepository(db),
       createCoupleRepository(db),
-    ]).then(([userRepo, coupleRepo]) => {
+      createEntryRepository(db),
+    ]).then(([userRepo, coupleRepo, entryRepo]) => {
       userRepository = userRepo;
       coupleRepository = coupleRepo;
-      entryRepository = createEntryRepository();
+      entryRepository = entryRepo;
 
       server = createServer({
         userRepository,
@@ -85,7 +86,7 @@ describe('GraphQL server', () => {
     it('returns the entries of the requested year and month with the entries query', () =>
       Promise.all([
         coupleRepository.createCouple({ id: 'couple', creatorId: 'author' }),
-        entryRepository.setEntry({
+        entryRepository.createEntry({
           year: 2018,
           month: 1,
           date: 1,
@@ -93,7 +94,7 @@ describe('GraphQL server', () => {
           coupleId: 'couple',
           content: 'Entry 1',
         }),
-        entryRepository.setEntry({
+        entryRepository.createEntry({
           year: 2018,
           month: 2,
           date: 1,
@@ -128,7 +129,7 @@ describe('GraphQL server', () => {
           otherId: 'secondUser',
         }),
 
-        entryRepository.setEntry({
+        entryRepository.createEntry({
           year: 2018,
           month: 1,
           date: 1,
@@ -136,7 +137,7 @@ describe('GraphQL server', () => {
           coupleId: 'couple',
           content: 'Entry 1',
         }),
-        entryRepository.setEntry({
+        entryRepository.createEntry({
           year: 2018,
           month: 1,
           date: 1,
@@ -144,7 +145,7 @@ describe('GraphQL server', () => {
           coupleId: 'couple',
           content: 'Entry 2',
         }),
-        entryRepository.setEntry({
+        entryRepository.createEntry({
           year: 2018,
           month: 1,
           date: 1,
@@ -444,7 +445,7 @@ describe('GraphQL server', () => {
 
         coupleRepository.createCouple({ id: 'couple', creatorId: userId }),
 
-        entryRepository.setEntry({
+        entryRepository.createEntry({
           year: 2018,
           month: 1,
           date: 1,

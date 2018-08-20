@@ -1,4 +1,5 @@
 import { gql, AuthenticationError } from 'apollo-server-express';
+import { generateId } from '../database';
 
 export const schema = [
   gql`
@@ -32,18 +33,19 @@ export const model = (entryRepository, userId) => ({
     return entryRepository
       .getEntriesForCoupleByDate(couple, entry.year, entry.month, entry.date)
       .then(
-        entries =>
-          entries.find(({ authorId }) => authorId === userId) || {
-            createdAt: new Date(),
-          }
+        entries => entries.find(({ authorId }) => authorId === userId) || null
       )
-      .then(({ createdAt }) =>
-        entryRepository.setEntry({
-          ...entry,
-          authorId: userId,
-          coupleId: couple.id,
-          createdAt,
-        })
+      .then(
+        oldEntry =>
+          oldEntry !== null
+            ? entryRepository.updateEntry({ ...oldEntry, ...entry })
+            : entryRepository.createEntry({
+                ...entry,
+                id: generateId(),
+                authorId: userId,
+                coupleId: couple.id,
+                createdAt: new Date(),
+              })
       );
   },
   getEntriesForCoupleByDate: (couple, year, month, date) => {

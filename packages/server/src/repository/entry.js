@@ -1,36 +1,70 @@
-class EntryRepository {
-  entries = [];
+import Sequelize, { Op } from 'sequelize';
 
-  setEntry = entry => {
-    const index = this.entries.findIndex(
-      ({ year, month, date, authorId }) =>
-        year === entry.year &&
-        month === entry.month &&
-        date === entry.date &&
-        authorId === entry.authorId
-    );
+const serialize = entry => ({
+  ...entry,
+  createdAt: entry.createdAt && entry.createdAt.getTime(),
+});
+const deserialize = entry => ({
+  ...entry,
+  createdAt: new Date(entry.createdAt),
+});
 
-    if (index !== -1) {
-      this.entries[index] = entry;
-    } else {
-      this.entries.push(entry);
-    }
+export const createEntryRepository = sequelize => {
+  const Entry = sequelize.define('entry', {
+    id: {
+      type: Sequelize.UUID,
+      primaryKey: true,
+    },
+    coupleId: {
+      type: Sequelize.UUID,
+    },
+    authorId: {
+      type: Sequelize.UUID,
+    },
+    year: {
+      type: Sequelize.INTEGER,
+    },
+    month: {
+      type: Sequelize.INTEGER,
+    },
+    date: {
+      type: Sequelize.INTEGER,
+    },
+    content: {
+      type: Sequelize.TEXT,
+    },
+    createdAt: {
+      type: Sequelize.INTEGER,
+    },
+  });
 
-    return Promise.resolve(entry);
-  };
+  return Entry.sync().then(() => ({
+    createEntry(entry) {
+      return Entry.create(serialize(entry)).then(() => entry);
+    },
+    updateEntry(entry) {
+      return Entry.update(serialize(entry), {
+        where: { id: { [Op.eq]: entry.id } },
+      }).then(() => entry);
+    },
+    getEntries() {
+      return Entry.findAll().then(entries =>
+        entries.map(entry => entry.get({ plain: true })).map(deserialize)
+      );
+    },
+    getEntriesForCoupleByDate(couple, year, month, date) {
+      let whereClause = {
+        coupleId: { [Op.eq]: couple.id },
+        year: { [Op.eq]: year },
+        month: { [Op.eq]: month },
+      };
+      if (date) {
+        whereClause = { ...whereClause, date: { [Op.eq]: date } };
+      }
 
-  getEntries = () => Promise.resolve(this.entries);
-
-  getEntriesForCoupleByDate = (couple, year, month, date) =>
-    Promise.resolve(
-      this.entries.filter(
-        entry =>
-          entry.coupleId === couple.id &&
-          entry.year === year &&
-          entry.month === month &&
-          (date == null || date === entry.date)
-      )
-    );
-}
-
-export const createEntryRepository = () => new EntryRepository();
+      return Entry.findAll({ where: whereClause }).then(entries =>
+        entries.map(entry => entry.get({ plain: true })).map(deserialize)
+      );
+    },
+  }));
+};

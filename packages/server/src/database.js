@@ -1,4 +1,5 @@
 import Sequelize from 'sequelize';
+import uuid from 'uuid/v4';
 
 const getDbName = () => process.env.DB_NAME || '';
 
@@ -15,3 +16,5 @@ export const createInMemoryDbInstance = () =>
     logging: false,
     storage: ':memory:',
   });
+
+export const generateId = () => uuid();

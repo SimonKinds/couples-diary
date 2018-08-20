@@ -1,4 +1,5 @@
 import { gql, AuthenticationError } from 'apollo-server-express';
+import { generateId } from '../database';
 
 export const schema = [
   gql`
@@ -44,7 +45,7 @@ export const model = (coupleRepository, userId) => ({
       }
 
       const couple = {
-        id: Math.max(-1, ...couples.map(({ id }) => id)) + 1,
+        id: generateId(),
         creatorId: userId,
       };
 
