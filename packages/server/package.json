@@ -8,7 +8,8 @@
     "start": "nodemon --exec babel-node --watch src src/index.js",
     "build": "babel src --out-dir build",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "start:prod": "node build/index.js"
   },
   "dependencies": {
     "apollo-server-express": "^2.0.0",
