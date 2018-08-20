@@ -31,9 +31,13 @@ describe('GraphQL server', () => {
       .set('Accept', 'application/json');
 
   beforeEach(() => {
-    return createUserRepository(createInMemoryDbInstance()).then(repository => {
-      userRepository = repository;
-      coupleRepository = createCoupleRepository();
+    const db = createInMemoryDbInstance();
+    return Promise.all([
+      createUserRepository(db),
+      createCoupleRepository(db),
+    ]).then(([userRepo, coupleRepo]) => {
+      userRepository = userRepo;
+      coupleRepository = coupleRepo;
       entryRepository = createEntryRepository();
 
       server = createServer({

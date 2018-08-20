@@ -8,15 +8,19 @@ import { createEntryRepository } from './repository/entry';
 import { createCoupleRepository } from './repository/couple';
 import { createServer, startServer } from './server';
 
-createUserRepository(createDbInstance()).then(userRepository => {
-  const server = createServer({
-    userRepository,
-    entryRepository: createEntryRepository(),
-    coupleRepository: createCoupleRepository(),
-  });
+const db = createDbInstance();
 
-  startServer(server, 3333).then(({ url }) =>
-    // eslint-disable-next-line no-console
-    console.log(`Server ready at ${url}`)
-  );
-});
+Promise.all([createUserRepository(db), createCoupleRepository(db)]).then(
+  ([userRepository, coupleRepository]) => {
+    const server = createServer({
+      userRepository,
+      coupleRepository,
+      entryRepository: createEntryRepository(),
+    });
+
+    startServer(server, 3333).then(({ url }) =>
+      // eslint-disable-next-line no-console
+      console.log(`Server ready at ${url}`)
+    );
+  }
+);
