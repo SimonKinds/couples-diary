@@ -136,4 +136,6 @@
   font: inherit;
   line-height: 30px;
   font-size: 20px;
+
+  white-space: pre-wrap;
 }
