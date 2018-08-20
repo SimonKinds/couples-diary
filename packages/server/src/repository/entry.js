@@ -34,7 +34,7 @@ export const createEntryRepository = sequelize => {
       type: Sequelize.TEXT,
     },
     createdAt: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.DATE,
     },
   });
 

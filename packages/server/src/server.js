@@ -183,7 +183,7 @@ export const createServer = ({
       })),
   });
 
-  graphqlServer.applyMiddleware({ app, cors: false, path: '/graphql' });
+  graphqlServer.applyMiddleware({ app, cors: false, path: '/' });
 
   return new Server(app);
 };
