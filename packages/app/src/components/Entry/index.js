@@ -4,6 +4,29 @@ import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 
 import Entry, { EntryForm, EntryBody } from './component';
+import { CALENDAR_GQL_QUERY } from '../Calendar';
+
+const ENTRY_GQL_QUERY = gql`
+  query Entries($year: Int!, $month: Int!, $date: Int!) {
+    myCouple {
+      creator {
+        name
+      }
+      other {
+        name
+      }
+    }
+    me {
+      name
+    }
+    entries(year: $year, month: $month, date: $date) {
+      content
+      author {
+        name
+      }
+    }
+  }
+`;
 
 const getEntryForAuthor = (author, entries) => {
   const entry = entries.filter(({ author: { name } }) => name === author)[0];
@@ -49,6 +72,10 @@ const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
         }
       }
     `}
+    refetchQueries={[
+      { query: CALENDAR_GQL_QUERY, variables: { year, month } },
+      { query: ENTRY_GQL_QUERY, variables: { year, month, date } },
+    ]}
   >
     {(setEntry, { data: dataFromMutation }) => (
       <EntryForm
@@ -64,27 +91,7 @@ const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
 
 const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
   <Query
-    query={gql`
-      query Entries($year: Int!, $month: Int!, $date: Int!) {
-        myCouple {
-          creator {
-            name
-          }
-          other {
-            name
-          }
-        }
-        me {
-          name
-        }
-        entries(year: $year, month: $month, date: $date) {
-          content
-          author {
-            name
-          }
-        }
-      }
-    `}
+    query={ENTRY_GQL_QUERY}
     variables={{ year, month, date }}
     pollInterval={10000}
   >

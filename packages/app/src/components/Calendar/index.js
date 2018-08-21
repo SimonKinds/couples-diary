@@ -8,6 +8,23 @@ import { calendarMonth, today } from 'couples-diary-core';
 
 import Calendar from './component';
 
+export const CALENDAR_GQL_QUERY = gql`
+  query entries($year: Int!, $month: Int!) {
+    me {
+      name
+    }
+    entries(year: $year, month: $month) {
+      year
+      month
+      date
+      author {
+        name
+        color
+      }
+    }
+  }
+`;
+
 const getDateFromPath = match => ({
   year: parseFloat(match.params.year),
   month: parseFloat(match.params.month),
@@ -33,22 +50,7 @@ export const CalendarContainer = ({ match }) => {
   return (
     <Query
       asyncMode
-      query={gql`
-        query entries($year: Int!, $month: Int!) {
-          me {
-            name
-          }
-          entries(year: $year, month: $month) {
-            year
-            month
-            date
-            author {
-              name
-              color
-            }
-          }
-        }
-      `}
+      query={CALENDAR_GQL_QUERY}
       variables={{ year, month }}
       pollInterval={10000}
     >
