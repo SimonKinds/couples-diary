@@ -8,19 +8,23 @@ import { months } from '../../constants';
 
 import './styles.css';
 
-const EntryBodyWrapper = ({ top, body }) => (
-  <Fragment>
-    <div className="entry-top-row">{top}</div>
-    <div className="notebook">
-      <div aria-hidden className="back" />
-      {body}
-    </div>
-  </Fragment>
-);
-
+const DEFAULT_ENTRY_HEIGHT = 400;
 export class EntryForm extends Component {
   state = {
     text: this.props.entry,
+    height: DEFAULT_ENTRY_HEIGHT,
+  };
+
+  notebook = null;
+
+  updateHeight = () => {
+    if (this.notebook !== null) {
+      const content = this.notebook.querySelector('.content');
+
+      if (content.scrollHeight !== this.state.height) {
+        this.setState({ height: content.scrollHeight });
+      }
+    }
   };
 
   onChangeText = ({ currentTarget: { value } }) =>
@@ -41,30 +45,40 @@ export class EntryForm extends Component {
 
     return (
       <form onSubmit={this.onSubmit} onReset={this.onReset}>
-        <EntryBodyWrapper
-          top={
-            <Fragment>
-              <h3>{nameOfUser}</h3>
-              <div className="buttons">
-                {this.props.entry === this.state.text ? (
-                  <p>Saved</p>
-                ) : (
-                  <Fragment>
-                    <input type="reset" value="Discard changes" />
-                    <input type="submit" value="Save" />
-                  </Fragment>
-                )}
-              </div>
-            </Fragment>
-          }
-          body={
-            <textarea
-              title="Diary entry"
-              value={this.state.text}
-              onChange={this.onChangeText}
-            />
-          }
-        />
+        <div className="entry-top-row">
+          <h3>{nameOfUser}</h3>
+          <div className="buttons">
+            {this.props.entry === this.state.text ? (
+              <p>Saved</p>
+            ) : (
+              <Fragment>
+                <input type="reset" value="Discard changes" />
+                <input type="submit" value="Save" />
+              </Fragment>
+            )}
+          </div>
+        </div>
+        <div
+          className="notebook"
+          style={{ height: `${this.state.height}px` }}
+          ref={notebook => {
+            this.notebook = notebook;
+            this.updateHeight();
+          }}
+        >
+          <div
+            aria-hidden
+            className="back"
+            style={{ height: `${this.state.height}px` }}
+          />
+          <textarea
+            className="content"
+            title="Diary entry"
+            value={this.state.text}
+            onChange={this.onChangeText}
+            style={{ height: `${this.state.height}px` }}
+          />
+        </div>
       </form>
     );
   }
@@ -76,9 +90,52 @@ EntryForm.propTypes = {
   entry: PropTypes.string.isRequired,
 };
 
-export const EntryBody = ({ nameOfUser, entry }) => (
-  <EntryBodyWrapper top={<h3>{nameOfUser}</h3>} body={<p>{entry}</p>} />
-);
+export class EntryBody extends Component {
+  state = {
+    height: DEFAULT_ENTRY_HEIGHT,
+  };
+
+  notebook = null;
+
+  updateHeight = () => {
+    if (this.notebook !== null) {
+      const content = this.notebook.querySelector('.content');
+
+      if (content.scrollHeight !== this.state.height) {
+        this.setState({ height: content.scrollHeight });
+      }
+    }
+  };
+
+  render() {
+    const { nameOfUser } = this.props;
+
+    return (
+      <Fragment>
+        <div className="entry-top-row">
+          <h3>{nameOfUser}</h3>
+        </div>
+        <div
+          className="notebook"
+          style={{ height: `${this.state.height}px` }}
+          ref={notebook => {
+            this.notebook = notebook;
+            this.updateHeight();
+          }}
+        >
+          <div
+            aria-hidden
+            className="back"
+            style={{ height: `${this.state.height}px` }}
+          />
+          <p className="content" style={{ height: `${this.state.height}px` }}>
+            {this.props.entry}
+          </p>
+        </div>
+      </Fragment>
+    );
+  }
+}
 
 EntryBody.propTypes = {
   nameOfUser: PropTypes.string.isRequired,
