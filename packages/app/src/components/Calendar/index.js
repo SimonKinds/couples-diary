@@ -7,9 +7,18 @@ import gql from 'graphql-tag';
 import { calendarMonth, today } from 'couples-diary-core';
 
 import Calendar from './component';
+import { getNameOfPartnerFromQueryData } from '../../couple';
 
 export const CALENDAR_GQL_QUERY = gql`
   query entries($year: Int!, $month: Int!) {
+    myCouple {
+      creator {
+        name
+      }
+      other {
+        name
+      }
+    }
     me {
       name
     }
@@ -57,7 +66,7 @@ export const CalendarContainer = ({ match }) => {
       {({ loading, error, data }) => {
         return (
           <Calendar
-            user={(data && data.me && data.me.name) || ''}
+            partner={getNameOfPartnerFromQueryData(data)}
             today={today()}
             selectedYear={year}
             selectedMonth={month}

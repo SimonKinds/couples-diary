@@ -5,6 +5,10 @@ import { Mutation, Query } from 'react-apollo';
 
 import Entry, { EntryForm, EntryBody } from './component';
 import { CALENDAR_GQL_QUERY } from '../Calendar';
+import {
+  getNameOfPartnerFromQueryData,
+  getNameOfUserFromQueryData,
+} from '../../couple';
 
 const ENTRY_GQL_QUERY = gql`
   query Entries($year: Int!, $month: Int!, $date: Int!) {
@@ -36,26 +40,6 @@ const getEntryForAuthor = (author, entries) => {
   }
 
   return '';
-};
-
-const getNameOfUserFromQueryData = data =>
-  (data && data.me && data.me.name) || '';
-
-const getNameOfPartnerFromQueryData = data => {
-  if (!(data && data.myCouple)) {
-    return '';
-  }
-
-  const nameOfCurrentUser = getNameOfUserFromQueryData(data);
-  const {
-    myCouple: { creator, other },
-  } = data;
-
-  if (nameOfCurrentUser.toLowerCase() !== creator.name.toLowerCase()) {
-    return creator.name;
-  }
-
-  return (other && other.name) || '';
 };
 
 const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
