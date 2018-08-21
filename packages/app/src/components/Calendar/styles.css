@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   color: #222;
-  padding: 0 10px;
+  padding: 0 10px 10px 10px;
   margin: auto;
   max-width: 700px;
 }
@@ -60,18 +60,20 @@
   width: 100%;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  grid-gap: 1px;
-  border: 1px solid #D2D2D2;
-  background-color: #d2d2d2;
+  height: 65vh;
+  max-height: 500px;
+  border-bottom: 1px solid #d2d2d2;
+  border-left: 1px solid #d2d2d2;
 }
 
 .calendar-container > .calendar .date {
-  height: 75px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  background-color: var(--main-bg-color);
+  border-top: 1px solid #d2d2d2;
+  border-right: 1px solid #d2d2d2;
 }
 
 .calendar-container > .calendar a {
