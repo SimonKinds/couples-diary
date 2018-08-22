@@ -45,19 +45,7 @@ export class EntryForm extends Component {
 
     return (
       <form onSubmit={this.onSubmit} onReset={this.onReset}>
-        <div className="entry-top-row">
-          <h3>{nameOfUser}</h3>
-          <div className="buttons">
-            {this.props.entry === this.state.text ? (
-              <p>Saved</p>
-            ) : (
-              <Fragment>
-                <input type="reset" value="Discard changes" />
-                <input type="submit" value="Save" />
-              </Fragment>
-            )}
-          </div>
-        </div>
+        <h3>{nameOfUser}</h3>
         <div
           className="notebook"
           style={{ height: `${this.state.height}px` }}
@@ -78,6 +66,16 @@ export class EntryForm extends Component {
             onChange={this.onChangeText}
             style={{ height: `${this.state.height}px` }}
           />
+        </div>
+        <div className="buttons">
+          {this.props.entry === this.state.text ? (
+            <p>Saved</p>
+          ) : (
+            <Fragment>
+              <input type="reset" value="Discard changes" />
+              <input type="submit" value="Save" />
+            </Fragment>
+          )}
         </div>
       </form>
     );
@@ -112,9 +110,7 @@ export class EntryBody extends Component {
 
     return (
       <Fragment>
-        <div className="entry-top-row">
-          <h3>{nameOfUser}</h3>
-        </div>
+        <h3>{nameOfUser}</h3>
         <div
           className="notebook"
           style={{ height: `${this.state.height}px` }}
