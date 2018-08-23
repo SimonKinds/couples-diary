@@ -140,3 +140,24 @@
 
   white-space: pre-wrap;
 }
+
+.entry .hidden {
+  display: none;
+}
+
+.entry .me {
+
+}
+
+@media (min-width: 1281px) {
+  .entry .notebook > .content {
+    padding: 7px 5px 7px 25px;
+
+    background: linear-gradient(to bottom, #fffaef 29px, #0564BC 1px);
+    background-size: 100% 30px;
+
+    font: inherit;
+    line-height: 30px;
+    font-size: 18px;
+
+}}
