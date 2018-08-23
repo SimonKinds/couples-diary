@@ -99,8 +99,11 @@ export class EntryBody extends Component {
     if (this.notebook !== null) {
       const content = this.notebook.querySelector('.content');
 
-      if (content.scrollHeight !== this.state.height) {
-        this.setState({ height: content.scrollHeight });
+      const heightOfContentExcludingPadding = content.scrollHeight;
+
+      if (heightOfContentExcludingPadding !== this.state.height) {
+        const heightOfContentWithPadding = heightOfContentExcludingPadding + 15;
+        this.setState({ height: heightOfContentWithPadding });
       }
     }
   };
