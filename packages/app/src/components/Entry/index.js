@@ -13,19 +13,25 @@ import {
 const ENTRY_GQL_QUERY = gql`
   query Entries($year: Int!, $month: Int!, $date: Int!) {
     myCouple {
+      id
       creator {
+        id
         name
       }
       other {
+        id
         name
       }
     }
     me {
+      id
       name
     }
     entries(year: $year, month: $month, date: $date) {
+      id
       content
       author {
+        id
         name
       }
     }

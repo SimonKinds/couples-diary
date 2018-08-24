@@ -12,17 +12,22 @@ import { getNameOfPartnerFromQueryData } from '../../couple';
 export const CALENDAR_GQL_QUERY = gql`
   query entries($year: Int!, $month: Int!) {
     myCouple {
+      id
       creator {
+        id
         name
       }
       other {
+        id
         name
       }
     }
     me {
+      id
       name
     }
     entries(year: $year, month: $month) {
+      id
       year
       month
       date

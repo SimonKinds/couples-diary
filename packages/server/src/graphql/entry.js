@@ -4,6 +4,7 @@ import { generateId } from '../database';
 export const schema = [
   gql`
     type Entry {
+      id: ID!
       author: User!
       year: Int!
       month: Int!
