@@ -68,7 +68,7 @@ export const CalendarContainer = ({ match }) => {
       variables={{ year, month }}
       pollInterval={10000}
     >
-      {({ loading, error, data }) => {
+      {({ data }) => {
         return (
           <Calendar
             partner={(data.myCouple && data.myCouple.partner.name) || ''}
@@ -76,7 +76,6 @@ export const CalendarContainer = ({ match }) => {
             selectedYear={year}
             selectedMonth={month}
             entries={hydrate(year, month, (data && data.entries) || [])}
-            loading={loading}
           />
         );
       }}

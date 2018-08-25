@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { persistCache } from 'apollo-cache-persist';
 
 import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
@@ -12,8 +14,15 @@ const shouldIncludeAuthorizationHeader = token => token !== null;
 const getAuthorizationHeader = token =>
   token !== null ? `Bearer ${token}` : null;
 
+const cache = new InMemoryCache();
+persistCache({
+  cache,
+  storage: window.localStorage,
+});
+
 const client = new ApolloClient({
   uri: '/graphql',
+  cache,
   request: operation =>
     operation.setContext(
       shouldIncludeAuthorizationHeader(getToken())
