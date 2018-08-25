@@ -38,15 +38,9 @@
   font-weight: bold;
 }
 
-.entry .entry-top-row {
-  display: flex;
-  justify-content: flex-end;
-  margin: 5px 10px;
-  height: 30px;
-}
-
 .entry h3 {
-  margin: 5px 0;
+  height: 30px;
+  margin: 0 0 0 10px;
   font-weight: normal;
   font-size: 20px;
   text-transform: capitalize;
@@ -141,14 +135,6 @@
   white-space: pre-wrap;
 }
 
-.entry .hidden {
-  display: none;
-}
-
-.entry .me {
-
-}
-
 @media (min-width: 1281px) {
   .entry .notebook > .content {
     padding: 7px 5px 7px 25px;
@@ -160,4 +146,5 @@
     line-height: 30px;
     font-size: 18px;
 
-}}
+}
+}
