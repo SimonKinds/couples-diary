@@ -5,16 +5,18 @@ export const schema = [
   gql`
     type Couple {
       id: ID!
-      creator: User!
-      other: User
+      me: User!
+      partner: User
     }
   `,
 ];
 
 export const resolver = {
   Couple: {
-    creator: ({ creatorId }, _, { userModel }) => userModel.getById(creatorId),
-    other: ({ otherId }, _, { userModel }) => userModel.getById(otherId),
+    me: ({ creatorId, otherId }, _, { userModel, userId }) =>
+      userModel.getById(creatorId === userId ? creatorId : otherId),
+    partner: ({ creatorId, otherId }, _, { userModel, userId }) =>
+      userModel.getById(creatorId === userId ? otherId : creatorId),
   },
 };
 

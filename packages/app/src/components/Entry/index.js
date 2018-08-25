@@ -5,20 +5,16 @@ import { Mutation, Query } from 'react-apollo';
 
 import Entry, { EntryForm, EntryBody } from './component';
 import { CALENDAR_GQL_QUERY } from '../Calendar';
-import {
-  getNameOfPartnerFromQueryData,
-  getNameOfUserFromQueryData,
-} from '../../couple';
 
 const ENTRY_GQL_QUERY = gql`
   query Entries($year: Int!, $month: Int!, $date: Int!) {
     myCouple {
       id
-      creator {
+      me {
         id
         name
       }
-      other {
+      partner {
         id
         name
       }
@@ -96,7 +92,7 @@ const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
               year={year}
               month={month}
               date={date}
-              nameOfUser={getNameOfUserFromQueryData(dataFromQuery)}
+              nameOfUser={(dataFromQuery.me && dataFromQuery.me.name) || ''}
               entry={getEntryForAuthor(
                 requestedAuthor,
                 (dataFromQuery && dataFromQuery.entries) || []
@@ -104,10 +100,14 @@ const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
             />
           ) : (
             <EntryBody
-              nameOfUser={getNameOfPartnerFromQueryData(dataFromQuery)}
+              nameOfUser={
+                (dataFromQuery.myCouple &&
+                  dataFromQuery.myCouple.partner.name) ||
+                ''
+              }
               entry={getEntryForAuthor(
                 requestedAuthor,
-                (dataFromQuery && dataFromQuery.entries) || []
+                dataFromQuery.entries || []
               )}
             />
           )
@@ -116,12 +116,12 @@ const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
         month={month}
         date={date}
         nameOfPartner={
-          ((dataFromQuery &&
-            dataFromQuery.me &&
-            dataFromQuery.me.name.toLowerCase()) ||
-            '') === requestedAuthor.toLowerCase()
-            ? getNameOfPartnerFromQueryData(dataFromQuery)
-            : getNameOfUserFromQueryData(dataFromQuery)
+          dataFromQuery.myCouple !== undefined
+            ? dataFromQuery.myCouple.me.name.toLowerCase() ===
+              requestedAuthor.toLowerCase()
+              ? dataFromQuery.myCouple.partner.name
+              : dataFromQuery.myCouple.me.name
+            : ''
         }
       />
     )}

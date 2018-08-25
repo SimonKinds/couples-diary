@@ -196,29 +196,44 @@ describe('GraphQL server', () => {
     it('returns the couple of the logged in user', () => {
       const coupleId = 'coupleId';
       const userId = 'creatorId';
+      const partnerId = 'partnerId';
 
-      return coupleRepository
-        .createCouple({
+      return Promise.all([
+        userRepository.createUser({ id: userId }),
+        userRepository.createUser({ id: partnerId }),
+        coupleRepository.createCouple({
           id: coupleId,
           creatorId: userId,
-          otherId: 'otherId',
-        })
-        .then(() =>
-          graphqlRequest()
-            .set('Authorization', `Bearer ${temporaryToken(userId)}`)
-            .send({
-              query: `
+          otherId: partnerId,
+        }),
+      ]).then(() =>
+        graphqlRequest()
+          .set('Authorization', `Bearer ${temporaryToken(userId)}`)
+          .send({
+            query: `
             {
               myCouple {
                 id
+                me {
+                  id
+                }
+                partner {
+                  id
+                }
               }
             }
           `,
+          })
+          .expect(200)
+          .then(parseGraphqlResponse)
+          .then(({ myCouple }) =>
+            expect(myCouple).toEqual({
+              id: coupleId,
+              me: { id: userId },
+              partner: { id: partnerId },
             })
-            .expect(200)
-            .then(parseGraphqlResponse)
-            .then(({ myCouple }) => expect(myCouple).toEqual({ id: coupleId }))
-        );
+          )
+      );
     });
   });
 
@@ -535,7 +550,7 @@ describe('GraphQL server', () => {
             query: `
             mutation {
               createCouple {
-                creator {
+                me {
                   id
                 }
               }
@@ -545,7 +560,7 @@ describe('GraphQL server', () => {
           .expect(200)
           .then(parseGraphqlResponse)
           .then(({ createCouple: couple }) => {
-            expect(couple).toEqual({ creator: { id: 'userId' } });
+            expect(couple).toEqual({ me: { id: 'userId' } });
             return coupleRepository
               .getCouples()
               .then(couples => expect(couples).toHaveLength(1));
@@ -559,7 +574,7 @@ describe('GraphQL server', () => {
             query: `
             mutation {
               createCouple {
-                creator {
+                me {
                   id
                 }
               }
@@ -586,7 +601,7 @@ describe('GraphQL server', () => {
               query: `
             mutation {
               createCouple {
-                creator {
+                me {
                   id
                 }
               }
@@ -623,10 +638,10 @@ describe('GraphQL server', () => {
             mutation {
               joinCoupleOfUser(userId: "creatorId") {
                 id
-                creator {
+                me {
                   id
                 }
-                other {
+                partner {
                   id
                 }
               }
@@ -638,8 +653,8 @@ describe('GraphQL server', () => {
               .then(({ joinCoupleOfUser: couple }) => {
                 expect(couple).toEqual({
                   id: 'coupleId',
-                  creator: { id: 'creatorId' },
-                  other: { id: 'userId' },
+                  me: { id: 'userId' },
+                  partner: { id: 'creatorId' },
                 });
                 return coupleRepository
                   .getCouples()
@@ -667,10 +682,10 @@ describe('GraphQL server', () => {
             mutation {
               joinCoupleOfUser(userId: "creatorId") {
                 id
-                creator {
+                me {
                   id
                 }
-                other {
+                partner {
                   id
                 }
               }
@@ -704,10 +719,10 @@ describe('GraphQL server', () => {
             mutation {
               joinCoupleOfUser(userId: "creatorId") {
                 id
-                creator {
+                me {
                   id
                 }
-                other {
+                partner {
                   id
                 }
               }

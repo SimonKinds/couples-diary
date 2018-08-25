@@ -180,6 +180,7 @@ export const createServer = ({
         userModel: userModel(passwordStrategy, userRepository, userId),
         entryModel: entryModel(entryRepository, userId),
         coupleModel: coupleModel(coupleRepository, userId),
+        userId,
       })),
   });
 
