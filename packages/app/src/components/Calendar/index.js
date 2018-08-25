@@ -32,6 +32,7 @@ export const CALENDAR_GQL_QUERY = gql`
       month
       date
       author {
+        id
         name
         color
       }
