@@ -9,13 +9,14 @@ import { months } from '../../constants';
 
 import './styles.css';
 
-const Circle = ({ color, author }) => (
+const Circle = ({ color, author, className }) => (
   <svg
     width="13"
     height="13"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
     aria-labelledby="title"
+    className={className}
   >
     <title>{author}</title>
     <circle cx="50%" cy="50%" r="50%" fill={color} />
@@ -35,9 +36,16 @@ const CalendarDate = ({ authors, date, isToday, isCurrentMonth }) => (
   >
     <p>{date}</p>
     <div className="entries">
-      {authors.map(author => (
-        <Circle key={author.name} author={author.name} color={author.color} />
-      ))}
+      <div className={`${authors.length >= 1 ? 'fade-in' : 'hidden'}`}>
+        {authors.length >= 1 && (
+          <Circle author={authors[0].name} color={authors[0].color} />
+        )}
+      </div>
+      <div className={`${authors.length >= 2 ? 'fade-in' : 'hidden'}`}>
+        {authors.length >= 2 && (
+          <Circle author={authors[1].name} color={authors[1].color} />
+        )}
+      </div>
     </div>
   </div>
 );

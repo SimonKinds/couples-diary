@@ -76,6 +76,15 @@
   border-right: 1px solid #d2d2d2;
 }
 
+.calendar-container > .calendar .hidden {
+  opacity: 0;
+}
+
+.calendar-container > .calendar .fade-in {
+  opacity: 1;
+  transition: opacity 1.5s;
+}
+
 .calendar-container > .calendar a {
   color: inherit;
   text-decoration: none;
@@ -94,7 +103,7 @@
 }
 
 .calendar-container > .calendar .today {
-  background-color: #CEEBCC;
+  background-color: #ceebcc;
 }
 
 .calendar-container > .calendar .not-in-month p,
