@@ -31,7 +31,9 @@ export class EntryForm extends Component {
     this.setState({ text: value });
 
   onSubmit = e => {
-    e.preventDefault();
+    if (e !== undefined) {
+      e.preventDefault();
+    }
     this.props.saveEntry(this.state.text);
   };
 
@@ -65,6 +67,9 @@ export class EntryForm extends Component {
             value={this.state.text}
             onChange={this.onChangeText}
             style={{ height: `${this.state.height}px` }}
+            onKeyDown={({ key, ctrlKey }) =>
+              key === 'Enter' && ctrlKey && this.onSubmit()
+            }
           />
         </div>
         <div className="buttons">
