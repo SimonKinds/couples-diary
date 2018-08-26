@@ -82,7 +82,7 @@
 
 .calendar-container > .calendar .fade-in {
   opacity: 1;
-  transition: opacity 1.5s;
+  transition: opacity 1s;
 }
 
 .calendar-container > .calendar a {
