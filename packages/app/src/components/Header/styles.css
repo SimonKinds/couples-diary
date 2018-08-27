@@ -4,13 +4,18 @@
   height: 55px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid #D2D2D2;
+  justify-content: center;
+  border-bottom: 1px solid #d2d2d2;
+  padding: 0 15px;
+}
+
+.main-header .container {
+  width: 100%;
+  max-width: var(--max-content-width);
 }
 
 .main-header a {
   text-decoration: none;
   color: inherit;
-  margin: 0 20px;
   font-size: 28px;
 }
-

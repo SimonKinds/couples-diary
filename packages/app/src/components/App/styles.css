@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  --main-bg-color: #FEF0F3;
-  --main-dark-color: #DD9FA7;
+  --main-bg-color: #fef0f3;
+  --main-dark-color: #dd9fa7;
+  --max-content-width: 700px;
   background-color: var(--main-bg-color);
 }

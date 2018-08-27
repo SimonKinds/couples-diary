@@ -5,7 +5,9 @@ import './styles.css';
 
 const Header = () => (
   <header className="main-header">
-    <Link to="/">Couple's Diary</Link>
+    <div className="container">
+      <Link to="/">Couple's Diary</Link>
+    </div>
   </header>
 );
 
