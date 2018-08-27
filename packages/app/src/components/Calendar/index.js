@@ -62,12 +62,7 @@ const hydrate = (year, month, entries) => {
 export const CalendarContainer = ({ match }) => {
   const { year, month } = getDateFromPath(match);
   return (
-    <Query
-      asyncMode
-      query={CALENDAR_GQL_QUERY}
-      variables={{ year, month }}
-      pollInterval={10000}
-    >
+    <Query query={CALENDAR_GQL_QUERY} variables={{ year, month }}>
       {({ data }) => {
         return (
           <Calendar
@@ -75,7 +70,7 @@ export const CalendarContainer = ({ match }) => {
             today={today()}
             selectedYear={year}
             selectedMonth={month}
-            entries={hydrate(year, month, (data && data.entries) || [])}
+            entries={hydrate(year, month, data.entries || [])}
           />
         );
       }}
