@@ -17,12 +17,27 @@ export class EntryForm extends Component {
 
   notebook = null;
 
+  componentDidMount() {
+    const textarea = this.getTextarea();
+    if (textarea !== null) {
+      textarea.focus();
+    }
+  }
+
+  getTextarea() {
+    if (this.notebook == null) {
+      return null;
+    }
+
+    return this.notebook.querySelector('.content');
+  }
+
   updateHeight = () => {
     if (this.notebook !== null) {
-      const content = this.notebook.querySelector('.content');
+      const textarea = this.getTextarea();
 
-      if (content.scrollHeight !== this.state.height) {
-        this.setState({ height: content.scrollHeight });
+      if (textarea.scrollHeight !== this.state.height) {
+        this.setState({ height: textarea.scrollHeight });
       }
     }
   };
