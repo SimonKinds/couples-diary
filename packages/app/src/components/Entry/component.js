@@ -21,6 +21,8 @@ export class EntryForm extends Component {
     const textarea = this.getTextarea();
     if (textarea !== null) {
       textarea.focus();
+      const length = this.state.text.length;
+      textarea.setSelectionRange(length, length);
     }
   }
 
