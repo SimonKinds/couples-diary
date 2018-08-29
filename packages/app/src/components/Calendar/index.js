@@ -62,7 +62,11 @@ const hydrate = (year, month, entries) => {
 export const CalendarContainer = ({ match }) => {
   const { year, month } = getDateFromPath(match);
   return (
-    <Query query={CALENDAR_GQL_QUERY} variables={{ year, month }}>
+    <Query
+      query={CALENDAR_GQL_QUERY}
+      variables={{ year, month }}
+      fetchPolicy="cache-and-network"
+    >
       {({ data }) => {
         return (
           <Calendar
