@@ -79,10 +79,9 @@ const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
   <Query
     query={ENTRY_GQL_QUERY}
     variables={{ year, month, date }}
-    pollInterval={10000}
     fetchPolicy="cache-and-network"
   >
-    {({ data: dataFromQuery, loading: loadingQuery, error: errorInQuery }) => (
+    {({ data: dataFromQuery, loading: loadingQuery }) => (
       <Entry
         body={
           loadingQuery ? (
