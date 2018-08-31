@@ -133,8 +133,8 @@ const Calendar = ({ today, selectedYear, selectedMonth, entries, partner }) => (
             <CalendarDate
               date={entry.date}
               isToday={
-                today.year === selectedYear &&
-                today.month === selectedMonth &&
+                today.year === entry.year &&
+                today.month === entry.month &&
                 today.date === entry.date
               }
               isCurrentMonth={selectedMonth === entry.month}
