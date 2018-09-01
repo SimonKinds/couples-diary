@@ -125,7 +125,6 @@ describe('GraphQL server', () => {
           `,
           })
           .expect(200)
-          .then(res => console.log(res.text) || res)
           .then(parseGraphqlResponse)
           .then(({ entries }) =>
             expect(entries).toEqual([
