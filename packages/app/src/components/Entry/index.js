@@ -69,7 +69,12 @@ const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
           setEntry({ variables: { year, month, date, content } })
         }
         nameOfUser={nameOfUser}
-        entry={(dataFromMutation && dataFromMutation.setEntry.content) || entry}
+        entry={
+          (dataFromMutation &&
+            dataFromMutation.setEntry &&
+            dataFromMutation.setEntry.content) ||
+          entry
+        }
       />
     )}
   </Mutation>

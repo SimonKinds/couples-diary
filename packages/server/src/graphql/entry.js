@@ -40,7 +40,9 @@ export const model = (entryRepository, userId) => ({
       .then(
         oldEntry =>
           oldEntry !== null
-            ? entryRepository.updateEntry({ ...oldEntry, ...entry })
+            ? entry.content === ''
+              ? entryRepository.deleteEntry(oldEntry.id).then(() => null)
+              : entryRepository.updateEntry({ ...oldEntry, ...entry })
             : entryRepository.createEntry({
                 ...entry,
                 id: generateId(),

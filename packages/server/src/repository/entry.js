@@ -52,6 +52,9 @@ export const createEntryRepository = sequelize => {
         entries.map(entry => entry.get({ plain: true })).map(deserialize)
       );
     },
+    deleteEntry(id) {
+      return Entry.destroy({ where: { id: { [Op.eq]: id } } });
+    },
     getEntriesForCoupleByDate(couple, year, month, date) {
       let whereClause = {
         coupleId: { [Op.eq]: couple.id },

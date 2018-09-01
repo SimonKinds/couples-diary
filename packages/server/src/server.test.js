@@ -504,6 +504,48 @@ describe('GraphQL server', () => {
       );
     });
 
+    it('deletes an entry if updated with empty text', () => {
+      const userId = 'author';
+
+      return Promise.all([
+        userRepository.createUser({ id: userId }),
+
+        coupleRepository.createCouple({ id: 'couple', creatorId: userId }),
+
+        entryRepository.createEntry({
+          year: 2018,
+          month: 1,
+          date: 1,
+          content: 'text',
+          coupleId: 'couple',
+          authorId: userId,
+          createdAt: new Date(),
+        }),
+      ]).then(() =>
+        graphqlRequest()
+          .set('Authorization', `Bearer ${temporaryToken(userId)}`)
+          .send({
+            query: `
+            mutation {
+              setEntry(year: 2018, month: 1, date: 1, content: "") {
+                content
+                createdAt
+              }
+            }
+          `,
+          })
+          .expect(200)
+          .then(parseGraphqlResponse)
+          .then(({ setEntry }) => {
+            expect(setEntry).toBeNull();
+
+            return entryRepository
+              .getEntries()
+              .then(entries => expect(entries).toHaveLength(0));
+          })
+      );
+    });
+
     it('returns UNAUTHENTICATED error and does not update the database if not logged in', () =>
       graphqlRequest()
         .send({
