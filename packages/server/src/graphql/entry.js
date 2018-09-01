@@ -1,4 +1,5 @@
 import { gql, AuthenticationError } from 'apollo-server-express';
+import { calendarMonth } from 'couples-diary-core';
 import { generateId } from '../database';
 
 export const schema = [
@@ -52,6 +53,15 @@ export const model = (entryRepository, userId) => ({
   getEntriesForCoupleByDate: (couple, year, month, date) => {
     if (couple == null) {
       return [];
+    }
+
+    if (date == null) {
+      // TODO: make one big DB request instead
+      return Promise.all(
+        calendarMonth(year, month).map(({ year, month, date }) =>
+          entryRepository.getEntriesForCoupleByDate(couple, year, month, date)
+        )
+      ).then(entries => entries.reduce((acc, e) => [...acc, ...e], []));
     }
 
     return entryRepository.getEntriesForCoupleByDate(couple, year, month, date);

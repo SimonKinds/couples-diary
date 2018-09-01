@@ -83,7 +83,7 @@ describe('GraphQL server', () => {
       ));
 
   describe('entries query', () => {
-    it('returns the entries of the requested year and month with the entries query', () =>
+    it('returns the entries of the requested year and month and any entries in the same weeks', () =>
       Promise.all([
         coupleRepository.createCouple({ id: 'couple', creatorId: 'author' }),
         entryRepository.createEntry({
@@ -94,13 +94,23 @@ describe('GraphQL server', () => {
           coupleId: 'couple',
           content: 'Entry 1',
         }),
+        // in the same week as the last dates of January 2018
         entryRepository.createEntry({
           year: 2018,
           month: 2,
-          date: 1,
+          date: 4,
           authorId: 'author',
           coupleId: 'couple',
           content: 'Entry 2',
+        }),
+        // in another week than the last dates of January 2018
+        entryRepository.createEntry({
+          year: 2018,
+          month: 2,
+          date: 5,
+          authorId: 'author',
+          coupleId: 'couple',
+          content: 'Entry 3',
         }),
       ]).then(() =>
         graphqlRequest()
@@ -115,9 +125,13 @@ describe('GraphQL server', () => {
           `,
           })
           .expect(200)
+          .then(res => console.log(res.text) || res)
           .then(parseGraphqlResponse)
           .then(({ entries }) =>
-            expect(entries).toEqual([{ content: 'Entry 1' }])
+            expect(entries).toEqual([
+              { content: 'Entry 1' },
+              { content: 'Entry 2' },
+            ])
           )
       ));
 
