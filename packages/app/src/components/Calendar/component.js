@@ -125,9 +125,7 @@ const Calendar = ({ today, selectedYear, selectedMonth, entries, partner }) => (
       <section className="calendar">
         {entries.map(entry => (
           <Link
-            key={`m${entry.month}-d${entry.date}-c${
-              selectedMonth === entry.month ? 1 : 0
-            }`}
+            key={`y-${entry.year}-m${entry.month}-d${entry.date}`}
             to={`/entry/${entry.year}/${entry.month}/${entry.date}/${partner}`}
           >
             <CalendarDate
