@@ -35,7 +35,7 @@ export default class Login extends PureComponent {
   render() {
     return (
       <Fragment>
-        <Header />
+        <Header location="center" />
         <main className="login">
           <h1>Login</h1>
           <Form onSubmit={this.onSubmit}>

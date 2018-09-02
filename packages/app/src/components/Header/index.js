@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 
 import './styles.css';
 
-const Header = () => (
+const containerClassname = location =>
+  `container ${location === 'center' ? 'center-content' : ''}`;
+
+const Header = ({ location }) => (
   <header className="main-header">
-    <div className="container">
+    <div className={containerClassname(location)}>
       <Link to="/">Couple's Diary</Link>
     </div>
   </header>
