@@ -38,6 +38,10 @@ export default class Router extends PureComponent {
 
       const author = params.author;
 
+      if (isNaN(year) || isNaN(month) || isNaN(date) || !author) {
+        return <Redirect to="/" />;
+      }
+
       return (
         <StrictMode>
           <Entry year={year} month={month} date={date} author={author} />
@@ -66,6 +70,7 @@ export default class Router extends PureComponent {
             path="/entry/:year/:month/:date/:author"
             render={this.renderEntryComponent}
           />
+          <Route path="/entry" render={() => <Redirect to="/" />} />
           <Route exact path="/login" render={this.renderLoginComponent} />
           <Route component={FourOhFour} />
         </Switch>
