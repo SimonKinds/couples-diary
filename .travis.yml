@@ -5,8 +5,9 @@ node_js:
 os: linux
 
 env:
-  - JWT_SECRET=notVerySecret
-  - DB_NAME=cd-test-db
+  - global
+    - JWT_SECRET=notVerySecret
+    - DB_NAME=cd-test-db
 
 cache:
   directories:
