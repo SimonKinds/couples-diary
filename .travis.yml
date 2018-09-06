@@ -5,7 +5,7 @@ node_js:
 os: linux
 
 env:
-  - global:
+  global:
     - JWT_SECRET=notVerySecret
     - DB_NAME=couplesdiarytest
 
