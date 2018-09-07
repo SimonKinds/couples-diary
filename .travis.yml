@@ -6,6 +6,8 @@ os: linux
 
 env:
   global:
+    - HOSTNAME=localhost
+    - SERVER_PORT=0
     - JWT_SECRET=notVerySecret
     - DB_NAME=couplesdiarytest
 
