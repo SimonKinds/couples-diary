@@ -65,6 +65,7 @@ export default class Router extends PureComponent {
             path="/calendar/:year/:month"
             render={this.renderCalendarComponent}
           />
+          <Route path="/calendar" render={() => <Redirect to="/" />} />
           <Route
             exact
             path="/entry/:year/:month/:date/:author"
