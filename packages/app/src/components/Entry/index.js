@@ -63,7 +63,14 @@ const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
       { query: ENTRY_GQL_QUERY, variables: { year, month, date } },
     ]}
   >
-    {(setEntry, { data: dataFromMutation }) => (
+    {(
+      setEntry,
+      {
+        data: dataFromMutation,
+        called: didCallMutation,
+        error: errorFromMutation,
+      }
+    ) => (
       <EntryForm
         saveEntry={content =>
           setEntry({ variables: { year, month, date, content } })
@@ -75,6 +82,7 @@ const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
             dataFromMutation.setEntry.content) ||
           entry
         }
+        errorOnSave={didCallMutation && errorFromMutation != null}
       />
     )}
   </Mutation>

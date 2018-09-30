@@ -94,6 +94,9 @@ export class EntryForm extends Component {
             <p>Saved</p>
           ) : (
             <Fragment>
+              <strong className="error">
+                {this.props.errorOnSave && 'Could not save entry, try again'}
+              </strong>
               <input type="reset" value="Discard changes" />
               <input type="submit" value="Save" />
             </Fragment>
@@ -108,6 +111,7 @@ EntryForm.propTypes = {
   nameOfUser: PropTypes.string.isRequired,
   saveEntry: PropTypes.func.isRequired,
   entry: PropTypes.string.isRequired,
+  errorOnSave: PropTypes.bool.isRequired,
 };
 
 export class EntryBody extends Component {
