@@ -59,6 +59,16 @@ const hydrate = (year, month, entries) => {
   });
 };
 
+const renderCalendar = (year, month) => ({ data }) => (
+  <Calendar
+    partner={(data.myCouple && data.myCouple.partner.name) || ''}
+    today={today()}
+    selectedYear={year}
+    selectedMonth={month}
+    entries={hydrate(year, month, data.entries || [])}
+  />
+);
+
 export const CalendarContainer = ({ match }) => {
   const { year, month } = getDateFromPath(match);
   return (
@@ -67,17 +77,7 @@ export const CalendarContainer = ({ match }) => {
       variables={{ year, month }}
       fetchPolicy="cache-and-network"
     >
-      {({ data }) => {
-        return (
-          <Calendar
-            partner={(data.myCouple && data.myCouple.partner.name) || ''}
-            today={today()}
-            selectedYear={year}
-            selectedMonth={month}
-            entries={hydrate(year, month, data.entries || [])}
-          />
-        );
-      }}
+      {renderCalendar(year, month)}
     </Query>
   );
 };
