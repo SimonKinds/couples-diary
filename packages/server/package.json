@@ -12,16 +12,16 @@
     "start:prod": "node build/index.js"
   },
   "dependencies": {
-    "apollo-server-express": "^2.0.0",
-    "bcrypt": "^3.0.0",
+    "apollo-server-express": "^2.1.0",
+    "bcrypt": "^3.0.1",
     "compression": "^1.7.3",
     "couples-diary-core": "^0.1.0",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "graphql": "^0.13.2",
-    "graphql-tag": "^2.9.2",
+    "graphql-tag": "^2.10.0",
     "jsonwebtoken": "^8.3.0",
-    "sequelize": "^4.38.0",
+    "sequelize": "^4.39.0",
     "sqlite3": "^4.0.2",
     "uuid": "^3.3.2"
   },
@@ -30,8 +30,8 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
-    "jest": "^23.1.0",
-    "nodemon": "^1.17.5",
-    "supertest": "^3.1.0"
+    "jest": "^23.6.0",
+    "nodemon": "^1.18.4",
+    "supertest": "^3.3.0"
   }
 }
