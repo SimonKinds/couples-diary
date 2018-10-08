@@ -7,10 +7,12 @@ export class Loader extends Component {
   static propTypes = {
     delay: PropTypes.number,
     className: PropTypes.string,
+    size: PropTypes.oneOf(['small', 'medium']),
   };
 
   static defaultProps = {
     delay: 100,
+    size: 'medium',
   };
 
   state = {
@@ -30,8 +32,14 @@ export class Loader extends Component {
   }
 
   render() {
+    const loaderSizeModifier = `loader--${this.props.size}`;
     if (!this.state.waiting) {
-      return <div className={`loader ${this.props.className || ''}`} />;
+      return (
+        <div
+          className={`loader ${loaderSizeModifier} ${this.props.className ||
+            ''}`}
+        />
+      );
     }
     return null;
   }
