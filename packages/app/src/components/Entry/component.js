@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import Header from '../Header';
+import Loader from '../Loader';
 import { months } from '../../constants';
 
 import './styles.css';
@@ -60,11 +61,16 @@ export class EntryForm extends Component {
   };
 
   render() {
-    const { nameOfUser } = this.props;
+    const { nameOfUser, loading } = this.props;
 
     return (
-      <form onSubmit={this.onSubmit} onReset={this.onReset}>
+      <form
+        onSubmit={this.onSubmit}
+        onReset={this.onReset}
+        className="entry-body"
+      >
         <h3>{nameOfUser}</h3>
+        {loading && <Loader size="small" className="entry-loader" />}
         <div
           className="notebook"
           style={{ height: `${this.state.height}px` }}
@@ -112,6 +118,7 @@ EntryForm.propTypes = {
   saveEntry: PropTypes.func.isRequired,
   entry: PropTypes.string.isRequired,
   errorOnSave: PropTypes.bool.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export class EntryBody extends Component {
@@ -135,11 +142,12 @@ export class EntryBody extends Component {
   };
 
   render() {
-    const { nameOfUser } = this.props;
+    const { nameOfUser, loading } = this.props;
 
     return (
-      <Fragment>
+      <div className="entry-body">
         <h3>{nameOfUser}</h3>
+        {loading && <Loader size="small" className="entry-loader" />}
         <div
           className="notebook"
           style={{ height: `${this.state.height}px` }}
@@ -157,7 +165,7 @@ export class EntryBody extends Component {
             {this.props.entry}
           </p>
         </div>
-      </Fragment>
+      </div>
     );
   }
 }
@@ -165,6 +173,7 @@ export class EntryBody extends Component {
 EntryBody.propTypes = {
   nameOfUser: PropTypes.string.isRequired,
   entry: PropTypes.string.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 const Entry = ({ year, month, date, body, nameOfPartner }) => (

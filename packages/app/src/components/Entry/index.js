@@ -69,6 +69,7 @@ const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
         data: dataFromMutation,
         called: didCallMutation,
         error: errorFromMutation,
+        loading,
       }
     ) => (
       <EntryForm
@@ -83,6 +84,7 @@ const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
           entry
         }
         errorOnSave={didCallMutation && errorFromMutation != null}
+        loading={loading}
       />
     )}
   </Mutation>
@@ -98,7 +100,7 @@ const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
       <Entry
         body={
           loadingQuery ? (
-            <EntryBody nameOfUser={''} entry={''} />
+            <EntryBody nameOfUser={''} entry={''} loading={loadingQuery} />
           ) : dataFromQuery.me.name.toLowerCase() ===
           requestedAuthor.toLowerCase() ? (
             <EditableEntryBody

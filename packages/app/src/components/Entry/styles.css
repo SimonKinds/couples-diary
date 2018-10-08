@@ -1,3 +1,13 @@
+.entry-body {
+  position: relative;
+}
+
+.entry-loader {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 .entry {
   max-width: var(--max-content-width);
   margin: auto;
