@@ -11,7 +11,7 @@ export class Loader extends Component {
   };
 
   static defaultProps = {
-    delay: 100,
+    delay: 300,
     size: 'medium',
   };
 
