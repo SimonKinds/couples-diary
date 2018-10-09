@@ -1,5 +1,6 @@
 # Couple's Diary
 [![Build Status](https://travis-ci.org/SimonKinds/couples-diary.svg?branch=master)](https://travis-ci.org/SimonKinds/couples-diary)
+
 Couple's Diary (CD) is a website where two people can share their daily experiences by writing about their days.
 
 CD is build using `express` on the backend, and `react` on the frontend.
