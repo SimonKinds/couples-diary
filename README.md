@@ -71,3 +71,6 @@ npm run test
 ```sh
 ./scripts/test.sh
 ```
+
+## License
+MIT
