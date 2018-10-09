@@ -124,6 +124,7 @@ const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
                 requestedAuthor,
                 dataFromQuery.entries || []
               )}
+              loading={loadingQuery}
             />
           )
         }
