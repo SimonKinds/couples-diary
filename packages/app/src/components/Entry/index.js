@@ -107,7 +107,10 @@ const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
               year={year}
               month={month}
               date={date}
-              nameOfUser={(dataFromQuery.me && dataFromQuery.me.name) || ''}
+              nameOfUser={
+                (dataFromQuery && dataFromQuery.me && dataFromQuery.me.name) ||
+                ''
+              }
               entry={getEntryForAuthor(
                 requestedAuthor,
                 (dataFromQuery && dataFromQuery.entries) || []
@@ -116,13 +119,14 @@ const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
           ) : (
             <EntryBody
               nameOfUser={
-                (dataFromQuery.myCouple &&
+                (dataFromQuery &&
+                  dataFromQuery.myCouple &&
                   dataFromQuery.myCouple.partner.name) ||
                 ''
               }
               entry={getEntryForAuthor(
                 requestedAuthor,
-                dataFromQuery.entries || []
+                (dataFromQuery && dataFromQuery.entries) || []
               )}
               loading={loadingQuery}
             />
@@ -132,7 +136,7 @@ const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
         month={month}
         date={date}
         nameOfPartner={
-          dataFromQuery.myCouple !== undefined
+          (dataFromQuery && dataFromQuery.myCouple) !== undefined
             ? dataFromQuery.myCouple.me.name.toLowerCase() ===
               requestedAuthor.toLowerCase()
               ? dataFromQuery.myCouple.partner.name

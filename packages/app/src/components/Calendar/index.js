@@ -61,11 +61,11 @@ const hydrate = (year, month, entries) => {
 
 const renderCalendar = (year, month) => ({ data, loading }) => (
   <Calendar
-    partner={(data.myCouple && data.myCouple.partner.name) || ''}
+    partner={(data && data.myCouple && data.myCouple.partner.name) || ''}
     today={today()}
     selectedYear={year}
     selectedMonth={month}
-    entries={hydrate(year, month, data.entries || [])}
+    entries={hydrate(year, month, (data && data.entries) || [])}
     loading={loading}
   />
 );
