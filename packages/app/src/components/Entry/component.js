@@ -45,8 +45,10 @@ export class EntryForm extends Component {
     }
   };
 
-  onChangeText = ({ currentTarget: { value } }) =>
+  onChangeText = ({ currentTarget: { value } }) => {
     this.setState({ text: value });
+    this.props.locallySaveEntry(value);
+  };
 
   onSubmit = e => {
     if (e !== undefined) {
@@ -96,6 +98,16 @@ export class EntryForm extends Component {
           />
         </div>
         <div className="buttons">
+          {this.props.getLocallySavedEntry() &&
+            this.props.getLocallySavedEntry() !== this.state.text && (
+              <input
+                type="button"
+                value="Reset local copy of entry"
+                onClick={() =>
+                  this.setState({ text: this.props.getLocallySavedEntry() })
+                }
+              />
+            )}
           {this.props.entry === this.state.text ? (
             <p>Saved</p>
           ) : (
@@ -119,6 +131,8 @@ EntryForm.propTypes = {
   entry: PropTypes.string.isRequired,
   errorOnSave: PropTypes.bool.isRequired,
   loading: PropTypes.bool.isRequired,
+  locallySavedEntry: PropTypes.string.isRequired,
+  locallySaveEntry: PropTypes.func.isRequired,
 };
 
 export class EntryBody extends Component {

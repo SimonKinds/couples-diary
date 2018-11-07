@@ -71,24 +71,59 @@ const EditableEntryBody = ({ year, month, date, nameOfUser, entry }) => (
         error: errorFromMutation,
         loading,
       }
-    ) => (
-      <EntryForm
-        saveEntry={content =>
-          setEntry({ variables: { year, month, date, content } })
-        }
-        nameOfUser={nameOfUser}
-        entry={
-          (dataFromMutation &&
-            dataFromMutation.setEntry &&
-            dataFromMutation.setEntry.content) ||
-          entry
-        }
-        errorOnSave={didCallMutation && errorFromMutation != null}
-        loading={loading}
-      />
-    )}
+    ) => {
+      if (didCallMutation && errorFromMutation == null) {
+        removeLocallySavedEntry(
+          locallySavedEntryKey(nameOfUser, year, month, date)
+        );
+      }
+
+      return (
+        <EntryForm
+          saveEntry={content =>
+            setEntry({ variables: { year, month, date, content } })
+          }
+          nameOfUser={nameOfUser}
+          entry={
+            (dataFromMutation &&
+              dataFromMutation.setEntry &&
+              dataFromMutation.setEntry.content) ||
+            entry
+          }
+          getLocallySavedEntry={() =>
+            getLocallySavedEntry(
+              locallySavedEntryKey(nameOfUser, year, month, date)
+            )
+          }
+          locallySaveEntry={entry =>
+            setLocallySavedEntry(
+              locallySavedEntryKey(nameOfUser, year, month, date),
+              entry
+            )
+          }
+          errorOnSave={didCallMutation && errorFromMutation != null}
+          loading={loading}
+        />
+      );
+    }}
   </Mutation>
 );
+
+function getLocallySavedEntry(key) {
+  return localStorage.getItem(key);
+}
+
+function setLocallySavedEntry(key, entry) {
+  return localStorage.setItem(key, entry);
+}
+
+function removeLocallySavedEntry(key) {
+  return localStorage.removeItem(key);
+}
+
+function locallySavedEntryKey(user, year, month, date) {
+  return `${user}${year}${month}${date}`;
+}
 
 const EntryContainer = ({ year, month, date, author: requestedAuthor }) => (
   <Query
