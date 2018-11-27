@@ -61,14 +61,27 @@ const hydrate = (year, month, entries) => {
 
 const renderCalendar = (year, month) => ({ data, loading }) => (
   <Calendar
-    partner={(data && data.myCouple && data.myCouple.partner.name) || ''}
+    partner={partnerName(data)}
     today={today()}
     selectedYear={year}
     selectedMonth={month}
-    entries={hydrate(year, month, (data && data.entries) || [])}
+    entries={hydrate(year, month, entries(data))}
     loading={loading}
   />
 );
+
+function partnerName(graphQlData) {
+  return (
+    (graphQlData &&
+      graphQlData.myCouple &&
+      graphQlData.myCouple.partner.name) ||
+    ''
+  );
+}
+
+function entries(graphQlData) {
+  return (graphQlData && graphQlData.entries) || [];
+}
 
 export const CalendarContainer = ({ match }) => {
   const { year, month } = getDateFromPath(match);
