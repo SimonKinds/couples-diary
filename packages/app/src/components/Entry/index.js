@@ -51,32 +51,27 @@ function renderEntry(year, month, date, requestedAuthor) {
     <Entry
       body={
         loadingQuery ? (
-          <EntryBody nameOfUser={''} entry={''} loading={loadingQuery} />
-        ) : dataFromQuery.me.name.toLowerCase() ===
-        requestedAuthor.toLowerCase() ? (
+          renderEmptyEntryBody()
+        ) : isLoggedInUserAuthor(
+          getLoggedInUserNameFromQuery(dataFromQuery),
+          requestedAuthor
+        ) ? (
           <EditableEntryBody
             year={year}
             month={month}
             date={date}
-            nameOfUser={
-              (dataFromQuery && dataFromQuery.me && dataFromQuery.me.name) || ''
-            }
+            nameOfUser={getLoggedInUserNameFromQuery(dataFromQuery)}
             entry={getEntryForAuthor(
               requestedAuthor,
-              (dataFromQuery && dataFromQuery.entries) || []
+              getEntriesFromQuery(dataFromQuery)
             )}
           />
         ) : (
           <EntryBody
-            nameOfUser={
-              (dataFromQuery &&
-                dataFromQuery.myCouple &&
-                dataFromQuery.myCouple.partner.name) ||
-              ''
-            }
+            nameOfUser={getPartnerNameFromQuery(dataFromQuery)}
             entry={getEntryForAuthor(
               requestedAuthor,
-              (dataFromQuery && dataFromQuery.entries) || []
+              getEntriesFromQuery(dataFromQuery)
             )}
             loading={loadingQuery}
           />
@@ -85,16 +80,38 @@ function renderEntry(year, month, date, requestedAuthor) {
       year={year}
       month={month}
       date={date}
-      nameOfPartner={
-        (dataFromQuery && dataFromQuery.myCouple) !== undefined
-          ? dataFromQuery.myCouple.me.name.toLowerCase() ===
-            requestedAuthor.toLowerCase()
-            ? dataFromQuery.myCouple.partner.name
-            : dataFromQuery.myCouple.me.name
-          : ''
-      }
+      nameOfPartner={getNameOfPartnerForAuthor(dataFromQuery, requestedAuthor)}
     />
   );
+}
+
+function renderEmptyEntryBody() {
+  return <EntryBody nameOfUser={''} entry={''} loading={true} />;
+}
+
+function isLoggedInUserAuthor(loggedInUser, author) {
+  return loggedInUser.toLowerCase() === author.toLowerCase();
+}
+
+function getLoggedInUserNameFromQuery(query) {
+  return (query && query.me && query.me.name) || '';
+}
+
+function getEntriesFromQuery(query) {
+  return (query && query.entries) || [];
+}
+
+function getNameOfPartnerForAuthor(query, requestedAuthor) {
+  return isLoggedInUserAuthor(
+    getLoggedInUserNameFromQuery(query),
+    requestedAuthor
+  )
+    ? getPartnerNameFromQuery(query)
+    : getLoggedInUserNameFromQuery(query);
+}
+
+function getPartnerNameFromQuery(query) {
+  return (query && query.myCouple && query.myCouple.partner.name) || '';
 }
 
 function EditableEntryBody({ year, month, date, nameOfUser, entry }) {
