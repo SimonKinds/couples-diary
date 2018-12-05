@@ -50,32 +50,16 @@ function renderEntry(year, month, date, requestedAuthor) {
   return ({ data: dataFromQuery, loading: loadingQuery }) => (
     <Entry
       body={
-        loadingQuery ? (
-          renderEmptyEntryBody()
-        ) : isLoggedInUserAuthor(
-          getLoggedInUserNameFromQuery(dataFromQuery),
-          requestedAuthor
-        ) ? (
-          <EditableEntryBody
-            year={year}
-            month={month}
-            date={date}
-            nameOfUser={getLoggedInUserNameFromQuery(dataFromQuery)}
-            entry={getEntryForAuthor(
+        loadingQuery
+          ? renderEmptyEntryBody()
+          : renderEntryBodyWithContent(
+              dataFromQuery,
+              loadingQuery,
               requestedAuthor,
-              getEntriesFromQuery(dataFromQuery)
-            )}
-          />
-        ) : (
-          <EntryBody
-            nameOfUser={getPartnerNameFromQuery(dataFromQuery)}
-            entry={getEntryForAuthor(
-              requestedAuthor,
-              getEntriesFromQuery(dataFromQuery)
-            )}
-            loading={loadingQuery}
-          />
-        )
+              year,
+              month,
+              date
+            )
       }
       year={year}
       month={month}
@@ -87,6 +71,56 @@ function renderEntry(year, month, date, requestedAuthor) {
 
 function renderEmptyEntryBody() {
   return <EntryBody nameOfUser={''} entry={''} loading={true} />;
+}
+
+function renderEntryBodyWithContent(
+  dataFromQuery,
+  loadingQuery,
+  requestedAuthor,
+  year,
+  month,
+  date
+) {
+  return isLoggedInUserAuthor(
+    getLoggedInUserNameFromQuery(dataFromQuery),
+    requestedAuthor
+  )
+    ? renderEditableEntryBody(dataFromQuery, requestedAuthor, year, month, date)
+    : renderEntryBody(dataFromQuery, loadingQuery, requestedAuthor);
+}
+
+function renderEditableEntryBody(
+  dataFromQuery,
+  requestedAuthor,
+  year,
+  month,
+  date
+) {
+  return (
+    <EditableEntryBody
+      year={year}
+      month={month}
+      date={date}
+      nameOfUser={getLoggedInUserNameFromQuery(dataFromQuery)}
+      entry={getEntryForAuthor(
+        requestedAuthor,
+        getEntriesFromQuery(dataFromQuery)
+      )}
+    />
+  );
+}
+
+function renderEntryBody(dataFromQuery, loadingQuery, requestedAuthor) {
+  return (
+    <EntryBody
+      nameOfUser={getPartnerNameFromQuery(dataFromQuery)}
+      entry={getEntryForAuthor(
+        requestedAuthor,
+        getEntriesFromQuery(dataFromQuery)
+      )}
+      loading={loadingQuery}
+    />
+  );
 }
 
 function isLoggedInUserAuthor(loggedInUser, author) {
